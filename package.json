@@ -1,0 +1,19 @@
+{
+  "name": "draw-guess",
+  "version": "1.0.0",
+  "description": "你画我猜",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/TwinkleDing/DRAW-GUESS.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/TwinkleDing/DRAW-GUESS/issues"
+  },
+  "homepage": "https://github.com/TwinkleDing/DRAW-GUESS#readme"
+}
