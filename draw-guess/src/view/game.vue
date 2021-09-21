@@ -15,6 +15,9 @@
                 class="canvas"
                 height="800"
                 width="1200" />
+            <div @click="emptyAll">
+                一键清空
+            </div>
         </div>
         <div>
             <div class="answer-list">
@@ -68,6 +71,10 @@ export default {
             let ctx = answer.getContext("2d");
             ctx.strokeStyle = "#000";
             let client = JSON.parse(msg.data);
+            if(client.status === "empty") {
+                ctx.clearRect(0, 0, 1200, 800);
+                return;
+            }
             if(client.status === "drawing") {
                 ctx.moveTo(this.mouseLastX, this.mouseLastY);
             }else {
@@ -86,6 +93,17 @@ export default {
         },
         submit() {
 
+        },
+        emptyAll() {
+            this.mouseBeginX = null;
+            this.mouseBeginY = null;
+            this.mouseLastX= null;
+            this.mouseLastY = null;
+            this.context.beginPath();
+            this.context.clearRect(0, 0, 1200, 800);
+            this.socket.send(JSON.stringify({
+                status: "empty"
+            }));
         },
         drawStart(e) {
             this.mouseBeginX = e.clientX - this.canvas.offsetLeft;
