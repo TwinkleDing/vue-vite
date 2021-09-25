@@ -15,8 +15,11 @@
                 class="canvas"
                 height="800"
                 width="1200" />
-            <div @click="emptyAll">
-                一键清空
+            <div>
+                <el-color-picker v-model="color"></el-color-picker>
+                <el-button v-if="drawer" @click="emptyAll">一键清空</el-button>
+                <el-button v-if="drawer" @click="startGame">开始游戏</el-button>
+                <el-button v-if="drawer" @click="nextUser">更换玩家</el-button>
             </div>
         </div>
         <div>
@@ -61,7 +64,8 @@ export default {
                 },
             ],
             user: "",
-            drawer: localStorage.getItem("user") === "丁玉亮"
+            drawer: localStorage.getItem("user") === "丁玉亮",
+            color: "#000000"
         };
     },
     mounted() {
@@ -88,6 +92,9 @@ export default {
                     answer: client.answer
                 });
             }
+            if(client.status === "question") {
+                // chuti
+            }
             if(client.status === "empty") {
                 ctx.clearRect(0, 0, 1200, 800);
                 return;
@@ -97,6 +104,7 @@ export default {
             }else {
                 ctx.moveTo(client.x, client.y);
             }
+            ctx.strokeStyle = client.color;
             ctx.lineTo(client.x, client.y);
             this.mouseLastX = client.x;
             this.mouseLastY = client.y;
@@ -130,6 +138,15 @@ export default {
                     this.socket.send(JSON.stringify(client));
                 }
             };
+        },
+        startGame() {
+            let client = {
+                status: "question",
+            };
+            this.socket.send(JSON.stringify(client));
+        },
+        nextUser() {
+            //下一个玩家进行游戏
         },
         submit() {
             if(this.answerInput === "") {
@@ -171,7 +188,7 @@ export default {
         },
         openDraw(e, status) {
             let ctx = this.context;
-            ctx.strokeStyle = "#000";
+            ctx.strokeStyle = this.color;
             this.mouseX = e.clientX - this.canvas.offsetLeft;
             this.mouseY = e.clientY - this.canvas.offsetTop;
             ctx.lineTo(this.mouseX, this.mouseY);
@@ -180,6 +197,7 @@ export default {
                 status,
                 x: this.mouseX,
                 y: this.mouseY,
+                color: this.color
             };
             this.socket.send(JSON.stringify(client));
         },
