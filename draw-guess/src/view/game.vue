@@ -15,8 +15,8 @@
                 class="canvas"
                 height="800"
                 width="1200" />
-            <div>
-                <el-color-picker v-model="color"></el-color-picker>
+            <div class="flex">
+                <el-color-picker v-if="drawer" v-model="color"></el-color-picker>
                 <el-button v-if="drawer" @click="emptyAll">一键清空</el-button>
                 <el-button v-if="drawer" @click="startGame">开始游戏</el-button>
                 <el-button v-if="drawer" @click="nextUser">更换玩家</el-button>
@@ -32,7 +32,7 @@
             </div>
             <div>
                 <div>提示：<el-tag>2个字</el-tag>；<el-tag>动物</el-tag></div>
-                <div style="display:flex">
+                <div class="flex">
                     <el-input @keyup.enter="submit" v-model="answerInput" type="text" placeholder="请输入答案" />
                     <el-button type="primary" @click="submit">确认</el-button>
                 </div>
@@ -96,6 +96,7 @@ export default {
                 // chuti
             }
             if(client.status === "empty") {
+                ctx.beginPath();
                 ctx.clearRect(0, 0, 1200, 800);
                 return;
             }
@@ -224,6 +225,9 @@ export default {
         .answer {
         height: 40px;
         }
+    }
+    .flex {
+        display: flex;
     }
 }
 </style>
