@@ -28,10 +28,10 @@
                 </div>
             </div>
             <div>
-                <div>提示：<span>2个字</span>；<span>动物</span></div>
-                <div>
-                    <input v-model="answerInput" type="text" placeholder="请输入答案" />
-                    <button @click="submit">确认</button>
+                <div>提示：<el-tag>2个字</el-tag>；<el-tag>动物</el-tag></div>
+                <div style="display:flex">
+                    <el-input @keyup.enter="submit" v-model="answerInput" type="text" placeholder="请输入答案" />
+                    <el-button type="primary" @click="submit">确认</el-button>
                 </div>
             </div>
         </div>
@@ -60,17 +60,34 @@ export default {
                     answer: "牛",
                 },
             ],
-            drawer: true
+            user: "",
+            drawer: localStorage.getItem("user") === "丁玉亮"
         };
     },
     mounted() {
         this.init();
-        this.socket = new WebSocket("ws://localhost:3001/test");
         this.socket.onmessage = (msg) => {
             let answer = document.getElementById("canvasAnswer");
             let ctx = answer.getContext("2d");
             ctx.strokeStyle = "#000";
             let client = JSON.parse(msg.data);
+            console.log(client);
+            if(client.status === "user") {
+                this.answerList.push({
+                    user: "系统",
+                    answer: `欢迎${client.user}加入游戏`
+                });
+                return;
+            }
+            if(client.status === "qusetionUser") {
+                this.drawer = client.user === this.user;
+            }
+            if(client.status === "answer") {
+                this.answerList.push({
+                    user: client.user,
+                    answer: client.answer
+                });
+            }
             if(client.status === "empty") {
                 ctx.clearRect(0, 0, 1200, 800);
                 return;
@@ -88,11 +105,43 @@ export default {
     },
     methods: {
         init() {
+            this.socket = new WebSocket("ws://localhost:3001/test");
             this.canvas = document.getElementById("canvas");
             this.context = this.canvas.getContext("2d");
+            this.user=localStorage.getItem("user");
+            this.socket.onopen = () => {
+                if(!this.user){
+                    this.$prompt("请输入玩家姓名", "提示", {
+                        cancelButtonText: "取消",
+                        confirmButtonText: "确定",
+                    }).then(({ value }) => {
+                        localStorage.setItem("user", value);
+                        let client = {
+                            status: "user",
+                            user: value,
+                        };
+                        this.socket.send(JSON.stringify(client));
+                    });
+                }else{
+                    let client = {
+                        status: "user",
+                        user: this.user,
+                    };
+                    this.socket.send(JSON.stringify(client));
+                }
+            };
         },
         submit() {
-
+            if(this.answerInput === "") {
+                return;
+            }
+            let client = {
+                status: "answer",
+                user: this.user,
+                answer: this.answerInput
+            };
+            this.answerInput = "";
+            this.socket.send(JSON.stringify(client));
         },
         emptyAll() {
             this.mouseBeginX = null;
@@ -140,21 +189,23 @@ export default {
 
 <style lang="less" scoped>
 #game {
-  height: 800px;
-  width: 100%;
-  min-width: 1400px;
-  display: flex;
-  .canvas {
-    border: 2px solid #ac0;
-  }
-  .answer-list {
-    border: 2px solid #3333ff;
-    width: 400px;
-    height: 100%;
+    height: 800px;
+    width: 100%;
+    min-width: 1400px;
     display: flex;
-    .answer {
-      height: 40px;
+    #canvas {
+        border: 2px solid #ac0;
     }
-  }
+    #canvasAnswer {
+        border: 2px solid #ca0;
+    }
+    .answer-list {
+        border: 2px solid #3333ff;
+        width: 400px;
+        height: 100%;
+        .answer {
+        height: 40px;
+        }
+    }
 }
 </style>

@@ -6,12 +6,15 @@
     "build": "vite build"
   },
   "dependencies": {
+    "element-plus": "^1.1.0-beta.16",
     "vue": "^3.0.4"
   },
   "devDependencies": {
+    "@vue/compiler-sfc": "^3.0.4",
+    "eslint": "^7.32.0",
+    "eslint-plugin-vue": "^7.18.0",
     "less": "^4.1.1",
     "less-loader": "^10.0.1",
-    "@vue/compiler-sfc": "^3.0.4",
     "vite": "^1.0.0-rc.13"
   }
 }
