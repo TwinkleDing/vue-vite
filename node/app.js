@@ -36,11 +36,8 @@ const wss = new WebSocketServer( {
 wss.on( 'connection', function ( ws ) {
     console.log( `[SERVER] connection()` );
     ws.on( 'message', function ( message ) {
-        console.log( `[SERVER] Received: ${message}` );
-        ws.send( `${message}`, ( err ) => {
-            if ( err ) {
-                console.log( `[SERVER] error: ${err}` );
-            }
+        wss.clients.forEach( function each( client ) {
+            client.send( `${message}` );
         } );
     } )
 } );
