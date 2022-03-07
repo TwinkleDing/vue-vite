@@ -1,23 +1,21 @@
 {
-  "name": "draw-guess",
-  "version": "1.0.0",
-  "description": "你画我猜",
-  "main": "index.js",
+  "name": "hello-vue3",
+  "version": "0.0.0",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "vite",
+    "build": "vite build"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/TwinkleDing/DRAW-GUESS.git"
+  "dependencies": {
+    "@vitejs/plugin-vue": "^2.2.4",
+    "element-plus": "^1.1.0-beta.16",
+    "vue": "^3.2.31"
   },
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/TwinkleDing/DRAW-GUESS/issues"
-  },
-  "homepage": "https://github.com/TwinkleDing/DRAW-GUESS#readme",
   "devDependencies": {
+    "@vue/compiler-sfc": "^3.0.4",
     "eslint": "^7.32.0",
-    "eslint-plugin-vue": "^7.18.0"
+    "eslint-plugin-vue": "^7.18.0",
+    "less": "^4.1.1",
+    "less-loader": "^10.0.1",
+    "vite": "^2.8.6"
   }
 }
