@@ -6,7 +6,7 @@
                 id="canvas"
                 class="canvas"
                 height="800"
-                width="1200"
+                width="1000"
                 @mousedown="drawStart"
                 @mousemove="drawing" />
             <canvas
@@ -14,7 +14,7 @@
                 id="canvasAnswer"
                 class="canvas"
                 height="800"
-                width="1200" />
+                width="1000" />
             <div class="flex">
                 <el-color-picker v-if="drawer" v-model="color"></el-color-picker>
                 <el-button v-if="drawer" @click="emptyAll">一键清空</el-button>
