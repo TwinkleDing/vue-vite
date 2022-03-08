@@ -1,5 +1,5 @@
 <template>
-    <index />
+    <router-view />
 </template>
 <script lang="ts">
 import index from "./views/index/index.vue";

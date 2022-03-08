@@ -1,5 +1,21 @@
-import Login from "@/views/login/login.vue";
+import Index from "../views/index/index.vue";
+import Login from "../views/login/login.vue";
 
-const routes = [{ path: "/", component: Login }];
+interface LabelledValue {
+    path: string;
+    component: any;
+    ss: any;
+}
+
+const routes: LabelledValue = [
+    {
+        path: "/",
+        component: Index,
+    },
+    {
+        path: "/login",
+        component: Login,
+    },
+];
 
 export default routes;

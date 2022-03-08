@@ -1,5 +1,7 @@
 <template>
-    <el-button type="primary">index</el-button>
+    <router-link to="/login">
+        <el-button type="primary"> login </el-button>
+    </router-link>
 </template>
 <script lang="ts">
 export default {
