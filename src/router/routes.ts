@@ -1,5 +1,5 @@
 import Index from "../views/index/index.vue";
-import Login from "../views/login/login.vue";
+import Login from "../pages/login/index.vue";
 
 interface LabelledValue {
     path: string;
