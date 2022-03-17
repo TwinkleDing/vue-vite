@@ -17,7 +17,7 @@
                 ></el-input>
             </el-form-item>
             <el-form-item>
-                <el-button type="primary" @click="register">{{
+                <el-button :icon="Search" type="primary" @click="register">{{
                     $t("login.register")
                 }}</el-button>
                 <el-button type="primary" @click="login">{{
@@ -26,56 +26,49 @@
                 <el-button type="primary" @click="tourists">{{
                     $t("login.touristsLogin")
                 }}</el-button>
+                <el-button type="primary" @click="color">设置颜色</el-button>
             </el-form-item>
         </el-form>
     </div>
 </template>
 
-<script>
-// import { loginByUsername } from "@/api/user";
-
-export default {
+<script lang="ts">
+import { defineComponent, getCurrentInstance } from "vue";
+import { Search } from "@element-plus/icons-vue";
+export default defineComponent({
     name: "Login",
-    data() {
-        return {
-            form: {
-                account: "",
-                password: "",
-            },
+    setup() {
+        const { proxy }: any = getCurrentInstance();
+
+        let form = {
+            account: "",
+            password: "",
         };
-    },
-    methods: {
-        login() {
-            if (!this.form.account) {
-                this.$message({
+        const login = () => {
+            if (!form.account) {
+                proxy.$message({
                     type: "error",
                     message: "请输入账号",
                 });
-            } else {
-                let params = {
-                    user_id: this.form.account,
-                    user_pwd: this.form.password,
-                };
             }
-        },
-        register() {
-            this.$emit("register");
-        },
-        tourists() {
+        };
+        const register = () => {
+            proxy.$emit("register");
+        };
+        const tourists = () => {
+            console.log(this);
             let data = {
                 account: "twinkeDing",
                 password: "twinkeDing",
                 user_name: "twinkeDing",
                 type: "tourist",
             };
-            this.$store.dispatch("userInfo", data);
-            this.$store.dispatch("route", data.type);
-            this.form = data;
-            this.goIndex();
-        },
-        goIndex() {
+            form = data;
+            goIndex();
+        };
+        const goIndex = () => {
             // 页面跳转
-            const loading = this.$loading({
+            const loading = proxy.$loading({
                 lock: true,
                 text: "Loading",
                 spinner: "el-icon-loading",
@@ -83,11 +76,22 @@ export default {
             });
             setTimeout(() => {
                 loading.close();
-                this.$router.push({ path: "/index" });
+                proxy.$router.push({ path: "/index" });
             }, 1000);
-        },
+        };
+        const color = () => {
+            proxy.$store.commit("SET_THEME_COLOR", "#536DF3")
+        };
+        return {
+            form,
+            login,
+            register,
+            tourists,
+            goIndex,
+            color,
+        };
     },
-};
+});
 </script>
 
 <style lang='scss' scoped>

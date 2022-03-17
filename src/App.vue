@@ -4,13 +4,19 @@
     </div>
 </template>
 <script lang="ts">
-import index from "./views/index/index.vue";
-export default {
+import { defineComponent, getCurrentInstance } from "vue";
+import { getStore } from "@/utils/store";
+export default defineComponent({
     name: "App",
-    components: {
-        index,
+    setup() {
+        const { proxy }: any = getCurrentInstance();
+        proxy.$store.commit(
+            "SET_THEME_COLOR",
+            getStore({ name: "themeColor" })
+        );
+        return {};
     },
-};
+});
 </script>
 
 <style lang="scss" scoped>

@@ -3,13 +3,16 @@ import Login from "../pages/login/index.vue";
 
 interface LabelledValue {
     path: string;
-    component: any;
-    ss: any;
+    component: string;
 }
 
 const routes: LabelledValue = [
     {
         path: "/",
+        redirect: "/index"
+    },
+    {
+        path: "/index",
         component: Index,
     },
     {

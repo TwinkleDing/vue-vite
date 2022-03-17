@@ -1,0 +1,12 @@
+$--color-primary: #ac0;
+
+@forward "element-plus/theme-chalk/src/common/var.scss" with (
+    $colors: (
+        "primary": (
+            "base": $--color-primary,
+        ),
+    )
+);
+$--font-path: "~element-plus/lib/theme-chalk/fonts";
+
+@import "element-plus/theme-chalk/src/index";

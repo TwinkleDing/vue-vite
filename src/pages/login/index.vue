@@ -5,16 +5,15 @@
             :particlesInit="particlesInit"
             :particlesLoaded="particlesLoaded"
             :options="ParticlesOption"
-        >
-        </Particles> -->
+        /> -->
         <div
             class="login-box-content"
-            :class="registerAnimation ? 'tranx' : ''"
+            :class="registerAnimation ? 'transformX' : ''"
         >
             <div class="title">{{ $t("login.title") }}</div>
             <login v-if="!register" @register="registerOpen" />
             <registered v-else @register="registerClose" />
-            <div class="language" style="background-color: #409eff">
+            <div class="language">
                 <span
                     @click="changeLan('zh')"
                     :style="language === 'zh' ? `color: #fff` : ''"
@@ -41,93 +40,17 @@
 import { mapGetters } from "vuex";
 import Login from "./components/Login.vue";
 import Registered from "./components/Registered.vue";
+import ParticlesOption from "./components/ParticlesOption";
 
 export default {
     name: "LoginBox",
     data() {
         return {
             register: false,
-            registerAnimation: "tranx",
-            thimer: false,
+            registerAnimation: "transformX",
             vuePath: "https://github.com/TwinkleDing/vue-template",
             nodePath: "https://github.com/TwinkleDing/koa-mongodb",
-            ParticlesOption: {
-                background: {
-                    color: {
-                        value: "#0d47a1",
-                    },
-                },
-                fpsLimit: 120,
-                interactivity: {
-                    events: {
-                        onClick: {
-                            enable: true,
-                            mode: "push",
-                        },
-                        onHover: {
-                            enable: true,
-                            mode: "repulse",
-                        },
-                        resize: true,
-                    },
-                    modes: {
-                        bubble: {
-                            distance: 400,
-                            duration: 2,
-                            opacity: 0.8,
-                            size: 40,
-                        },
-                        push: {
-                            quantity: 4,
-                        },
-                        repulse: {
-                            distance: 200,
-                            duration: 0.4,
-                        },
-                    },
-                },
-                particles: {
-                    color: {
-                        value: "#ffffff",
-                    },
-                    links: {
-                        color: "#ffffff",
-                        distance: 150,
-                        enable: true,
-                        opacity: 0.5,
-                        width: 1,
-                    },
-                    collisions: {
-                        enable: true,
-                    },
-                    move: {
-                        direction: "none",
-                        enable: true,
-                        outMode: "bounce",
-                        random: false,
-                        speed: 6,
-                        straight: false,
-                    },
-                    number: {
-                        density: {
-                            enable: true,
-                            area: 800,
-                        },
-                        value: 80,
-                    },
-                    opacity: {
-                        value: 0.5,
-                    },
-                    shape: {
-                        type: "circle",
-                    },
-                    size: {
-                        random: true,
-                        value: 5,
-                    },
-                },
-                detectRetina: true,
-            },
+            ParticlesOption: ParticlesOption,
         };
     },
     components: {
@@ -147,14 +70,14 @@ export default {
             this.registerAnimation = false;
             this.throttle(() => {
                 this.register = true;
-                this.registerAnimation = "tranx";
+                this.registerAnimation = "transformX";
             }, 600);
         },
         registerClose() {
             this.registerAnimation = false;
             this.throttle(() => {
                 this.register = false;
-                this.registerAnimation = "tranx";
+                this.registerAnimation = "transformX";
             }, 600);
         },
         throttle(fn, wait) {
@@ -225,7 +148,7 @@ export default {
             }
         }
     }
-    .tranx {
+    .transformX {
         transform: rotateX(0);
         transition: transform 0.5s linear;
     }
