@@ -35,28 +35,31 @@
     </div>
 </template>
 
-<script>
-// import { register } from "@/api/user";
+<script lang="ts">
+import { defineComponent, getCurrentInstance } from "vue";
 
-export default {
+export default defineComponent({
     name: "register",
-    data() {
-        return {
-            form: {},
-        };
-    },
-    methods: {
-        register() {
-            this.$message({
+    setup(props, context) {
+        const { proxy }: any = getCurrentInstance();
+
+        let form = {};
+        const register = () => {
+            proxy.$message({
                 type: "warning",
                 message: "暂无服务器，无法注册，请使用游客登陆！",
             });
-        },
-        goBack() {
-            this.$emit("register");
-        },
+        };
+        const goBack = () => {
+            context.emit("register");
+        };
+        return {
+            form,
+            register,
+            goBack,
+        };
     },
-};
+});
 </script>
 
 <style lang='scss' scoped>

@@ -5,14 +5,14 @@ interface LabelledValue {
     path: string;
     name: string;
     component: string;
-    redirect?: string
+    redirect?: string;
 }
 
 const routes: LabelledValue = [
     {
         path: "/",
         name: "index",
-        redirect: "/index"
+        redirect: "/index",
     },
     {
         path: "/index",

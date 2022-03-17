@@ -1,5 +1,5 @@
 import { setStore } from "@/utils/store";
-import { lighten } from "@/utils/themeColor"
+import { lighten } from "@/utils/themeColor";
 
 const themeColor = {
     state: {
@@ -8,17 +8,17 @@ const themeColor = {
     mutations: {
         SET_THEME_COLOR(state: any, color: string) {
             state.themeColor = color;
-            let attribute = ''
-            attribute += `--systemThemeColor: ${color};`
-            let result = lighten(color, 58)
-            attribute += `--systemThemeColorActive: ${result};`
-            document.querySelector(':root').setAttribute('style', attribute)
+            let attribute = "";
+            attribute += `--systemThemeColor: ${color};`;
+            let result = lighten(color, 58);
+            attribute += `--systemThemeColorActive: ${result};`;
+            document.querySelector(":root").setAttribute("style", attribute);
             setStore({
                 name: "themeColor",
-                content: color
+                content: color,
             });
-        }
-    }
-}
+        },
+    },
+};
 
 export default themeColor;

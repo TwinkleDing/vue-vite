@@ -6,7 +6,7 @@ import themeColor from "./modules/themeColor";
 export default new createStore({
     modules: {
         common,
-        themeColor
+        themeColor,
     },
     getters,
 });

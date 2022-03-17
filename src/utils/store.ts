@@ -1,4 +1,4 @@
-const validatenull = val => {
+const validatenull = (val) => {
     if (typeof val === "boolean") {
         return false;
     }
@@ -36,7 +36,7 @@ export const setStore = (params = {}) => {
             dataType: typeof content,
             content: content,
             type: type,
-            datetime: new Date().getTime()
+            datetime: new Date().getTime(),
         };
     if (type) {
         window.sessionStorage.setItem(name, JSON.stringify(obj));
@@ -49,7 +49,9 @@ export const setStore = (params = {}) => {
  */
 
 export const getStore = (params = {}) => {
-    let { name, debug } = params, obj = {}, content;
+    let { name, debug } = params,
+        obj = {},
+        content;
     obj = window.sessionStorage.getItem(name);
     if (validatenull(obj)) {
         obj = window.localStorage.getItem(name);
@@ -92,15 +94,16 @@ export const removeStore = (params = {}) => {
  * 获取全部localStorage
  */
 export const getAllStore = (params = {}) => {
-    let list = [], { type } = params;
+    let list = [],
+        { type } = params;
     if (type) {
         for (let i = 0; i <= window.sessionStorage.length; i++) {
             list.push({
                 name: window.sessionStorage.key(i),
                 content: getStore({
                     name: window.sessionStorage.key(i),
-                    type: "session"
-                })
+                    type: "session",
+                }),
             });
         }
     } else {
@@ -108,8 +111,8 @@ export const getAllStore = (params = {}) => {
             list.push({
                 name: window.localStorage.key(i),
                 content: getStore({
-                    name: window.localStorage.key(i)
-                })
+                    name: window.localStorage.key(i),
+                }),
             });
         }
     }

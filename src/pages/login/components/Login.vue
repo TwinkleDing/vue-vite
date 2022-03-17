@@ -41,7 +41,7 @@ export default defineComponent({
         User,
         UserFilled,
     },
-    setup() {
+    setup(props, context) {
         // 第一步将useRouter函数执行放在顶部，不然执行报错为undefined
         const router = useRouter();
         const { proxy }: any = getCurrentInstance();
@@ -59,7 +59,7 @@ export default defineComponent({
             }
         };
         const register = () => {
-            proxy.$emit("register");
+            context.emit("register");
         };
         const tourists = () => {
             let data = {
