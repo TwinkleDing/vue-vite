@@ -10,9 +10,12 @@ export default defineComponent({
     name: "App",
     setup() {
         const { proxy }: any = getCurrentInstance();
+        
         proxy.$store.commit(
             "SET_THEME_COLOR",
             getStore({ name: "themeColor" })
+                ? getStore({ name: "themeColor" })
+                : proxy.$store.state.themeColor.themeColor
         );
         return {};
     },

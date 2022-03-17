@@ -100,6 +100,8 @@ export default {
 </script>
 
 <style lang='scss' scoped>
+@import "@/css/theme.scss";
+
 .login-box {
     width: 100%;
     height: 100%;
@@ -114,7 +116,7 @@ export default {
         min-width: 330px;
         background: #fff;
         box-sizing: border-box;
-        box-shadow: 0 0 10px;
+        box-shadow: 0 0 10px 0 $--color-primary;
         padding: 20px 70px 10px;
         position: relative;
         border-radius: 20px;
@@ -136,6 +138,7 @@ export default {
             width: 100px;
             line-height: 40px;
             color: #333;
+            background: $--color-primary;
             transform: rotate(-45deg);
             span {
                 cursor: pointer;

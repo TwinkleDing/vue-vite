@@ -26,7 +26,6 @@
                 <el-button type="primary" @click="tourists">{{
                     $t("login.touristsLogin")
                 }}</el-button>
-                <el-button type="primary" @click="color">设置颜色</el-button>
             </el-form-item>
         </el-form>
     </div>
@@ -79,16 +78,12 @@ export default defineComponent({
                 proxy.$router.push({ path: "/index" });
             }, 1000);
         };
-        const color = () => {
-            proxy.$store.commit("SET_THEME_COLOR", "#536DF3")
-        };
         return {
             form,
             login,
             register,
             tourists,
             goIndex,
-            color,
         };
     },
 });

@@ -19,22 +19,41 @@ body,
     width: 100%;
 }
 
-:root {
-    --systemThemeColor: #0960bd;
-    --navbarThemeColor: #ffffff;
-    --navbarColor: rgba(0, 0, 0, 0.85); // 当navbar背景为白色时
-    --sidebarThemeColor: #001529;
-    --sidebarThemeColorActive: #0960bd;
-    --systemThemeColorActive: #93ffff;
-    --contentBgColor: #f0f2f5;
-    --border-color: #f0f0f0;
-    --el-border-color-base: #dcdfe6;
-    --el-color-primary: var(--systemThemeColor);
-}
-
+// 自定义theme样式文件
+@import "./theme.scss";
 // 自定义element样式文件
 @import "./element/custom.scss";
-// 修改滚动条样式文件
-@import "./scroll-bar.scss";
 // 字体图标文件
 @import "./iconfont.css";
+
+.pages {
+    div::-webkit-scrollbar {
+        /*滚动条整体样式*/
+        width: 8px;
+        /*高宽分别对应横竖滚动条的尺寸*/
+        height: 1px;
+    }
+
+    div::-webkit-scrollbar-thumb {
+        /*滚动条里面小方块*/
+        border-radius: 10px;
+        background-color: skyblue;
+        background-image: -webkit-linear-gradient(
+            45deg,
+            rgba(255, 255, 255, 0.2) 25%,
+            transparent 25%,
+            transparent 50%,
+            rgba(255, 255, 255, 0.2) 50%,
+            rgba(255, 255, 255, 0.2) 75%,
+            transparent 75%,
+            transparent
+        );
+    }
+
+    div::-webkit-scrollbar-track {
+        /*滚动条里面轨道*/
+        // box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
+        background: transparent;
+        border-radius: 10px;
+    }
+}

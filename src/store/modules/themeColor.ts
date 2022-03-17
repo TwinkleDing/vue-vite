@@ -3,11 +3,11 @@ import { lighten } from "@/utils/themeColor"
 
 const themeColor = {
     state: {
-        themeColor: "#ac0",
-        nightMode: false,
+        themeColor: "#007dff",
     },
     mutations: {
         SET_THEME_COLOR(state: any, color: string) {
+            console.log(color)
             state.themeColor = color;
             let attribute = ''
             attribute += `--systemThemeColor: ${color};`

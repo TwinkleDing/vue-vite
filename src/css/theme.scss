@@ -1,0 +1,7 @@
+:root {
+    --systemThemeColor: #007dff;
+    --systemThemeColorActive: #4dcaff;
+    --el-color-primary: var(--systemThemeColor);
+    --el-button-hover-bg-color: var(--systemThemeColorActive);
+}
+$--color-primary: var(--systemThemeColor);
