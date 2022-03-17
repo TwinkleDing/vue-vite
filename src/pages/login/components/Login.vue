@@ -5,19 +5,19 @@
                 <el-input
                     v-model="form.account"
                     :placeholder="$t('login.userId')"
-                    prefix-icon="el-icon-user"
-                ></el-input>
+                    :prefix-icon="User"
+                />
             </el-form-item>
             <el-form-item>
                 <el-input
                     type="password"
                     v-model="form.password"
                     :placeholder="$t('login.userPassword')"
-                    prefix-icon="el-icon-user-solid"
-                ></el-input>
+                    :prefix-icon="UserFilled"
+                />
             </el-form-item>
             <el-form-item>
-                <el-button :icon="Search" type="primary" @click="register">{{
+                <el-button type="primary" @click="register">{{
                     $t("login.register")
                 }}</el-button>
                 <el-button type="primary" @click="login">{{
@@ -33,10 +33,17 @@
 
 <script lang="ts">
 import { defineComponent, getCurrentInstance } from "vue";
-import { Search } from "@element-plus/icons-vue";
+import { User, UserFilled } from "@element-plus/icons-vue";
+import { useRouter } from "vue-router";
 export default defineComponent({
     name: "Login",
+    components: {
+        User,
+        UserFilled,
+    },
     setup() {
+        // 第一步将useRouter函数执行放在顶部，不然执行报错为undefined
+        const router = useRouter();
         const { proxy }: any = getCurrentInstance();
 
         let form = {
@@ -55,7 +62,6 @@ export default defineComponent({
             proxy.$emit("register");
         };
         const tourists = () => {
-            console.log(this);
             let data = {
                 account: "twinkeDing",
                 password: "twinkeDing",
@@ -75,7 +81,7 @@ export default defineComponent({
             });
             setTimeout(() => {
                 loading.close();
-                proxy.$router.push({ path: "/index" });
+                router.push("/index");
             }, 1000);
         };
         return {
@@ -84,6 +90,8 @@ export default defineComponent({
             register,
             tourists,
             goIndex,
+            User,
+            UserFilled,
         };
     },
 });

@@ -7,7 +7,6 @@ const themeColor = {
     },
     mutations: {
         SET_THEME_COLOR(state: any, color: string) {
-            console.log(color)
             state.themeColor = color;
             let attribute = ''
             attribute += `--systemThemeColor: ${color};`
