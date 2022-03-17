@@ -13,7 +13,7 @@ export default {
 };
 </script>
 
-<style lang="less" scoped>
+<style lang="scss" scoped>
 html,
 body {
     width: 100%;

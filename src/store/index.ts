@@ -1,15 +1,10 @@
 import { createStore } from "vuex";
-const store = createStore({
-    state() {
-        return {
-            count: 0,
-        };
-    },
-    mutations: {
-        increment(state) {
-            state.count++;
-        },
-    },
-});
+import getters from "./getters";
+import common from "./modules/common";
 
-export default store;
+export default new createStore({
+    modules: {
+        common,
+    },
+    getters,
+});

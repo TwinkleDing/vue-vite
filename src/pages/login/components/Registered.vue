@@ -1,5 +1,5 @@
 <template>
-    <div class="regest">
+    <div class="register">
         <el-form ref="form" :model="form" label-width="0px">
             <el-form-item>
                 <el-input
@@ -27,7 +27,7 @@
                 <el-button type="primary" @click="goBack">{{
                     $t("login.back")
                 }}</el-button>
-                <el-button type="primary" @click="regest">{{
+                <el-button type="primary" @click="register">{{
                     $t("login.sure")
                 }}</el-button>
             </el-form-item>
@@ -39,46 +39,28 @@
 // import { register } from "@/api/user";
 
 export default {
-    name: "Regest",
+    name: "register",
     data() {
         return {
             form: {},
         };
     },
     methods: {
-        regest() {
-            // this.$message({
-            //   type: 'warning',
-            //   message: '暂无服务器，无法注册，请使用游客登陆！'
-            // });
-            // register({
-            //     "user_name": this.form.account,
-            //     "user_id": this.form.id,
-            //     "user_pwd": this.form.password
-            // }).then(res=>{
-            //     if(res.code === 200) {
-            //         this.$message({
-            //             type: "success",
-            //             message: res.msg
-            //         });
-            //         this.goBack();
-            //     }else {
-            //         this.$message({
-            //             type: "error",
-            //             message: res.msg
-            //         });
-            //     }
-            // });
+        register() {
+            this.$message({
+                type: "warning",
+                message: "暂无服务器，无法注册，请使用游客登陆！",
+            });
         },
         goBack() {
-            this.$emit("regest");
+            this.$emit("register");
         },
     },
 };
 </script>
 
-<style lang='less' scoped>
-.regest {
+<style lang='scss' scoped>
+.register {
     .el-input {
         input {
             background: none !important;

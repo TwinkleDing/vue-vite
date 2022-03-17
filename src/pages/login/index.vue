@@ -1,28 +1,20 @@
 <template>
     <div class="login-box">
-        <vue-particles
-            color="#47CD88"
-            linesColor="#47CD88"
-            shapeType="star"
-            hoverMode="grab"
-            clickMode="remove"
-            :particleOpacity="0.7"
-            :particlesNumber="80"
-            :particleSize="4"
-            :linesWidth="1"
-            :lineLinked="true"
-            :lineOpacity="0.4"
-            :linesDistance="150"
-            :moveSpeed="3"
-            :hoverEffect="true"
-            :clickEffect="true"
+        <!-- <Particles
+            id="particles"
+            :particlesInit="particlesInit"
+            :particlesLoaded="particlesLoaded"
+            :options="ParticlesOption"
         >
-        </vue-particles>
-        <div class="login-box-content" :class="regestAnimation ? 'tranx' : ''">
+        </Particles> -->
+        <div
+            class="login-box-content"
+            :class="registerAnimation ? 'tranx' : ''"
+        >
             <div class="title">{{ $t("login.title") }}</div>
-            <login v-if="!regest" @regest="regestOpen" />
-            <registered v-else @regest="regestClose" />
-            <div class="language" :style="`background-color:${themeColor}`">
+            <login v-if="!register" @register="registerOpen" />
+            <registered v-else @register="registerClose" />
+            <div class="language" style="background-color: #409eff">
                 <span
                     @click="changeLan('zh')"
                     :style="language === 'zh' ? `color: #fff` : ''"
@@ -53,58 +45,116 @@ import Registered from "./components/Registered.vue";
 export default {
     name: "LoginBox",
     data() {
-        /*
-    color: String类型。默认'#dedede'。粒子颜色。
-    particleOpacity: Number类型。默认0.7。粒子透明度。
-    particlesNumber: Number类型。默认80。粒子数量。
-    shapeType: String类型。默认'circle'。可用的粒子外观类型有："circle","edge","triangle", "polygon","star"。
-    particleSize: Number类型。默认80。单个粒子大小。
-    linesColor: String类型。默认'#dedede'。线条颜色。
-    linesWidth: Number类型。默认1。线条宽度。
-    lineLinked: 布尔类型。默认true。连接线是否可用。
-    lineOpacity: Number类型。默认0.4。线条透明度。
-    linesDistance: Number类型。默认150。线条距离。
-    moveSpeed: Number类型。默认3。粒子运动速度。
-    hoverEffect: 布尔类型。默认true。是否有hover特效。
-    hoverMode: String类型。默认true。可用的hover模式有: "grab", "repulse", "bubble"。
-    clickEffect: 布尔类型。默认true。是否有click特效。
-    clickMode: String类型。默认true。可用的click模式有: "push", "remove", "repulse", "bubble"
-    */
         return {
-            regest: false,
-            regestAnimation: "tranx",
+            register: false,
+            registerAnimation: "tranx",
             thimer: false,
             vuePath: "https://github.com/TwinkleDing/vue-template",
             nodePath: "https://github.com/TwinkleDing/koa-mongodb",
+            ParticlesOption: {
+                background: {
+                    color: {
+                        value: "#0d47a1",
+                    },
+                },
+                fpsLimit: 120,
+                interactivity: {
+                    events: {
+                        onClick: {
+                            enable: true,
+                            mode: "push",
+                        },
+                        onHover: {
+                            enable: true,
+                            mode: "repulse",
+                        },
+                        resize: true,
+                    },
+                    modes: {
+                        bubble: {
+                            distance: 400,
+                            duration: 2,
+                            opacity: 0.8,
+                            size: 40,
+                        },
+                        push: {
+                            quantity: 4,
+                        },
+                        repulse: {
+                            distance: 200,
+                            duration: 0.4,
+                        },
+                    },
+                },
+                particles: {
+                    color: {
+                        value: "#ffffff",
+                    },
+                    links: {
+                        color: "#ffffff",
+                        distance: 150,
+                        enable: true,
+                        opacity: 0.5,
+                        width: 1,
+                    },
+                    collisions: {
+                        enable: true,
+                    },
+                    move: {
+                        direction: "none",
+                        enable: true,
+                        outMode: "bounce",
+                        random: false,
+                        speed: 6,
+                        straight: false,
+                    },
+                    number: {
+                        density: {
+                            enable: true,
+                            area: 800,
+                        },
+                        value: 80,
+                    },
+                    opacity: {
+                        value: 0.5,
+                    },
+                    shape: {
+                        type: "circle",
+                    },
+                    size: {
+                        random: true,
+                        value: 5,
+                    },
+                },
+                detectRetina: true,
+            },
         };
     },
     components: {
         Login,
         Registered,
     },
-    mounted() {
-        this.$store.dispatch("logOut");
-    },
+    mounted() {},
     computed: {
-        ...mapGetters(["language", "themeColor"]),
+        ...mapGetters(["language"]),
     },
     methods: {
         changeLan(lang) {
             this.$i18n.locale = lang;
             this.$store.commit("SET_LANGUAGE", lang);
         },
-        regestOpen() {
-            this.regestAnimation = false;
+        registerOpen() {
+            this.registerAnimation = false;
             this.throttle(() => {
-                this.regest = true;
-                this.regestAnimation = "tranx";
+                this.register = true;
+                this.registerAnimation = "tranx";
             }, 600);
         },
-        regestClose() {
-            this.regestAnimation = false;
+        registerClose() {
+            this.registerAnimation = false;
             this.throttle(() => {
-                this.regest = false;
-                this.regestAnimation = "tranx";
+                this.register = false;
+                this.registerAnimation = "tranx";
             }, 600);
         },
         throttle(fn, wait) {
@@ -116,11 +166,17 @@ export default {
                 }, wait);
             }
         },
+        particlesInit(e) {
+            console.log(e);
+        },
+        particlesLoaded(e) {
+            console.log(e);
+        },
     },
 };
 </script>
 
-<style lang='less' scoped>
+<style lang='scss' scoped>
 .login-box {
     width: 100%;
     height: 100%;

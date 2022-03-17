@@ -17,7 +17,7 @@
                 ></el-input>
             </el-form-item>
             <el-form-item>
-                <el-button type="primary" @click="regest">{{
+                <el-button type="primary" @click="register">{{
                     $t("login.register")
                 }}</el-button>
                 <el-button type="primary" @click="login">{{
@@ -56,26 +56,10 @@ export default {
                     user_id: this.form.account,
                     user_pwd: this.form.password,
                 };
-                // loginByUsername(params).then(res => {
-                //     if(res.code === 200){
-                //         this.$store.dispatch("userInfo", res.data);
-                //         this.$store.dispatch("route", "admin");
-                //     }else{
-                //         this.$message({
-                //             type: "error",
-                //             message: res.msg
-                //         });
-                //     }
-                //     return res.code;
-                // }).then((code) => {
-                //     if(code === 200) {
-                //         this.goIndex();
-                //     }
-                // });
             }
         },
-        regest() {
-            this.$emit("regest");
+        register() {
+            this.$emit("register");
         },
         tourists() {
             let data = {
@@ -106,7 +90,7 @@ export default {
 };
 </script>
 
-<style lang='less' scoped>
+<style lang='scss' scoped>
 .login {
     .el-input {
         input {
