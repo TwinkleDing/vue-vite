@@ -1,4 +1,7 @@
+import elementZhLocale from "element-plus/es/locale/lang/zh-cn";
+
 export default {
+    ...elementZhLocale,
     login: {
         title: "Vue 模板",
         login: "登录",
@@ -8,7 +11,7 @@ export default {
         touristsLogin: "游客登陆",
         userName: "请输入用户名称",
         userId: "请输入用户ID",
-        userPassword: "请输入密码"
+        userPassword: "请输入密码",
     },
     common: {
         cancel: "取消",
@@ -16,6 +19,6 @@ export default {
         language: "选择语言",
         logout: "退出登录",
         tip: "提示",
-        userId: "用户ID："
-    }
+        userId: "用户ID",
+    },
 };

@@ -36,7 +36,7 @@
 </template>
 
 <script lang="ts" setup>
-import { getCurrentInstance, reactive, defineEmits } from "vue";
+import { getCurrentInstance, reactive } from "vue";
 import { User, UserFilled } from "@element-plus/icons-vue";
 import { userData } from "@/utils/interface";
 

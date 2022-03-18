@@ -32,7 +32,7 @@
 </template>
 
 <script lang="ts" setup>
-import { getCurrentInstance, reactive, defineEmits } from "vue";
+import { getCurrentInstance, reactive } from "vue";
 import { User, UserFilled } from "@element-plus/icons-vue";
 import { useRouter } from "vue-router";
 import { useStore } from "vuex";
@@ -54,6 +54,11 @@ const login = () => {
         proxy.$message({
             type: "error",
             message: "请输入账号",
+        });
+    } else {
+        proxy.$message({
+            type: "warning",
+            message: "暂无服务器，无法注册，请使用游客登陆！",
         });
     }
 };

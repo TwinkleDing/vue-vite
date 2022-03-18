@@ -2,7 +2,8 @@
     --systemThemeColor: #007dff;
     --systemThemeColorActive: #4dcaff;
     --el-color-primary: var(--systemThemeColor);
-    --el-button-hover-bg-color: var(--systemThemeColorActive);
+    --el-color-primary-light-3: var(--systemThemeColorActive);
+    --el-color-primary-dark-2: var(--systemThemeColor);
 }
 
 $--color-primary: var(--systemThemeColor);

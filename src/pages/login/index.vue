@@ -10,13 +10,13 @@
             <div class="language">
                 <span
                     @click="changeLan('zh')"
-                    :style="language === 'zh' ? `color: #fff` : ''"
+                    :class="[language === 'zh' ? 'language-active' : '']"
                     >中</span
                 >
                 /
                 <span
                     @click="changeLan('en')"
-                    :style="language === 'en' ? `color: #fff` : ''"
+                    :class="[language === 'en' ? 'language-active' : '']"
                     >En</span
                 >
             </div>
@@ -36,7 +36,6 @@ import { useStore } from "vuex";
 //组件不需要注册
 import Login from "./components/Login.vue";
 import Registered from "./components/Registered.vue";
-import ParticlesOption from "./components/ParticlesOption";
 
 const { proxy }: any = getCurrentInstance();
 const store = useStore();
@@ -119,8 +118,10 @@ const throttle = (fn: any, wait: number) => {
             color: #333;
             background: $--color-primary;
             transform: rotate(-45deg);
-            span {
-                cursor: pointer;
+            cursor: pointer;
+            &-active {
+                color: #fff;
+                cursor: default;
             }
         }
         .node-path {

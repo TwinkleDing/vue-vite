@@ -1,7 +1,5 @@
 import { createI18n } from "vue-i18n";
 import store from "@/store";
-import elementEnLocale from "element-plus/es/locale/lang/en";
-import elementZhLocale from "element-plus/es/locale/lang/zh-cn";
 import zhLocale from "./zh";
 import enLocale from "./en";
 
@@ -10,11 +8,9 @@ const i18n = createI18n({
     messages: {
         zh: {
             ...zhLocale,
-            ...elementZhLocale,
         },
         en: {
             ...enLocale,
-            ...elementEnLocale,
         },
     },
 });

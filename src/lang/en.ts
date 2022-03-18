@@ -1,14 +1,17 @@
+import elementEnLocale from "element-plus/es/locale/lang/en";
+
 export default {
+    ...elementEnLocale,
     login: {
         title: "Vue Template",
         login: "Login",
         register: "Register",
-        back: "Return login",
-        sure: "Confirm registration",
+        back: "Return Login",
+        sure: "Confirm Registration",
         touristsLogin: "Tourists Login",
         userName: "User Name",
         userId: "User ID",
-        userPassword: "User Password"
+        userPassword: "User Password",
     },
     common: {
         cancel: "Cancel",
@@ -16,6 +19,6 @@ export default {
         language: "Language",
         logout: "Logout",
         tip: "Tip",
-        userId: "User ID: "
-    }
+        userId: "User ID",
+    },
 };

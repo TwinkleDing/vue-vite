@@ -1,4 +1,4 @@
-import Index from "../views/index/index.vue";
+import Index from "../pages/dashboard/index.vue";
 import Login from "../pages/login/index.vue";
 
 interface LabelledValue {
