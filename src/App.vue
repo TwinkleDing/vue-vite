@@ -16,7 +16,7 @@ export default defineComponent({
             "SET_THEME_COLOR",
             getStore({ name: "themeColor" })
                 ? getStore({ name: "themeColor" })
-                : proxy.$store.state.themeColor.themeColor
+                : proxy.$store.getters.themeColor
         );
         return {};
     },

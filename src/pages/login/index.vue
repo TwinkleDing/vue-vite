@@ -1,14 +1,8 @@
 <template>
     <div class="login-box">
-        <!-- <Particles
-            id="particles"
-            :particlesInit="particlesInit"
-            :particlesLoaded="particlesLoaded"
-            :options="ParticlesOption"
-        /> -->
         <div
             class="login-box-content"
-            :class="registerAnimation ? 'transformX' : ''"
+            :class="registerAnimation === 'transformX' ? 'transformX' : ''"
         >
             <div class="title">{{ $t("login.title") }}</div>
             <login v-if="!register" @register="registerOpen" />
@@ -36,66 +30,51 @@
     </div>
 </template>
 
-<script>
-import { mapGetters } from "vuex";
+<script lang="ts" setup>
+import { getCurrentInstance, ref } from "vue";
+import { useStore } from "vuex";
+//组件不需要注册
 import Login from "./components/Login.vue";
 import Registered from "./components/Registered.vue";
 import ParticlesOption from "./components/ParticlesOption";
 
-export default {
-    name: "LoginBox",
-    data() {
-        return {
-            register: false,
-            registerAnimation: "transformX",
-            vuePath: "https://github.com/TwinkleDing/vue-template",
-            nodePath: "https://github.com/TwinkleDing/koa-mongodb",
-            ParticlesOption: ParticlesOption,
-        };
-    },
-    components: {
-        Login,
-        Registered,
-    },
-    mounted() {},
-    computed: {
-        ...mapGetters(["language"]),
-    },
-    methods: {
-        changeLan(lang) {
-            this.$i18n.locale = lang;
-            this.$store.commit("SET_LANGUAGE", lang);
-        },
-        registerOpen() {
-            this.registerAnimation = false;
-            this.throttle(() => {
-                this.register = true;
-                this.registerAnimation = "transformX";
-            }, 600);
-        },
-        registerClose() {
-            this.registerAnimation = false;
-            this.throttle(() => {
-                this.register = false;
-                this.registerAnimation = "transformX";
-            }, 600);
-        },
-        throttle(fn, wait) {
-            if (!this.timer) {
-                this.timer = setTimeout(() => {
-                    fn();
-                    clearTimeout(this.timer);
-                    this.timer = false;
-                }, wait);
-            }
-        },
-        particlesInit(e) {
-            console.log(e);
-        },
-        particlesLoaded(e) {
-            console.log(e);
-        },
-    },
+const { proxy }: any = getCurrentInstance();
+const store = useStore();
+
+const vuePath = "https://github.com/TwinkleDing/vue-vite";
+const nodePath = "https://github.com/TwinkleDing/koa-mongodb";
+const language = ref(store.getters.language);
+const register = ref(false);
+const timer: any = ref(false);
+const registerAnimation = ref("transformX");
+
+const changeLan = (lang: string) => {
+    proxy.$i18n.locale = lang;
+    language.value = lang;
+    store.commit("SET_LANGUAGE", lang);
+};
+const registerOpen = () => {
+    registerAnimation.value = "pause";
+    throttle(() => {
+        register.value = true;
+        registerAnimation.value = "transformX";
+    }, 600);
+};
+const registerClose = () => {
+    registerAnimation.value = "pause";
+    throttle(() => {
+        register.value = false;
+        registerAnimation.value = "transformX";
+    }, 600);
+};
+const throttle = (fn: any, wait: number) => {
+    if (!timer.value) {
+        timer.value = setTimeout(() => {
+            fn();
+            clearTimeout(timer.value);
+            timer.value = false;
+        }, wait);
+    }
 };
 </script>
 

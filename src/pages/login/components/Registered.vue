@@ -1,27 +1,27 @@
 <template>
     <div class="register">
-        <el-form ref="form" :model="form" label-width="0px">
+        <el-form ref="form" :model="formLine" label-width="0px">
             <el-form-item>
                 <el-input
-                    v-model="form.account"
+                    v-model="formLine.account"
                     :placeholder="$t('login.userName')"
-                    prefix-icon="el-icon-user"
-                ></el-input>
+                    :prefix-icon="User"
+                />
             </el-form-item>
             <el-form-item>
                 <el-input
-                    v-model="form.id"
+                    v-model="formLine.userId"
                     :placeholder="$t('login.userId')"
-                    prefix-icon="el-icon-user-solid"
-                ></el-input>
+                    :prefix-icon="UserFilled"
+                />
             </el-form-item>
             <el-form-item>
                 <el-input
                     type="password"
-                    v-model="form.password"
+                    v-model="formLine.password"
                     :placeholder="$t('login.userPassword')"
-                    prefix-icon="el-icon-user-solid"
-                ></el-input>
+                    :prefix-icon="UserFilled"
+                />
             </el-form-item>
             <el-form-item>
                 <el-button type="primary" @click="goBack">{{
@@ -35,31 +35,29 @@
     </div>
 </template>
 
-<script lang="ts">
-import { defineComponent, getCurrentInstance } from "vue";
+<script lang="ts" setup>
+import { getCurrentInstance, reactive, defineEmits } from "vue";
+import { User, UserFilled } from "@element-plus/icons-vue";
+import { userData } from "@/utils/interface";
 
-export default defineComponent({
-    name: "register",
-    setup(props, context) {
-        const { proxy }: any = getCurrentInstance();
+const { proxy }: any = getCurrentInstance();
+const $emit = defineEmits(["register"]);
 
-        let form = {};
-        const register = () => {
-            proxy.$message({
-                type: "warning",
-                message: "暂无服务器，无法注册，请使用游客登陆！",
-            });
-        };
-        const goBack = () => {
-            context.emit("register");
-        };
-        return {
-            form,
-            register,
-            goBack,
-        };
-    },
+const formLine: userData = reactive({
+    account: "",
+    userId: "",
+    password: "",
 });
+
+const register = () => {
+    proxy.$message({
+        type: "warning",
+        message: "暂无服务器，无法注册，请使用游客登陆！",
+    });
+};
+const goBack = () => {
+    $emit("register");
+};
 </script>
 
 <style lang='scss' scoped>

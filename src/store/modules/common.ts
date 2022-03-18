@@ -1,29 +1,16 @@
-import {
-    setStore,
-    getStore,
-    removeStore
-} from "@/utils/store";
+import { setStore, getStore, removeStore } from "@/utils/store";
+import { userData } from "@/utils/interface";
 
 const common = {
     state: {
-        userInfo: getStore({
-            name: "userInfo"
-        }) || "",
-        loginIn: getStore({
-            name: "loginIn"
-        }) || false,
-        user: getStore({
-            name: "user"
-        }) || "",
-        color: getStore({
-            name: "color"
-        }) || "#409eff",
-        route: getStore({
-            name: "route"
-        }) || [],
-        language: getStore({
-            name: "language"
-        }) || "zh",
+        userInfo:
+            getStore({
+                name: "userInfo",
+            }) || {},
+        language:
+            getStore({
+                name: "language",
+            }) || "zh",
     },
     mutations: {
         SET_LANGUAGE: (state, language) => {
@@ -41,8 +28,14 @@ const common = {
                 for (let i in head.children) {
                     if (head.children[i].attributes) {
                         if (head.children[i].attributes[0]) {
-                            if (head.children[i].attributes[0].name === "href") {
-                                if (head.children[i].attributes[0].value.includes("public.css")) {
+                            if (
+                                head.children[i].attributes[0].name === "href"
+                            ) {
+                                if (
+                                    head.children[
+                                        i
+                                    ].attributes[0].value.includes("public.css")
+                                ) {
                                     head.removeChild(head.children[i]);
                                     console.log(head.children[i]);
                                 }
@@ -58,12 +51,17 @@ const common = {
             }
             setStore({
                 name: "language",
-                content: state.language
+                content: state.language,
             });
-        }
+        },
+        SET_USER_INFO(state: any, userInfo: userData) {
+            state.userInfo = userInfo;
+            setStore({
+                name: "userInfo",
+                content: state.userInfo,
+            });
+        },
     },
-    actions: {
-
-    }
+    actions: {},
 };
 export default common;
