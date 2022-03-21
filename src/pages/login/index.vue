@@ -8,76 +8,73 @@
             <login v-if="!register" @register="registerOpen" />
             <registered v-else @register="registerClose" />
             <div class="language">
-                <span
-                    @click="changeLan('zh')"
-                    :class="[language === 'zh' ? 'language-active' : '']"
+                <span @click="changeLan('zh')" :class="[language === 'zh' ? 'language-active' : '']"
                     >中</span
                 >
                 /
-                <span
-                    @click="changeLan('en')"
-                    :class="[language === 'en' ? 'language-active' : '']"
+                <span @click="changeLan('en')" :class="[language === 'en' ? 'language-active' : '']"
                     >En</span
                 >
             </div>
             <div class="node-path">
-                vue path: <a :href="vuePath">{{ vuePath }}</a>
+                vue path: <a target="_blank" :href="vuePath">{{ vuePath }}</a>
             </div>
             <div class="node-path">
-                node path: <a :href="nodePath">{{ nodePath }}</a>
+                node path:
+                <a target="_blank" :href="nodePath">{{ nodePath }}</a>
             </div>
         </div>
     </div>
 </template>
 
 <script lang="ts" setup>
-import { getCurrentInstance, ref } from "vue";
-import { useStore } from "vuex";
+import { getCurrentInstance, ref } from "vue"
+import { useStore } from "vuex"
 //组件不需要注册
-import Login from "./components/Login.vue";
-import Registered from "./components/Registered.vue";
+import Login from "./components/Login.vue"
+import Registered from "./components/Registered.vue"
 
-const { proxy }: any = getCurrentInstance();
-const store = useStore();
+const { proxy }: any = getCurrentInstance()
+const store = useStore()
 
-const vuePath = "https://github.com/TwinkleDing/vue-vite";
-const nodePath = "https://github.com/TwinkleDing/koa-mongodb";
-const language = ref(store.getters.language);
-const register = ref(false);
-const timer: any = ref(false);
-const registerAnimation = ref("transformX");
+const vuePath = "https://github.com/TwinkleDing/vue-vite"
+const nodePath = "https://github.com/TwinkleDing/koa-mongodb"
+const language = ref(store.getters.language)
+const register = ref(false)
+const timer: any = ref(false)
+const registerAnimation = ref("transformX")
 
 const changeLan = (lang: string) => {
-    proxy.$i18n.locale = lang;
-    language.value = lang;
-    store.commit("SET_LANGUAGE", lang);
-};
+    proxy.$i18n.locale = lang
+    language.value = lang
+    store.commit("SET_LANGUAGE", lang)
+}
 const registerOpen = () => {
-    registerAnimation.value = "pause";
+    registerAnimation.value = "pause"
     throttle(() => {
-        register.value = true;
-        registerAnimation.value = "transformX";
-    }, 600);
-};
+        register.value = true
+        registerAnimation.value = "transformX"
+    }, 600)
+}
 const registerClose = () => {
-    registerAnimation.value = "pause";
+    registerAnimation.value = "pause"
     throttle(() => {
-        register.value = false;
-        registerAnimation.value = "transformX";
-    }, 600);
-};
+        register.value = false
+        registerAnimation.value = "transformX"
+    }, 600)
+}
 const throttle = (fn: any, wait: number) => {
     if (!timer.value) {
         timer.value = setTimeout(() => {
-            fn();
-            clearTimeout(timer.value);
-            timer.value = false;
-        }, wait);
+            fn()
+            clearTimeout(timer.value)
+            timer.value = false
+        }, wait)
     }
-};
+}
 </script>
 
-<style lang='scss' scoped>
+<style lang="scss" scoped>
 @import "@/css/theme.scss";
 
 .login-box {

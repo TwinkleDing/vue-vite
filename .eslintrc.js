@@ -3,18 +3,18 @@ module.exports = {
     env: {
         browser: true,
         node: true,
-        es6: true,
+        es6: true
     },
     parser: "vue-eslint-parser",
     extends: [
-        "plugin:vue/recommended",
+        "plugin:vue/vue3-recommended",
         "plugin:prettier/recommended",
         "prettier/@typescript-eslint",
-        "plugin:@typescript-eslint/recommended",
+        "plugin:@typescript-eslint/recommended"
     ],
     plugins: ["@typescript-eslint"],
     parserOptions: {
-        parser: "@typescript-eslint/parser",
+        parser: "@typescript-eslint/parser"
     },
     rules: {
         "no-console": process.env.NODE_ENV === "production" ? "error" : "off",
@@ -24,8 +24,8 @@ module.exports = {
             2,
             "1tbs",
             {
-                allowSingleLine: false,
-            },
+                allowSingleLine: false
+            }
         ],
         semi: [2, "always"],
         // 控制逗号在行尾出现还是在行首出现
@@ -52,8 +52,8 @@ module.exports = {
         "no-multiple-empty-lines": [
             1,
             {
-                max: 2,
-            },
+                max: 2
+            }
         ], //空行最多不能超过2行
         "no-nested-ternary": 0, //禁止使用嵌套的三目运算
         "no-param-reassign": 2, //禁止给参数重新赋值
@@ -66,24 +66,21 @@ module.exports = {
         "dot-location": 0, //对象访问符的位置，换行的时候在行首还是行尾
         "func-names": 0, //函数表达式必须有名字
         "object-shorthand": 0, //强制对象字面量缩写语法
-        quotes: [1, "double"], //引号类型 `` "" ''
+        quotes: [1, "double"] //引号类型 `` "" ''
     },
     overrides: [
         {
-            files: [
-                "**/__tests__/*.{j,t}s?(x)",
-                "**/tests/unit/**/*.spec.{j,t}s?(x)",
-            ],
+            files: ["**/__tests__/*.{j,t}s?(x)", "**/tests/unit/**/*.spec.{j,t}s?(x)"],
             env: {
-                jest: true,
-            },
-        },
+                jest: true
+            }
+        }
     ],
     settings: {
         "import/resolver": {
             alias: {
-                map: [["@", "./src/"]],
-            },
-        },
-    },
-};
+                map: [["@", "./src/"]]
+            }
+        }
+    }
+}
