@@ -1,29 +1,21 @@
-import Index from "../pages/dashboard/index.vue";
-import Login from "../pages/login/index.vue";
+import { RouterItem } from "@/utils/interface"
 
-interface LabelledValue {
-    path: string;
-    name: string;
-    component: string;
-    redirect?: string;
-}
-
-const routes: LabelledValue = [
+const routes: RouterItem = [
     {
         path: "/",
         name: "index",
-        redirect: "/index",
+        redirect: "/index"
     },
     {
         path: "/index",
         name: "index",
-        component: Index,
+        component: import(/* webpackChunkName: 'dashboard' */ "@/pages/dashboard/index.vue")
     },
     {
         path: "/login",
         name: "login",
-        component: Login,
-    },
-];
+        component: import(/* webpackChunkName: 'login' */ "@/pages/login/index.vue")
+    }
+]
 
-export default routes;
+export default routes

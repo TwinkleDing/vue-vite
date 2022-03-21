@@ -18,7 +18,7 @@ const common = {
             }) || {}
     },
     mutations: {
-        SET_LANGUAGE: (state, language) => {
+        SET_LANGUAGE: (state:any, language:string) => {
             state.language = language
             var head = document.getElementsByTagName('head')[0]
             for (let i in head.children) {
@@ -39,7 +39,7 @@ const common = {
                 loadStyles('../../css/public.css')
             }
 
-            function loadStyles(url) {
+            function loadStyles(url:string) {
                 var link = document.createElement('link')
                 link.rel = 'stylesheet'
                 link.type = 'text/css'

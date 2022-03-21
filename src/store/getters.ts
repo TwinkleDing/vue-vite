@@ -1,6 +1,6 @@
 const getters = {
-    language: (state) => state.common.language,
-    userInfo: (state) => state.common.userInfo,
-    themeColor: (state) => state.common.themeColor,
-};
-export default getters;
+    language: (state: any) => state.common.language,
+    userInfo: (state: any) => state.common.userInfo,
+    themeColor: (state: any) => state.common.themeColor
+}
+export default getters

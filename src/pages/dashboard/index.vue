@@ -1,7 +1,9 @@
 <template>
-    <router-link to="/login">
-        <el-button type="primary"> login </el-button>
-    </router-link>
+    <div>
+        <router-link to="/login">
+            <el-button type="primary"> login </el-button>
+        </router-link>
+    </div>
 </template>
 <script lang="ts">
 export default {

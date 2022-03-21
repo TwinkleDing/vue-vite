@@ -1,10 +1,12 @@
-import { createStore } from "vuex";
-import getters from "./getters";
-import common from "./modules/common";
+import { createStore } from "vuex"
+import getters from "./getters"
+import common from "./modules/common"
 
-export default new createStore({
+const store: any = new (createStore as any)({
     modules: {
-        common,
+        common
     },
-    getters,
-});
+    getters
+})
+
+export default store

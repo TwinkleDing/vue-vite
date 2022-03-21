@@ -1,16 +1,9 @@
-import { createApp } from "vue";
-import App from "./App.vue";
-import "element-plus/dist/index.css";
-import Particles from "particles.vue3";
+import { createApp } from "vue"
+import App from "./App.vue"
+import "element-plus/dist/index.css"
+import route from "./router"
+import store from "./store"
+import i18n from "./lang"
+import "./css/index.scss"
 
-import "./css/index.scss";
-import route from "./router/index.ts";
-import store from "./store/index.ts";
-import i18n from "./lang";
-
-createApp(App)
-    .use(i18n)
-    .use(store)
-    .use(route)
-    .use(Particles)
-    .mount("#app");
+createApp(App).use(i18n).use(store).use(route).mount("#app")
