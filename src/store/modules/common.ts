@@ -1,5 +1,5 @@
 import { setStore, getStore, removeStore } from "@/utils/store"
-import { userData } from "@/utils/interface"
+import { UserInfo } from "@/utils/interface"
 import { lighten } from "@/utils/themeColor"
 
 const common = {
@@ -66,7 +66,7 @@ const common = {
                 content: color
             })
         },
-        SET_USER_INFO(state: any, userInfo: userData) {
+        SET_USER_INFO(state: any, userInfo: UserInfo) {
             state.userInfo = userInfo
             setStore({
                 name: "userInfo",

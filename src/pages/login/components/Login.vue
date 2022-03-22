@@ -33,13 +33,13 @@ import { User, UserFilled } from "@element-plus/icons-vue"
 import { ElLoading, ElMessage } from "element-plus"
 import { useRouter } from "vue-router"
 import { useStore } from "vuex"
-import { userData } from "@/utils/interface"
+import { UserInfo } from "@/utils/interface"
 
 const router = useRouter()
 const store = useStore()
 const $emit = defineEmits(["register"])
 
-let formInline: userData = reactive({
+let formInline: UserInfo = reactive({
     userId: "",
     password: ""
 })

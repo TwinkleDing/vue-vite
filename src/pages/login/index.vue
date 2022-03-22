@@ -28,7 +28,7 @@
 </template>
 
 <script lang="ts" setup>
-import { getCurrentInstance, ref } from "vue"
+import { getCurrentInstance, ref, Ref } from "vue"
 import { useStore } from "vuex"
 //组件不需要注册
 import Login from "./components/Login.vue"
@@ -37,12 +37,12 @@ import Registered from "./components/Registered.vue"
 const { proxy }: any = getCurrentInstance()
 const store = useStore()
 
-const vuePath = "https://github.com/TwinkleDing/vue-vite"
-const nodePath = "https://github.com/TwinkleDing/koa-mongodb"
-const language = ref(store.getters.language)
-const register = ref(false)
+const vuePath: Ref<string> = ref("https://github.com/TwinkleDing/vue-vite")
+const nodePath: Ref<string> = ref("https://github.com/TwinkleDing/koa-mongodb")
+const language: Ref<string> = ref(store.getters.language)
+const register: Ref<boolean> = ref(false)
 const timer: any = ref(false)
-const registerAnimation = ref("transformX")
+const registerAnimation: Ref<string> = ref("transformX")
 
 const changeLan = (lang: string) => {
     proxy.$i18n.locale = lang

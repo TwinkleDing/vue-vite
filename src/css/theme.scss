@@ -7,3 +7,8 @@
 }
 
 $--color-primary: var(--systemThemeColor);
+$--color-minor: var(--systemThemeColorActive);
+
+:export {
+    primaryColor: $--color-primary;
+}

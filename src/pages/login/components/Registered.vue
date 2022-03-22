@@ -34,12 +34,12 @@
 <script lang="ts" setup>
 import { getCurrentInstance, reactive } from "vue"
 import { User, UserFilled } from "@element-plus/icons-vue"
-import { userData } from "@/utils/interface"
+import { UserInfo } from "@/utils/interface"
 
 const { proxy }: any = getCurrentInstance()
 const $emit = defineEmits(["register"])
 
-const formLine: userData = reactive({
+const formLine: UserInfo = reactive({
     account: "",
     userId: "",
     password: ""
