@@ -1,5 +1,6 @@
 import { createRouter, createWebHashHistory } from "vue-router"
 import store from "@/store"
+import Empty from "@/pages/Empty.vue"
 
 const router: any = new (createRouter as any)({
     history: createWebHashHistory(),
@@ -23,7 +24,7 @@ const router: any = new (createRouter as any)({
         {
             path: "/404", //重定向
             name: "404",
-            component: () => import("@/pages/notFound")
+            component: () => import("@/pages/notFound.vue")
         }
     ]
 })
@@ -45,13 +46,11 @@ router.beforeEach(async (to: any) => {
     }
 })
 
+//遍历后台传来的路由字符串，转换为组件对象
 function filterAsyncRouter(asyncRouterMap: any) {
-    //遍历后台传来的路由字符串，转换为组件对象
     const accessedRouters = asyncRouterMap.filter((route: any) => {
         if (route.name === "Pages") {
             route.component = Pages
-        } else if (route.name === "NotFound") {
-            route.component = NotFound
         } else {
             if (route.component) {
                 route.component = _import(route.component)

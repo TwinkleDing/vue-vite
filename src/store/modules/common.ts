@@ -1,4 +1,4 @@
-import { setStore, getStore, removeStore } from "@/utils/store"
+import { setStore, getStore, removeStore } from "@/utils/storage"
 import { UserInfo } from "@/utils/interface"
 import { lighten } from "@/utils/themeColor"
 import routeList from "@/router/routeList"

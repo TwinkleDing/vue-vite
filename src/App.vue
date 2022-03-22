@@ -3,7 +3,7 @@
 </template>
 <script lang="ts">
 import { defineComponent } from "vue"
-import { getStore } from "@/utils/store"
+import { getStore } from "@/utils/storage"
 import { useStore } from "vuex"
 
 export default defineComponent({
