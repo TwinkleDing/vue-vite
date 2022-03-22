@@ -1,6 +1,6 @@
 import { RouterItem } from "@/utils/interface"
 
-const routes: RouterItem = [
+const routes: RouterItem[] = [
     {
         path: "/",
         name: "index",
@@ -9,12 +9,12 @@ const routes: RouterItem = [
     {
         path: "/index",
         name: "index",
-        component: import(/* webpackChunkName: 'dashboard' */ "@/pages/dashboard/index.vue")
+        component: () => import(/* webpackChunkName: 'dashboard' */ "@/pages/dashboard/index.vue")
     },
     {
         path: "/login",
         name: "login",
-        component: import(/* webpackChunkName: 'login' */ "@/pages/login/index.vue")
+        component: () => import(/* webpackChunkName: 'login' */ "@/pages/login/index.vue")
     }
 ]
 

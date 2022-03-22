@@ -6,8 +6,8 @@ export interface userData {
 }
 
 export type RouterItem = {
-    path?: string
-    name?: string
+    path: string
+    name: string
     component?: any
     redirect?: string
 }
