@@ -8,6 +8,8 @@ export interface UserInfo {
 export type RouterItem = {
     path: string
     name: string
-    component?: any
     redirect?: string
+    component?: any
+    children?: any
+    meta?: any
 }

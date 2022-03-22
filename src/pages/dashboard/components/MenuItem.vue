@@ -1,27 +1,26 @@
 <template>
     <div class="menu-item">
-        <template v-for="item in menu" :key="item.key">
+        <template v-for="item in menu" :key="item.name">
             <el-menu-item
                 v-if="!item.children || !item.children.length"
-                :index="item.key"
+                :index="item.name"
                 @click="open(item)"
             >
                 <template #title>
                     <div class="no-active">
                         <el-icon><coordinate /></el-icon>
-                        <span>{{ item.name }}</span>
+                        <span>{{ item.meta.label }}</span>
                     </div>
                 </template>
             </el-menu-item>
             <el-sub-menu
                 v-if="item.children && item.children.length"
-                :key="item.key"
-                :index="item.key"
+                :index="item.name"
             >
                 <template #title>
                     <div class="no-active">
                         <el-icon><icon-menu /></el-icon>
-                        <span>{{ item.name }}</span>
+                        <span>{{ item.meta.label }}</span>
                     </div>
                 </template>
                 <menu-item :menu="item.children" />
@@ -50,7 +49,7 @@ export default defineComponent({
         const menu = props.menu
         const open = (item: any) => {
             if (route.name !== item.name) {
-                router.push(item.router)
+                router.push(item.path)
             }
         }
         return {

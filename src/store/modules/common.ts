@@ -1,6 +1,8 @@
 import { setStore, getStore, removeStore } from "@/utils/store"
 import { UserInfo } from "@/utils/interface"
 import { lighten } from "@/utils/themeColor"
+import routeList from "@/router/routeList"
+import { RouterItem } from "@/utils/interface"
 
 const common = {
     state: {
@@ -74,6 +76,12 @@ const common = {
             })
         }
     },
-    actions: {}
+    actions: {
+        router() {
+            return new Promise((resolve: any) => {
+                resolve(routeList)
+            })
+        }
+    }
 }
 export default common

@@ -12,7 +12,9 @@
             <div class="pages-left">
                 <left-menu :menuList="menuList" />
             </div>
-            <div class="pages-right"></div>
+            <div class="pages-right">
+                <router-view></router-view>
+            </div>
         </div>
     </div>
 </template>
@@ -20,70 +22,15 @@
 import { defineComponent, reactive, ref, Ref } from "vue"
 import { useStore } from "vuex"
 import LeftMenu from "./components/LeftMenu.vue"
-
-interface MenuList {
-    name: string
-    key: string
-    router: string
-    children?: any
-}
+import routeList from "@/router/routeList"
+import { RouterItem } from "@/utils/interface"
 
 export default defineComponent({
     name: "Dashboard",
     components: { LeftMenu },
     setup() {
         const store = useStore()
-        const menuList: MenuList[] = [
-            {
-                name: "菜单一",
-                key: "menu1",
-                router: "menu1"
-            },
-            {
-                name: "菜单二",
-                key: "menu2",
-                router: "menu2",
-                children: [
-                    {
-                        name: "菜单二一",
-                        key: "menu21",
-                        router: "menu21",
-                        children: [
-                            {
-                                name: "菜单二一一",
-                                key: "menu211",
-                                router: "menu211"
-                            },
-                            {
-                                name: "菜单二一二",
-                                key: "menu212",
-                                router: "menu212"
-                            }
-                        ]
-                    },
-                    {
-                        name: "菜单二二",
-                        key: "menu22",
-                        router: "menu22"
-                    }
-                ]
-            },
-            {
-                name: "菜单三",
-                key: "menu3",
-                router: "menu3"
-            },
-            {
-                name: "菜单四",
-                key: "menu4",
-                router: "menu4"
-            },
-            {
-                name: "菜单五",
-                key: "menu5",
-                router: "menu5"
-            }
-        ]
+        const menuList: RouterItem[] = [...routeList]
         const userInfo: any = reactive(store.getters.userInfo)
         const imgUrl: Ref<string> = ref(
             "https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"
