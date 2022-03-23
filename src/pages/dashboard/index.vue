@@ -2,7 +2,10 @@
     <div class="pages">
         <div class="pages-header">
             <div class="header-background"></div>
-            <div class="logo"></div>
+            <div class="logo">
+                <img src="@/assets/logo.png" alt="" srcset="" />
+                <i>VUE+VITE+TS</i>
+            </div>
             <div class="avatar">
                 <span>{{ userInfo.account }}</span>
                 <el-avatar :size="size" :src="imgUrl" />
@@ -66,7 +69,19 @@ export default defineComponent({
         }
         .logo {
             height: 100%;
-            width: 200px;
+            min-width: 200px;
+            padding: 0 20px;
+            display: flex;
+            align-items: center;
+            img {
+                height: 50px;
+                width: 50px;
+            }
+            i {
+                color: #fff;
+                font-size: 36px;
+                font-family: fangsong;
+            }
         }
         .avatar {
             display: flex;

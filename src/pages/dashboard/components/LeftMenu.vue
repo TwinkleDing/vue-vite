@@ -25,7 +25,6 @@ export default defineComponent({
 
         const menu: any = reactive(props.menuList)
         const themeColor = store.getters.themeColor
-        console.log(route)
 
         return {
             menu,

@@ -7,7 +7,7 @@ const routeList: RouterItem[] = [
         meta: {
             label: "首页"
         },
-        component: "index",
+        component: "home",
     },
     {
         path: "/menu2",
