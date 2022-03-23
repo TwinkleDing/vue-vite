@@ -2,12 +2,12 @@ import { RouterItem } from "@/utils/interface"
 
 const routeList: RouterItem[] = [
     {
-        path: "/menu1",
-        name: "menu1",
+        path: "/home",
+        name: "home",
         meta: {
-            label: "菜单一"
+            label: "首页"
         },
-        component: () => import(/* webpackChunkName: 'home' */ "@/views/home.vue")
+        component: "index",
     },
     {
         path: "/menu2",
@@ -15,7 +15,7 @@ const routeList: RouterItem[] = [
         meta: {
             label: "菜单二"
         },
-        component: () => import(/* webpackChunkName: 'home' */ "@/views/home.vue"),
+        component: "home",
         children: [
             {
                 path: "/menu21",
@@ -23,7 +23,7 @@ const routeList: RouterItem[] = [
                 meta: {
                     label: "菜单二一"
                 },
-                component: () => import(/* webpackChunkName: 'home' */ "@/views/home.vue"),
+                component: "home",
                 children: [
                     {
                         path: "/menu211",
@@ -31,7 +31,7 @@ const routeList: RouterItem[] = [
                         meta: {
                             label: "菜单二一一"
                         },
-                        component: () => import(/* webpackChunkName: 'home' */ "@/views/home.vue")
+                        component: "home"
                     },
                     {
                         path: "/menu212",
@@ -39,7 +39,7 @@ const routeList: RouterItem[] = [
                         meta: {
                             label: "菜单二一二"
                         },
-                        component: () => import(/* webpackChunkName: 'home' */ "@/views/home.vue")
+                        component: "home"
                     }
                 ]
             },
@@ -49,7 +49,7 @@ const routeList: RouterItem[] = [
                 meta: {
                     label: "菜单二二"
                 },
-                component: () => import(/* webpackChunkName: 'home' */ "@/views/home.vue")
+                component: "home"
             }
         ]
     },
@@ -59,7 +59,7 @@ const routeList: RouterItem[] = [
         meta: {
             label: "菜单三"
         },
-        component: () => import(/* webpackChunkName: 'home' */ "@/views/home.vue")
+        component: "home"
     },
     {
         path: "/menu4",
@@ -67,7 +67,7 @@ const routeList: RouterItem[] = [
         meta: {
             label: "菜单四"
         },
-        component: () => import(/* webpackChunkName: 'home' */ "@/views/home.vue")
+        component: "home"
     },
     {
         path: "/menu5",
@@ -75,7 +75,7 @@ const routeList: RouterItem[] = [
         meta: {
             label: "菜单五"
         },
-        component: () => import(/* webpackChunkName: 'home' */ "@/views/home.vue")
+        component: "home"
     }
 ]
 

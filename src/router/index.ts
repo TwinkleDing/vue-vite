@@ -2,6 +2,9 @@ import { createRouter, createWebHashHistory } from "vue-router"
 import store from "@/store"
 import Empty from "@/pages/Empty.vue"
 
+let firstGetRoute = false
+const _importComponent = (file) => () => import(`../views/${file}/index.vue`)
+
 const router: any = new (createRouter as any)({
     history: createWebHashHistory(),
     routes: [
@@ -29,13 +32,9 @@ const router: any = new (createRouter as any)({
     ]
 })
 
-var getRoute
-// var _import = (file) => () => import("@/views/" + file + ".vue")
-var _import = (file) => () => import("@/views/home.vue")
-
 router.beforeEach(async (to: any) => {
-    if (!getRoute) {
-        getRoute = true
+    if (!firstGetRoute) {
+        firstGetRoute = true
         const list = await store.dispatch("router")
         const routerList = filterAsyncRouter(list)
         routerList.map((item: RouterItem[]) => {
@@ -47,16 +46,12 @@ router.beforeEach(async (to: any) => {
 })
 
 //遍历后台传来的路由字符串，转换为组件对象
-function filterAsyncRouter(asyncRouterMap: any) {
-    const accessedRouters = asyncRouterMap.filter((route: any) => {
-        if (route.name === "Pages") {
-            route.component = Pages
+function filterAsyncRouter(asyncRouterMap: RouterItem[]) {
+    const accessedRouters = asyncRouterMap.filter((route: RouterItem) => {
+        if (route.component) {
+            route.component = _importComponent(route.component)
         } else {
-            if (route.component) {
-                route.component = _import(route.component)
-            } else {
-                route.component = Empty
-            }
+            route.component = Empty
         }
         if (route.children && route.children.length) {
             route.children = filterAsyncRouter(route.children)

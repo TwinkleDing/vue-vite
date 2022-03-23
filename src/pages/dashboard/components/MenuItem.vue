@@ -7,21 +7,14 @@
                 @click="open(item)"
             >
                 <template #title>
-                    <div class="no-active">
-                        <el-icon><coordinate /></el-icon>
-                        <span>{{ item.meta.label }}</span>
-                    </div>
+                    <el-icon><coordinate /></el-icon>
+                    <span>{{ item.meta.label }}</span>
                 </template>
             </el-menu-item>
-            <el-sub-menu
-                v-if="item.children && item.children.length"
-                :index="item.name"
-            >
+            <el-sub-menu v-if="item.children && item.children.length" :index="item.name">
                 <template #title>
-                    <div class="no-active">
-                        <el-icon><icon-menu /></el-icon>
-                        <span>{{ item.meta.label }}</span>
-                    </div>
+                    <el-icon><icon-menu /></el-icon>
+                    <span>{{ item.meta.label }}</span>
                 </template>
                 <menu-item :menu="item.children" />
             </el-sub-menu>
@@ -47,14 +40,17 @@ export default defineComponent({
         const route = useRoute()
         const router = useRouter()
         const menu = props.menu
+
         const open = (item: any) => {
             if (route.name !== item.name) {
                 router.push(item.path)
             }
         }
+
         return {
             menu,
-            open
+            open,
+            route
         }
     }
 })
