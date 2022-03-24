@@ -54,6 +54,7 @@ export default defineComponent({
 .pages {
     height: 100%;
     width: 100%;
+    min-width: 1400px;
     &-header {
         height: 60px;
         width: 100%;
@@ -100,6 +101,7 @@ export default defineComponent({
     &-left {
         height: 100%;
         width: 200px;
+        min-width: 200px;
         box-shadow: 6px 0px 10px 0px rgb(38 38 38 / 8%);
     }
     &-right {

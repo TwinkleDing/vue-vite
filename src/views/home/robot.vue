@@ -6,11 +6,13 @@
 
 <script>
 import * as THREE from "three"
-// import { GUI } from "three/examples/jsm/libs/dat.gui.module.js";
+import { GUI } from "three/examples/jsm/libs/lil-gui.module.min.js"
+
 import Stats from "three/examples/jsm/libs/stats.module.js"
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js"
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js"
 let scene
+let gui
 let mesh
 let camera
 let grid
@@ -18,8 +20,17 @@ let renderer
 let stats
 let model
 let controls
+let mixer
+let previousAction
+let activeAction
+let face
+let actions
+let clock
+let api = {
+    state: "Walking"
+}
 export default {
-    name: "Robbot",
+    name: "Robot",
     data() {
         return {}
     },
@@ -36,6 +47,8 @@ export default {
             // 创建坐标系
             let axisHelper = new THREE.AxesHelper(1000)
             scene.add(axisHelper)
+
+            clock = new THREE.Clock()
 
             // 创建相机
             let w = 1200
@@ -74,8 +87,8 @@ export default {
                 (gltf) => {
                     model = gltf.scene
                     scene.add(model)
-                    // this.animation()
-
+                    this.createGUI(model, gltf.animations)
+                    this.animation()
                     this.render()
                 },
                 undefined,
@@ -91,18 +104,29 @@ export default {
             renderer.outputEncoding = THREE.sRGBEncoding
             renderer.setClearColor(0xb9d3ff, 1)
             document.getElementById("model").appendChild(renderer.domElement)
+            // window.addEventListener('resize', this.onWindowResize, false);
 
             stats = new Stats()
-            console.log(stats.dom.style.position="absolute");
+            stats.dom.style.position = "absolute"
             document.getElementById("model").appendChild(stats.dom)
 
             this.render()
             this.controlsEvent()
         },
         animation() {
+            let dt = clock.getDelta()
+            if (mixer) {
+                mixer.update(dt)
+            }
             requestAnimationFrame(this.animation)
             this.render()
             stats.update()
+        },
+        onWindowResize() {
+            this.camera.aspect = window.innerWidth / window.innerHeight
+            this.camera.updateProjectionMatrix()
+            this.renderer.setSize(window.innerWidth, window.innerHeight)
+            this.render()
         },
         render() {
             renderer.render(scene, camera) //执行渲染操作
@@ -111,6 +135,70 @@ export default {
         controlsEvent() {
             controls = new OrbitControls(camera, renderer.domElement) //创建控件对象
             controls.addEventListener("change", this.render) //监听鼠标、键盘事件
+        },
+        createGUI(model, animations) {
+            gui = new GUI()
+            let states = ["Idle", "Walking", "Running", "Dance", "Death", "Sitting", "Standing"]
+            let emotes = ["Jump", "Yes", "No", "Wave", "Punch", "ThumbsUp"]
+            mixer = new THREE.AnimationMixer(model)
+            actions = {}
+            for (let i = 0; i < animations.length; i++) {
+                let clip = animations[i]
+                let action = mixer.clipAction(clip)
+                actions[clip.name] = action
+                if (emotes.indexOf(clip.name) >= 0 || states.indexOf(clip.name) >= 4) {
+                    action.clampWhenFinished = true
+                    action.loop = THREE.LoopOnce
+                }
+            }
+
+            let statesFolder = gui.addFolder("States")
+            let clipCtrl = statesFolder.add(api, "state").options(states)
+            clipCtrl.onChange(() => {
+                this.fadeToAction(api.state, 0.5)
+            })
+            statesFolder.open()
+
+            let emoteFolder = gui.addFolder("Emotes")
+            let createEmoteCallback = (name) => {
+                api[name] = () => {
+                    this.fadeToAction(name, 0.2)
+                    mixer.addEventListener("finished", restoreState)
+                }
+                emoteFolder.add(api, name)
+            }
+            let restoreState = () => {
+                mixer.removeEventListener("finished", restoreState)
+                this.fadeToAction(api.state, 0.2)
+            }
+            for (let i = 0; i < emotes.length; i++) {
+                createEmoteCallback(emotes[i])
+            }
+            emoteFolder.open()
+
+            face = model.getObjectByName("Head_2")
+            let expressions = Object.keys(face.morphTargetDictionary)
+            let expressionFolder = gui.addFolder("Expressions")
+            for (let i = 0; i < expressions.length; i++) {
+                expressionFolder.add(face.morphTargetInfluences, i, 0, 1, 0.01).name(expressions[i])
+            }
+            expressionFolder.open()
+        
+            activeAction = actions["Walking"]
+            activeAction.play()
+        },
+        fadeToAction(name, duration) {
+            previousAction = activeAction
+            activeAction = actions[name]
+            if (previousAction !== activeAction) {
+                previousAction.fadeOut(duration)
+            }
+            activeAction
+                .reset()
+                .setEffectiveTimeScale(1)
+                .setEffectiveWeight(1)
+                .fadeIn(duration)
+                .play()
         }
     }
 }

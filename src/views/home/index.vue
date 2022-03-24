@@ -1,10 +1,10 @@
 <template>
     <div>
-        <robbot />
+        <robot />
     </div>
 </template>
 <script lang="ts" setup>
-import robbot from "./robbot.vue"
+import robot from "./robot.vue"
 
 import { useRoute } from "vue-router"
 
