@@ -4,11 +4,15 @@
 
 declare module 'vue' {
   export interface GlobalComponents {
+    Chart: typeof import('./src/components/chart.vue')['default']
+    Echart: typeof import('./src/components/echart.vue')['default']
     ElAvatar: typeof import('element-plus/es')['ElAvatar']
     ElIcon: typeof import('element-plus/es')['ElIcon']
     ElMenu: typeof import('element-plus/es')['ElMenu']
     ElMenuItem: typeof import('element-plus/es')['ElMenuItem']
     ElSubMenu: typeof import('element-plus/es')['ElSubMenu']
+    LineChart: typeof import('./src/components/Chart/LineChart.vue')['default']
+    PieChar: typeof import('./src/components/Chart/PieChar.vue')['default']
   }
 }
 
