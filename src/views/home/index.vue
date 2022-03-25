@@ -1,12 +1,10 @@
 <template>
     <div>
-        <!-- <robot /> -->
-        <soldier />
+        <robot />
     </div>
 </template>
 <script lang="ts" setup>
 import robot from "./robot.vue"
-import soldier from "./soldier.vue"
 
 import { useRoute } from "vue-router"
 

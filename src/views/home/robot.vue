@@ -1,63 +1,55 @@
 <template>
     <div>
-        <div id="model" class="model-ca"></div>
+        <div id="model" class="model-ca" @keydown="keyDown"></div>
     </div>
 </template>
 
-<script>
+<script >
+import { onMounted } from "vue"
 import * as THREE from "three"
 import { GUI } from "three/examples/jsm/libs/lil-gui.module.min.js"
 
 import Stats from "three/examples/jsm/libs/stats.module.js"
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js"
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js"
-let scene
-let gui
-let mesh
-let camera
-let grid
-let renderer
-let stats
-let model
-let controls
-let mixer
-let previousAction
-let activeAction
-let face
-let actions
-let clock
-let api = {
-    state: "Walking"
-}
 export default {
-    name: "Robot",
-    data() {
-        return {}
-    },
-    mounted() {
-        this.init()
-    },
-    methods: {
-        init() {
+    setup() {
+        let scene
+        let camera
+        let renderer
+        let stats = new Stats()
+        let model
+        let mixer
+        let previousAction
+        let activeAction
+        let actions
+        let clock = new THREE.Clock()
+        let positionZ = 0
+        let walkTime
+        let controls
+        let api = {
+            state: "Idle"
+        }
+        let count = 0.001
+        const init = () => {
             // 创建场景
             scene = new THREE.Scene()
             scene.background = new THREE.Color(0xe0e0e0)
-            // scene.fog = new THREE.Fog(0xe0e0e0, 20, 100); // 雾化背景
+            // scene.fog = new THREE.Fog(0xe0e0e0, 20, 100) // 雾化背景
 
             // 创建坐标系
-            let axisHelper = new THREE.AxesHelper(1000)
+            let axisHelper = new THREE.AxesHelper(5000)
             scene.add(axisHelper)
-
-            clock = new THREE.Clock()
 
             // 创建相机
             let w = 1200
             let h = 800
             // 透视相机
-            camera = new THREE.PerspectiveCamera(60, w / h, 0.25, 1000)
-            //
-            camera.position.set(-4, 7, 8)
-            camera.lookAt(new THREE.Vector3(0, 2, 0))
+            camera = new THREE.PerspectiveCamera(60, w / h, 0.25, 10000)
+            // 视角
+            camera.lookAt(new THREE.Vector3(2, 0, 0))
+            // 相机位置
+            camera.position.set(-4, 7, -8)
 
             // 创建光源
             let ambient = new THREE.HemisphereLight(0xffffff, 0x444444)
@@ -72,11 +64,11 @@ export default {
                 color: 0x999999,
                 depthWrite: false
             })
-            mesh = new THREE.Mesh(new THREE.PlaneBufferGeometry(2000, 2000), material)
+            const mesh = new THREE.Mesh(new THREE.PlaneBufferGeometry(2000, 2000), material)
             mesh.rotation.x = -Math.PI / 2
             scene.add(mesh)
 
-            grid = new THREE.GridHelper(200, 40, 0x000000, 0x000000)
+            const grid = new THREE.GridHelper(200, 40, 0x000000, 0x000000)
             grid.material.opacity = 0.2
             grid.material.transparent = true
             scene.add(grid)
@@ -87,9 +79,9 @@ export default {
                 (gltf) => {
                     model = gltf.scene
                     scene.add(model)
-                    this.createGUI(model, gltf.animations)
-                    this.animation()
-                    this.render()
+                    createGUI(model, gltf.animations)
+                    animation()
+                    render()
                 },
                 undefined,
                 function (e) {
@@ -103,41 +95,18 @@ export default {
             renderer.setSize(w, h)
             renderer.outputEncoding = THREE.sRGBEncoding
             renderer.setClearColor(0xb9d3ff, 1)
-            document.getElementById("model").appendChild(renderer.domElement)
-            // window.addEventListener('resize', this.onWindowResize, false);
+            const container = document.getElementById("model")
+            container.appendChild(renderer.domElement)
 
-            stats = new Stats()
             stats.dom.style.position = "absolute"
-            document.getElementById("model").appendChild(stats.dom)
+            container.appendChild(stats.dom)
 
-            this.render()
-            this.controlsEvent()
-        },
-        animation() {
-            let dt = clock.getDelta()
-            if (mixer) {
-                mixer.update(dt)
-            }
-            requestAnimationFrame(this.animation)
-            this.render()
-            stats.update()
-        },
-        onWindowResize() {
-            this.camera.aspect = window.innerWidth / window.innerHeight
-            this.camera.updateProjectionMatrix()
-            this.renderer.setSize(window.innerWidth, window.innerHeight)
-            this.render()
-        },
-        render() {
-            renderer.render(scene, camera) //执行渲染操作
-        },
-        // 控制器
-        controlsEvent() {
-            controls = new OrbitControls(camera, renderer.domElement) //创建控件对象
-            controls.addEventListener("change", this.render) //监听鼠标、键盘事件
-        },
-        createGUI(model, animations) {
-            gui = new GUI()
+            render()
+            controlsEvent()
+        }
+        const createGUI = (model, animations) => {
+            const gui = new GUI()
+            gui.domElement.style.position = "absolute"
             let states = ["Idle", "Walking", "Running", "Dance", "Death", "Sitting", "Standing"]
             let emotes = ["Jump", "Yes", "No", "Wave", "Punch", "ThumbsUp"]
             mixer = new THREE.AnimationMixer(model)
@@ -151,43 +120,57 @@ export default {
                     action.loop = THREE.LoopOnce
                 }
             }
-
             let statesFolder = gui.addFolder("States")
             let clipCtrl = statesFolder.add(api, "state").options(states)
             clipCtrl.onChange(() => {
-                this.fadeToAction(api.state, 0.5)
+                fadeToAction(api.state, 0.5)
+                if (api.state === "Walking") {
+                    camera.lookAt(scene.position)
+                    walkTime = setInterval(() => {
+                        if (positionZ >= 0.5) {
+                            count = -0.001
+                            model.rotation.y = Math.PI
+                        } else if (positionZ < 0) {
+                            model.rotation.y = 0
+                            count = 0.001
+                        }
+                        positionZ += count
+                        model.translateZ(positionZ)
+                    }, 10)
+                } else {
+                    clearInterval(walkTime)
+                }
             })
             statesFolder.open()
 
             let emoteFolder = gui.addFolder("Emotes")
             let createEmoteCallback = (name) => {
                 api[name] = () => {
-                    this.fadeToAction(name, 0.2)
+                    fadeToAction(name, 0.2)
                     mixer.addEventListener("finished", restoreState)
                 }
                 emoteFolder.add(api, name)
             }
             let restoreState = () => {
                 mixer.removeEventListener("finished", restoreState)
-                this.fadeToAction(api.state, 0.2)
+                fadeToAction(api.state, 0.2)
             }
             for (let i = 0; i < emotes.length; i++) {
                 createEmoteCallback(emotes[i])
             }
             emoteFolder.open()
 
-            face = model.getObjectByName("Head_2")
+            let face = model.getObjectByName("Head_2")
             let expressions = Object.keys(face.morphTargetDictionary)
             let expressionFolder = gui.addFolder("Expressions")
             for (let i = 0; i < expressions.length; i++) {
                 expressionFolder.add(face.morphTargetInfluences, i, 0, 1, 0.01).name(expressions[i])
             }
             expressionFolder.open()
-        
-            activeAction = actions["Walking"]
+            activeAction = actions[api.state]
             activeAction.play()
-        },
-        fadeToAction(name, duration) {
+        }
+        const fadeToAction = (name, duration) => {
             previousAction = activeAction
             activeAction = actions[name]
             if (previousAction !== activeAction) {
@@ -200,6 +183,56 @@ export default {
                 .fadeIn(duration)
                 .play()
         }
+        const animation = () => {
+            let dt = clock.getDelta()
+            if (mixer) {
+                mixer.update(dt)
+            }
+            requestAnimationFrame(animation)
+            render()
+            stats.update()
+        }
+        // 控制器
+        const controlsEvent = () => {
+            controls = new OrbitControls(camera, renderer.domElement) //创建控件对象
+            controls.addEventListener("change", render) //监听鼠标、键盘事件
+            keyDown()
+        }
+        const render = () => {
+            renderer.render(scene, camera) //执行渲染操作
+        }
+
+        const keyDown = () => {
+            window.onkeydown = (e) => {
+                let { x, y, z } = camera.position
+                if (e.keyCode === 87) {
+                    y += 1
+                }
+                if (e.keyCode === 83) {
+                    y -= 1
+                }
+                if (e.keyCode === 65) {
+                }
+                if (e.keyCode === 68) {
+                }
+
+                if (e.keyCode === 81) {
+                    x += 1
+                    y += 1
+                    z += 1
+                }
+                if (e.keyCode === 69) {
+                    x -= 1
+                    y -= 1
+                    z -= 1
+                }
+                camera.position.set(x, y, z)
+            }
+        }
+
+        onMounted(() => {
+            init()
+        })
     }
 }
 </script>
