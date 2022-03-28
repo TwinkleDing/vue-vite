@@ -1,5 +1,5 @@
 <template>
-    <div id="chart" class="chart" :style="{ width, height }"></div>
+    <div id="pieChart" class="pie-chart" :style="{ width, height }"></div>
 </template>
 <script lang="ts">
 import { onMounted } from "vue"
@@ -29,7 +29,7 @@ type EChartsOption = echarts.ComposeOption<
 >
 
 export default {
-    name: "Chart",
+    name: "PieChart",
     props: {
         option: {
             type: Object,
@@ -84,7 +84,7 @@ export default {
         const option: EChartsOption = props.option
 
         onMounted(() => {
-            const chartDom = document.getElementById("chart")!
+            const chartDom = document.getElementById("pieChart")!
             const myChart = echarts.init(chartDom)
             option && myChart.setOption(option)
         })
@@ -93,7 +93,7 @@ export default {
 </script>
 
 <style scoped>
-.chart {
+.pie-chart {
     height: 100%;
     width: 100%;
 }

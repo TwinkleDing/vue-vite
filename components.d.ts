@@ -13,6 +13,7 @@ declare module 'vue' {
     ElSubMenu: typeof import('element-plus/es')['ElSubMenu']
     LineChart: typeof import('./src/components/Chart/LineChart.vue')['default']
     PieChar: typeof import('./src/components/Chart/PieChar.vue')['default']
+    PieChart: typeof import('./src/components/Chart/PieChart.vue')['default']
   }
 }
 

@@ -1,5 +1,5 @@
 <template>
-    <div id="chart" class="chart" :style="{ width, height }"></div>
+    <div id="lineChart" class="line-chart" :style="{ width, height }"></div>
 </template>
 <script lang="ts">
 import { onMounted } from "vue"
@@ -49,7 +49,7 @@ export default {
         const option: EChartsOption = props.option
 
         onMounted(() => {
-            const chartDom = document.getElementById("chart")!
+            const chartDom = document.getElementById("lineChart")!
             const myChart = echarts.init(chartDom)
             option && myChart.setOption(option)
         })
@@ -58,7 +58,7 @@ export default {
 </script>
 
 <style scoped>
-.chart {
+.line-chart {
     height: 100%;
     width: 100%;
 }
