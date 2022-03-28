@@ -1,4 +1,5 @@
 import { setStore, getStore, removeStore } from "@/utils/storage"
+import router from "@/router"
 import { UserInfo } from "@/utils/interface"
 import { lighten } from "@/utils/themeColor"
 import routeList from "@/router/routeList"
@@ -17,7 +18,15 @@ const common = {
         userInfo:
             getStore({
                 name: "userInfo"
-            }) || {}
+            }) || {},
+        routeHistory: getStore({
+            name: "routeHistory"
+        }) || [
+            {
+                label: "首页",
+                path: "/home"
+            }
+        ]
     },
     mutations: {
         SET_LANGUAGE: (state: any, language: string) => {
@@ -73,6 +82,52 @@ const common = {
             setStore({
                 name: "userInfo",
                 content: state.userInfo
+            })
+        },
+        REMOVE_USER_INFO(state: any) {
+            state.userInfo = {}
+            removeStore({
+                name: "userInfo"
+            })
+        },
+        SET_ROUTE_HISTORY(state: any, to: any) {
+            const history: any = state.routeHistory ? state.routeHistory : []
+            let repeat: boolean = false
+            history.forEach((item: any) => {
+                if (item.path.includes(to.path)) {
+                    repeat = true
+                }
+            })
+            if (!repeat) {
+                state.routeHistory = [
+                    ...history,
+                    {
+                        label: to.name,
+                        path: to.path
+                    }
+                ]
+                setStore({
+                    name: "routeHistory",
+                    content: state.routeHistory
+                })
+            }
+        },
+        REMOVE_ROUTE_HISTORY(state: any, index: number) {
+            const history = state.routeHistory.splice(index, 1)
+            if (!state.routeHistory.length) {
+                state.routeHistory = [
+                    {
+                        label: "首页",
+                        path: "/home"
+                    }
+                ]
+            }
+            if (history[0].path === router.currentRoute.value.path) {
+                router.push(state.routeHistory[state.routeHistory.length - 1].path)
+            }
+            setStore({
+                name: "routeHistory",
+                content: state.routeHistory
             })
         }
     },

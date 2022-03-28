@@ -7,67 +7,74 @@ const routeList: RouterItem[] = [
         meta: {
             label: "首页"
         },
-        component: "home",
+        component: "home"
     },
     {
-        path: "/menu2",
-        name: "menu2",
+        path: "/nested",
+        name: "nested",
         meta: {
-            label: "菜单二"
+            label: "嵌套路由"
         },
-        component: "home",
         children: [
             {
-                path: "/menu21",
-                name: "menu21",
+                path: "/nested1",
+                name: "nested1",
                 meta: {
-                    label: "菜单二一"
+                    label: "嵌套路由1"
                 },
-                component: "home",
                 children: [
                     {
-                        path: "/menu211",
-                        name: "menu211",
+                        path: "/nested11",
+                        name: "nested11",
                         meta: {
-                            label: "菜单二一一"
+                            label: "嵌套路由1-1"
                         },
-                        component: "home"
+                        component: "nested11"
                     },
                     {
-                        path: "/menu212",
-                        name: "menu212",
+                        path: "/nested12",
+                        name: "nested12",
                         meta: {
-                            label: "菜单二一二"
+                            label: "嵌套路由1-2"
                         },
-                        component: "home"
+                        component: "nested12"
                     }
                 ]
             },
             {
-                path: "/menu22",
-                name: "menu22",
+                path: "/nested2",
+                name: "nested2",
                 meta: {
-                    label: "菜单二二"
+                    label: "嵌套路由2"
                 },
-                component: "home"
+                component: "nested2"
             }
         ]
     },
     {
-        path: "/menu3",
-        name: "menu3",
+        path: "/charts",
+        name: "charts",
         meta: {
-            label: "菜单三"
+            label: "图表"
         },
-        component: "home"
+        component: "charts"
     },
     {
-        path: "/menu4",
-        name: "menu4",
+        path: "/system",
+        name: "system",
         meta: {
-            label: "菜单四"
+            label: "系统设置"
         },
-        component: "home"
+        children: [
+            {
+                path: "/permission",
+                name: "permission",
+                meta: {
+                    label: "权限管理"
+                },
+                component: "permission"
+            }
+        ]
     },
     {
         path: "/menu5",

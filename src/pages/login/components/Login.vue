@@ -80,7 +80,7 @@ const goIndex = () => {
     })
     setTimeout(() => {
         loading.close()
-        router.push("/index")
+        router.push("/home")
     }, 1000)
 }
 </script>
