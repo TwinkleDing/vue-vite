@@ -7,7 +7,12 @@
                 @click="open(item)"
             >
                 <template #title>
-                    <el-icon><coordinate /></el-icon>
+                    <el-icon>
+                        <help v-if="item.path.includes('home')" />
+                        <coordinate v-if="item.path.includes('nested')" />
+                        <histogram v-if="item.path.includes('chart')" />
+                        <setting v-if="item.path.includes('permission')" />
+                    </el-icon>
                     <span>{{ item.meta.label }}</span>
                 </template>
             </el-menu-item>
@@ -25,11 +30,11 @@
 <script lang="ts">
 import { defineComponent } from "vue"
 import { useRoute, useRouter } from "vue-router"
-import { Menu as IconMenu, Coordinate } from "@element-plus/icons-vue"
+import { Menu as IconMenu, Coordinate, Help, Histogram, Setting } from "@element-plus/icons-vue"
 
 export default defineComponent({
     name: "MenuItem",
-    components: { IconMenu, Coordinate },
+    components: { IconMenu, Coordinate, Help, Histogram, Setting },
     props: {
         menu: {
             type: Array,

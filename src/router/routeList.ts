@@ -70,19 +70,11 @@ const routeList: RouterItem[] = [
                 path: "/permission",
                 name: "permission",
                 meta: {
-                    label: "权限管理"
+                    label: "角色权限"
                 },
                 component: "permission"
             }
         ]
-    },
-    {
-        path: "/menu5",
-        name: "menu5",
-        meta: {
-            label: "菜单五"
-        },
-        component: "home"
     }
 ]
 
