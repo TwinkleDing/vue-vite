@@ -6,10 +6,18 @@
                 <img src="@/assets/logo.png" alt="" srcset="" />
                 <i>VUE+VITE+TS</i>
             </div>
-            <div class="avatar">
-                <span>{{ userInfo.account }}</span>
-                <el-avatar :size="size" :src="imgUrl" />
-            </div>
+            <el-dropdown placement="bottom-end">
+                <div class="avatar">
+                    <span>{{ userInfo.account }}</span>
+                    <el-avatar @click="showSet" :size="size" :src="imgUrl" />
+                    <arrow-down />
+                </div>
+                <template #dropdown>
+                    <el-dropdown-menu>
+                        <el-dropdown-item @click="logout">退出登录</el-dropdown-item>
+                    </el-dropdown-menu>
+                </template>
+            </el-dropdown>
         </div>
         <div class="pages-content">
             <div class="pages-left">
@@ -93,9 +101,8 @@ export default defineComponent({
         const closeCurrentRoute = (index: number) => {
             store.commit("REMOVE_ROUTE_HISTORY", index)
         }
-        const routeGo = (path: string) => {
-            router.push(path)
-        }
+        const routeGo = (path: string) => router.push(path)
+        const logout = () => router.push("login")
 
         return {
             menuList,
@@ -105,6 +112,7 @@ export default defineComponent({
             routeHistory,
             route,
             routeGo,
+            logout,
             closeCurrentRoute
         }
     }
@@ -147,12 +155,14 @@ export default defineComponent({
             }
         }
         .avatar {
+            height: 100%;
             display: flex;
             justify-content: space-between;
             align-items: center;
             min-width: 150px;
             margin: 0 20px;
             color: #fff;
+            cursor: pointer;
         }
     }
     &-content {

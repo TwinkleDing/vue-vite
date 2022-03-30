@@ -107,7 +107,7 @@ const permissionRoute = async () => {
     } else {
         ElMessage({
             type: "error",
-            message: "无法继续删除路由"
+            message: "无法继续设置路由权限"
         })
     }
 }
