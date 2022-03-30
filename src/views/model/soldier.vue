@@ -12,7 +12,7 @@ import Stats from "three/examples/jsm/libs/stats.module.js"
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js"
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js"
 
-import { onMounted } from "vue"
+import { onMounted, onUnmounted } from "vue"
 let scene, renderer, camera, stats
 let model, skeleton, mixer, clock
 
@@ -408,6 +408,9 @@ const controlsEvent = () => {
 
 onMounted(() => {
     init()
+})
+onUnmounted(() => {
+    document.getElementsByClassName("lil-gui")[0].remove()
 })
 </script>
 

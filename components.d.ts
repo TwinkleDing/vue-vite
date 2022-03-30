@@ -23,6 +23,8 @@ declare module 'vue' {
     ElSwitch: typeof import('element-plus/es')['ElSwitch']
     ElTable: typeof import('element-plus/es')['ElTable']
     ElTableColumn: typeof import('element-plus/es')['ElTableColumn']
+    ElTabPane: typeof import('element-plus/es')['ElTabPane']
+    ElTabs: typeof import('element-plus/es')['ElTabs']
     ElTree: typeof import('element-plus/es')['ElTree']
     LineChart: typeof import('./src/components/Chart/LineChart.vue')['default']
     PieChar: typeof import('./src/components/Chart/PieChar.vue')['default']

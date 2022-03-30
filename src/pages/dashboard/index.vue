@@ -9,8 +9,7 @@
             <el-dropdown placement="bottom-end">
                 <div class="avatar">
                     <span>{{ userInfo.account }}</span>
-                    <el-avatar @click="showSet" :size="size" :src="imgUrl" />
-                    <arrow-down />
+                    <el-avatar :size="size" :src="imgUrl" />
                 </div>
                 <template #dropdown>
                     <el-dropdown-menu>

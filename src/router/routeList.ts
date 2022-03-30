@@ -78,6 +78,14 @@ const routeList: RouterItem[] = [
                 component: "permission"
             }
         ]
+    },
+    {
+        path: "/model",
+        name: "model",
+        meta: {
+            label: "模型"
+        },
+        component: "model"
     }
 ]
 

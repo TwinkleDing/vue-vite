@@ -5,7 +5,7 @@
 </template>
 
 <script >
-import { onMounted } from "vue"
+import { onMounted, onUnmounted } from "vue"
 import * as THREE from "three"
 import { GUI } from "three/examples/jsm/libs/lil-gui.module.min.js"
 
@@ -43,7 +43,7 @@ export default {
 
             // 创建相机
             let w = 1200
-            let h = 800
+            let h = 685
             // 透视相机
             camera = new THREE.PerspectiveCamera(60, w / h, 0.25, 10000)
             // 视角
@@ -136,7 +136,7 @@ export default {
                         }
                         positionZ += count
                         model.translateZ(positionZ)
-                    }, 10)
+                    }, 16)
                 } else {
                     clearInterval(walkTime)
                 }
@@ -232,6 +232,9 @@ export default {
 
         onMounted(() => {
             init()
+        })
+        onUnmounted(() => {
+            document.getElementsByClassName("lil-gui")[0].remove()
         })
     }
 }
