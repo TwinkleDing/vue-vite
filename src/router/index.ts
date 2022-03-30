@@ -11,11 +11,12 @@ const router: any = new (createRouter as any)({
         {
             path: "/",
             name: "dashboard",
-            redirect: "/index"
+            redirect: "/home"
         },
         {
             path: "/index",
             name: "index",
+            redirect: "/home",
             component: () =>
                 import(/* webpackChunkName: 'dashboard' */ "@/pages/dashboard/index.vue")
         },
@@ -35,7 +36,7 @@ const router: any = new (createRouter as any)({
 router.beforeEach(async (to: any) => {
     if (!firstGetRoute && store.getters.userInfo.userId) {
         firstGetRoute = true
-        const list = await store.dispatch("router")
+        const list = [...(await store.dispatch("getRouteList"))]
         const routerList = filterAsyncRouter(list)
         routerList.map((item: RouterItem[]) => {
             router.addRoute("index", item)

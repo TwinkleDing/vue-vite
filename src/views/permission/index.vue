@@ -6,20 +6,40 @@
         <el-table-column prop="description" label="description" />
         <el-table-column label="Operations">
             <template #default="scope">
-                <el-button size="small" @click="handleEdit(scope.$index, scope.row)"
-                    >Edit</el-button
-                >
-                <el-button size="small" type="danger" @click="handleDelete(scope.$index, scope.row)"
-                    >Delete</el-button
-                >
+                <el-button type="primary" size="small" @click="permissionRoute">
+                    权限页面设置
+                </el-button>
+                <el-button type="success" size="small" @click="restoreRoute"> 恢复 </el-button>
             </template>
         </el-table-column>
     </el-table>
+    <el-dialog v-model="dialogVisible" title="权限管理" width="600px" :destroy-on-close="true">
+        <el-tree :data="tree.value" :props="defaultProps">
+            <template #default="{ data }">
+                <span class="custom-tree-node">
+                    <span>{{ data.label }}</span>
+                    <span>
+                        <el-switch
+                            :disabled="data.name.includes('home')"
+                            v-model="data.permission"
+                            @change="switchPermission(data)"
+                        />
+                    </span>
+                </span>
+            </template>
+        </el-tree>
+        <template #footer>
+            <span class="dialog-footer">
+                <el-button @click="dialogVisible = false">取消</el-button>
+                <el-button type="primary" @click="savePermission">确定</el-button>
+            </span>
+        </template>
+    </el-dialog>
 </template>
 <script lang="ts" setup>
-import { reactive } from "vue"
-import { ElMessage } from "element-plus"
-import routeList from "@/router/routeList"
+import { onMounted, ref, Ref, reactive } from "vue"
+import { ElMessage, ElMessageBox } from "element-plus"
+import { useStore } from "vuex"
 
 interface DataItem {
     userId: string
@@ -27,6 +47,13 @@ interface DataItem {
     description: string
 }
 
+const store = useStore()
+const dialogVisible: Ref<boolean> = ref(false)
+const defaultProps: any = reactive({
+    children: "children",
+    label: "name"
+})
+const tree: any = reactive([])
 const tableData: DataItem[] = reactive([
     {
         userId: "TwinkleDing",
@@ -35,8 +62,20 @@ const tableData: DataItem[] = reactive([
     }
 ])
 const handleEdit = (index: number, row: DataItem) => {
-    console.log(index)
-    console.log(row)
+    dialogVisible.value = true
+    store.dispatch("router").then((res: any) => {
+        tree.value = digui(res)
+    })
+}
+const digui = (list: any) => {
+    return list.map((element: any) => {
+        element.label = element.meta.label
+        element.permission = true
+        if (element.children) {
+            digui(element.children)
+        }
+        return element
+    })
 }
 const handleDelete = () => {
     ElMessage({
@@ -44,7 +83,55 @@ const handleDelete = () => {
         message: "仅此一个账号，无法删除"
     })
 }
+
+const switchPermission = (data: any) => {
+    console.log(data.permission)
+}
+
+const savePermission = () => {
+    dialogVisible.value = false
+}
+
+const permissionRoute = async () => {
+    let list = [...(await store.dispatch("getRouteList"))]
+    if (list.length > 2) {
+        list.splice(1, 1)
+        ElMessage({
+            type: "success",
+            message: "路由设置成功，将刷新页面"
+        })
+        setTimeout(() => {
+            store.commit("SET_ROUTE_LIST", list)
+            window.location.reload()
+        }, 1000)
+    } else {
+        ElMessage({
+            type: "error",
+            message: "无法继续删除路由"
+        })
+    }
+}
+const restoreRoute = async () => {
+    let list = [...(await store.dispatch("router"))]
+    ElMessage({
+        type: "success",
+        message: "路由恢复成功，将刷新页面"
+    })
+    setTimeout(() => {
+        store.commit("SET_ROUTE_LIST", list)
+        window.location.reload()
+    }, 1000)
+}
+
+onMounted(() => {})
 </script>
 
 <style lang="scss" scoped>
+.custom-tree-node {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    font-size: 16px;
+}
 </style>

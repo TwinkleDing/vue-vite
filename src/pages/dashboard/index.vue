@@ -57,7 +57,7 @@ export default defineComponent({
         const store = useStore()
         const route = useRoute()
         const router = useRouter()
-        const menuList: RouterItem[] = [...routeList]
+        const menuList: RouterItem[] = [...store.getters.routeList]
         const userInfo: any = reactive(store.getters.userInfo)
         const imgUrl: Ref<string> = ref(
             "https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"
@@ -65,8 +65,31 @@ export default defineComponent({
         const size: Ref<string> = ref("default")
 
         const routeHistory = computed(() => {
-            return store.getters.routeHistory
+            const history = store.getters.routeHistory
+            const list = digui(store.getters.routeList, [])
+            let showHistory: any = []
+            history.map((item: any) => {
+                list.map((element: any) => {
+                    if (element.path === item.path) {
+                        showHistory.push(item)
+                    }
+                })
+            })
+            store.commit("SET_ROUTE_HISTORY", showHistory)
+
+            return showHistory
         })
+        const digui = (list: any, parent: any) => {
+            list.map((element: any) => {
+                if (element.children) {
+                    digui(element.children, parent)
+                } else {
+                    parent.push(element)
+                }
+                return element
+            })
+            return parent
+        }
         const closeCurrentRoute = (index: number) => {
             store.commit("REMOVE_ROUTE_HISTORY", index)
         }

@@ -26,7 +26,11 @@ const common = {
                 label: "首页",
                 path: "/home"
             }
-        ]
+        ],
+        routeList:
+            getStore({
+                name: "routeList"
+            }) || routeList
     },
     mutations: {
         SET_LANGUAGE: (state: any, language: string) => {
@@ -38,7 +42,6 @@ const common = {
                         if (head.children[i].attributes[0].name === "href") {
                             if (head.children[i].attributes[0].value.includes("public.css")) {
                                 head.removeChild(head.children[i])
-                                console.log(head.children[i])
                             }
                         }
                     }
@@ -91,6 +94,14 @@ const common = {
             })
         },
         SET_ROUTE_HISTORY(state: any, to: any) {
+            if (Array.isArray(to)) {
+                state.routeHistory = to
+                setStore({
+                    name: "routeHistory",
+                    content: state.routeHistory
+                })
+                return
+            }
             const history: any = state.routeHistory ? state.routeHistory : []
             let repeat: boolean = false
             history.forEach((item: any) => {
@@ -129,12 +140,28 @@ const common = {
                 name: "routeHistory",
                 content: state.routeHistory
             })
+        },
+        SET_ROUTE_LIST(state: any, list: any) {
+            state.routeList = list
+            setStore({
+                name: "routeList",
+                content: state.routeList
+            })
         }
     },
     actions: {
         router() {
             return new Promise((resolve: any) => {
                 resolve(routeList)
+            })
+        },
+        getRouteList(context: any) {
+            return new Promise((resolve: any) => {
+                const list = getStore({ name: "routeList" })
+                    ? getStore({ name: "routeList" })
+                    : routeList
+                context.commit("SET_ROUTE_LIST", list)
+                resolve(list)
             })
         }
     }

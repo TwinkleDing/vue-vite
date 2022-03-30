@@ -12,6 +12,7 @@ const routeList: RouterItem[] = [
     {
         path: "/nested",
         name: "nested",
+        redirect: "/nested1",
         meta: {
             label: "嵌套路由"
         },
@@ -19,6 +20,7 @@ const routeList: RouterItem[] = [
             {
                 path: "/nested1",
                 name: "nested1",
+                redirect: "/nested11",
                 meta: {
                     label: "嵌套路由1"
                 },
@@ -62,6 +64,7 @@ const routeList: RouterItem[] = [
     {
         path: "/system",
         name: "system",
+        redirect: "/permission",
         meta: {
             label: "系统设置"
         },
