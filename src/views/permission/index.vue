@@ -10,6 +10,9 @@
                     权限页面设置
                 </el-button>
                 <el-button type="success" size="small" @click="restoreRoute"> 恢复 </el-button>
+                <el-button type="primary" size="small" @click="openPermission">
+                    查看权限
+                </el-button>
             </template>
         </el-table-column>
     </el-table>
@@ -61,7 +64,8 @@ const tableData: DataItem[] = reactive([
         description: "游客账号"
     }
 ])
-const handleEdit = (index: number, row: DataItem) => {
+
+const openPermission = () => {
     dialogVisible.value = true
     store.dispatch("router").then((res: any) => {
         tree.value = digui(res)
@@ -70,7 +74,7 @@ const handleEdit = (index: number, row: DataItem) => {
 const digui = (list: any) => {
     return list.map((element: any) => {
         element.label = element.meta.label
-        element.permission = true
+        element.permission = element.meta.permission
         if (element.children) {
             digui(element.children)
         }
@@ -90,11 +94,15 @@ const switchPermission = (data: any) => {
 
 const savePermission = () => {
     dialogVisible.value = false
+    // setTimeout(() => {
+    //     store.commit("SET_ROUTE_LIST", tree.value)
+    //     window.location.reload()
+    // }, 1000)
 }
 
 const permissionRoute = async () => {
     let list = [...(await store.dispatch("getRouteList"))]
-    if (list.length > 2) {
+    if (list.length > 3) {
         list.splice(1, 1)
         ElMessage({
             type: "success",
