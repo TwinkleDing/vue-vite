@@ -110,10 +110,11 @@ const common = {
                 }
             })
             if (!repeat) {
+                
                 state.routeHistory = [
                     ...history,
                     {
-                        label: to.name,
+                        label: to.meta.label,
                         path: to.path
                     }
                 ]

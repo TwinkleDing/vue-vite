@@ -11,7 +11,9 @@
                         <help v-if="item.path.includes('home')" />
                         <coordinate v-if="item.path.includes('nested')" />
                         <histogram v-if="item.path.includes('chart')" />
+                        <school v-if="item.path.includes('model')" />
                         <setting v-if="item.path.includes('permission')" />
+                        <postcard v-if="item.path.includes('my')" />
                     </el-icon>
                     <span>{{ item.meta.label }}</span>
                 </template>
@@ -30,11 +32,19 @@
 <script lang="ts">
 import { defineComponent } from "vue"
 import { useRoute, useRouter } from "vue-router"
-import { Menu as IconMenu, Coordinate, Help, Histogram, Setting } from "@element-plus/icons-vue"
+import {
+    Menu as IconMenu,
+    Coordinate,
+    Help,
+    Histogram,
+    Setting,
+    School,
+    Postcard
+} from "@element-plus/icons-vue"
 
 export default defineComponent({
     name: "MenuItem",
-    components: { IconMenu, Coordinate, Help, Histogram, Setting },
+    components: { IconMenu, Coordinate, Help, Histogram, Setting, School, Postcard },
     props: {
         menu: {
             type: Array,

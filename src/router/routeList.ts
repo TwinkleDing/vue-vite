@@ -57,9 +57,17 @@ const routeList: RouterItem[] = [
         path: "/charts",
         name: "charts",
         meta: {
-            label: "图表"
+            label: "图表展示"
         },
         component: "charts"
+    },
+    {
+        path: "/model",
+        name: "model",
+        meta: {
+            label: "模型预览"
+        },
+        component: "model"
     },
     {
         path: "/system",
@@ -80,12 +88,12 @@ const routeList: RouterItem[] = [
         ]
     },
     {
-        path: "/model",
-        name: "model",
+        path: "/my",
+        name: "my",
         meta: {
-            label: "模型"
+            label: "我的信息"
         },
-        component: "model"
+        component: "my"
     }
 ]
 

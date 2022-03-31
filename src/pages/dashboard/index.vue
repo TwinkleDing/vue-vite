@@ -13,7 +13,8 @@
                 </div>
                 <template #dropdown>
                     <el-dropdown-menu>
-                        <el-dropdown-item @click="logout">退出登录</el-dropdown-item>
+                        <el-dropdown-item @click="drClick(1)">我的信息</el-dropdown-item>
+                        <el-dropdown-item @click="drClick(2)">退出登录</el-dropdown-item>
                     </el-dropdown-menu>
                 </template>
             </el-dropdown>
@@ -101,7 +102,13 @@ export default defineComponent({
             store.commit("REMOVE_ROUTE_HISTORY", index)
         }
         const routeGo = (path: string) => router.push(path)
-        const logout = () => router.push("login")
+        const drClick = (type: number) => {
+            if (type === 1) {
+                router.push("my")
+            } else if (type === 2) {
+                router.push("login")
+            }
+        }
 
         return {
             menuList,
@@ -111,7 +118,7 @@ export default defineComponent({
             routeHistory,
             route,
             routeGo,
-            logout,
+            drClick,
             closeCurrentRoute
         }
     }
@@ -155,6 +162,7 @@ export default defineComponent({
         }
         .avatar {
             height: 100%;
+            font-size: 18px;
             display: flex;
             justify-content: space-between;
             align-items: center;
