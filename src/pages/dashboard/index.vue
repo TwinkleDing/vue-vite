@@ -13,8 +13,8 @@
                 </div>
                 <template #dropdown>
                     <el-dropdown-menu>
-                        <el-dropdown-item @click="drClick(1)">我的信息</el-dropdown-item>
-                        <el-dropdown-item @click="drClick(2)">退出登录</el-dropdown-item>
+                        <el-dropdown-item @click="drClick(1)">{{ $t("myInfo") }}</el-dropdown-item>
+                        <el-dropdown-item @click="drClick(2)">{{ $t("logout") }}</el-dropdown-item>
                     </el-dropdown-menu>
                 </template>
             </el-dropdown>
@@ -47,6 +47,7 @@
                 </div>
             </div>
         </div>
+        <system-icon />
     </div>
 </template>
 <script lang="ts">
@@ -57,10 +58,12 @@ import LeftMenu from "./components/LeftMenu.vue"
 import routeList from "@/router/routeList"
 import { RouterItem } from "@/utils/interface"
 import { CircleClose } from "@element-plus/icons-vue"
+import { ElMessageBox, ElMessage } from "element-plus"
+import SystemIcon from "./components/SystemIcon.vue"
 
 export default defineComponent({
     name: "Dashboard",
-    components: { LeftMenu, CircleClose },
+    components: { LeftMenu, CircleClose, SystemIcon },
     setup() {
         const store = useStore()
         const route = useRoute()
@@ -71,7 +74,6 @@ export default defineComponent({
             "https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"
         )
         const size: Ref<string> = ref("default")
-
         const routeHistory = computed(() => {
             const history = store.getters.routeHistory
             const list = digui(store.getters.routeList, [])
@@ -106,7 +108,18 @@ export default defineComponent({
             if (type === 1) {
                 router.push("my")
             } else if (type === 2) {
-                router.push("login")
+                ElMessageBox.confirm("是否确认退出登录?", "提示", {
+                    confirmButtonText: "确定",
+                    cancelButtonText: "取消"
+                })
+                    .then(() => {
+                        router.push("login")
+                        ElMessage({
+                            type: "success",
+                            message: "退出成功"
+                        })
+                    })
+                    .catch(() => {})
             }
         }
 

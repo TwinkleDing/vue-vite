@@ -78,24 +78,13 @@ const routeList: RouterItem[] = [
         component: "model"
     },
     {
-        path: "/system",
-        name: "system",
-        redirect: "/permission",
+        path: "/permission",
+        name: "permission",
         meta: {
-            label: "系统设置",
+            label: "角色权限",
             permission: true
         },
-        children: [
-            {
-                path: "/permission",
-                name: "permission",
-                meta: {
-                    label: "角色权限",
-                    permission: true
-                },
-                component: "permission"
-            }
-        ]
+        component: "permission"
     },
     {
         path: "/my",

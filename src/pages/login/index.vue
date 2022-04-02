@@ -116,6 +116,7 @@ const throttle = (fn: any, wait: number) => {
             background: $--color-primary;
             transform: rotate(-45deg);
             cursor: pointer;
+            text-align: center;
             &-active {
                 color: #fff;
                 cursor: default;

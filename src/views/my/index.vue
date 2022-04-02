@@ -70,10 +70,9 @@
 </template>
 <script lang="ts" setup>
 import { reactive, ref } from "vue"
-import type { FormInstance } from "element-plus"
 
 const formSize = ref("default")
-const ruleFormRef = ref<FormInstance>()
+const ruleFormRef = ref<any>()
 const ruleForm = reactive({
     name: "Hello",
     region: "",

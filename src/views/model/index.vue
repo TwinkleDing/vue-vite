@@ -1,11 +1,11 @@
 <template>
-    <div>
-        <el-tabs type="border-card" @tab-click="tabClick" tab-position="left">
+    <div class="model">
+        <el-tabs class="model-tabs" type="border-card" @tab-click="tabClick" tab-position="left">
             <el-tab-pane key="robot" label="Robot">
-                <robot v-if="showModel === 'Robot'" />
+                <robot :height="height" :width="width" v-if="showModel === 'Robot'" />
             </el-tab-pane>
             <el-tab-pane key="soldier" label="Soldier">
-                <soldier v-if="showModel === 'Soldier'" />
+                <soldier :height="height" :width="width" v-if="showModel === 'Soldier'" />
             </el-tab-pane>
         </el-tabs>
     </div>
@@ -20,15 +20,24 @@ const route = useRoute()
 
 const showModel: Ref<string> = ref("Robot")
 
+const height: Ref<number> = ref(765)
+const width: Ref<number> = ref(1360)
+
 const tabClick = (e: any) => {
     showModel.value = e.props.label
 }
 </script>
 
-<style>
+<style lang="scss">
 .lil-gui.autoPlace {
     top: 120px !important;
     position: fixed;
     right: 20px;
+}
+.model {
+    height: 795px;
+    &-tabs {
+        height: 100%;
+    }
 }
 </style>

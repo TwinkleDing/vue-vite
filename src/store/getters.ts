@@ -4,6 +4,7 @@ const getters = {
     themeColor: (state: any) => state.common.themeColor,
     router: (state: any) => state.common.router,
     routeHistory: (state: any) => state.common.routeHistory,
-    routeList: (state: any) => state.common.routeList
+    routeList: (state: any) => state.common.routeList,
+    systemIcon: (state: any) => state.common.systemIcon
 }
 export default getters

@@ -7,23 +7,32 @@
 <script >
 import { onMounted, onUnmounted } from "vue"
 import * as THREE from "three"
-import { GUI } from "three/examples/jsm/libs/lil-gui.module.min.js"
-
 import Stats from "three/examples/jsm/libs/stats.module.js"
-import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js"
+import { GUI } from "three/examples/jsm/libs/lil-gui.module.min.js"
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js"
+import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js"
 export default {
-    setup() {
+    props: {
+        height: {
+            type: Number,
+            default: 765
+        },
+        width: {
+            type: Number,
+            default: 1360
+        }
+    },
+    setup(props) {
+        const stats = new Stats()
+        const clock = new THREE.Clock()
         let scene
         let camera
         let renderer
-        let stats = new Stats()
         let model
         let mixer
         let previousAction
         let activeAction
         let actions
-        let clock = new THREE.Clock()
         let positionZ = 0
         let walkTime
         let controls
@@ -31,6 +40,7 @@ export default {
             state: "Idle"
         }
         let count = 0.001
+
         const init = () => {
             // 创建场景
             scene = new THREE.Scene()
@@ -42,8 +52,8 @@ export default {
             scene.add(axisHelper)
 
             // 创建相机
-            let w = 1200
-            let h = 685
+            let w = props.width
+            let h = props.height
             // 透视相机
             camera = new THREE.PerspectiveCamera(60, w / h, 0.25, 10000)
             // 视角

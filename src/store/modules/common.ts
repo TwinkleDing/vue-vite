@@ -30,7 +30,11 @@ const common = {
         routeList:
             getStore({
                 name: "routeList"
-            }) || routeList
+            }) || routeList,
+        systemIcon:
+            getStore({
+                name: "systemIcon"
+            }) || null
     },
     mutations: {
         SET_LANGUAGE: (state: any, language: string) => {
@@ -110,7 +114,6 @@ const common = {
                 }
             })
             if (!repeat) {
-                
                 state.routeHistory = [
                     ...history,
                     {
@@ -147,6 +150,13 @@ const common = {
             setStore({
                 name: "routeList",
                 content: state.routeList
+            })
+        },
+        SET_SYSTEM_ICON_POSITION(state: any, position: any) {
+            state.systemIcon = position
+            setStore({
+                name: "systemIcon",
+                content: state.systemIcon
             })
         }
     },

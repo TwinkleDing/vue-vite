@@ -1,6 +1,7 @@
 import { createRouter, createWebHashHistory } from "vue-router"
 import store from "@/store"
 import Empty from "@/pages/Empty.vue"
+import { RouterItem } from "@/utils/interface"
 
 let firstGetRoute = false
 const _importComponent = (file) => () => import(`../views/${file}/index.vue`)

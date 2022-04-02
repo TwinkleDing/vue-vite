@@ -15,13 +15,13 @@
                         <setting v-if="item.path.includes('permission')" />
                         <postcard v-if="item.path.includes('my')" />
                     </el-icon>
-                    <span>{{ item.meta.label }}</span>
+                    <span>{{ $t(item.name) }}</span>
                 </template>
             </el-menu-item>
             <el-sub-menu v-if="item.children && item.children.length" :index="item.name">
                 <template #title>
                     <el-icon><icon-menu /></el-icon>
-                    <span>{{ item.meta.label }}</span>
+                    <span>{{ $t(item.name) }}</span>
                 </template>
                 <menu-item :menu="item.children" />
             </el-sub-menu>
