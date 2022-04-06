@@ -7,13 +7,17 @@
             <el-tab-pane key="soldier" label="Soldier">
                 <soldier :height="height" :width="width" v-if="showModel === 'Soldier'" />
             </el-tab-pane>
+            <el-tab-pane key="three7" label="Three7">
+                <three7 :height="height" :width="width" v-if="showModel === 'Three7'" />
+            </el-tab-pane>
         </el-tabs>
     </div>
 </template>
 <script lang="ts" setup>
 import { ref, Ref } from "vue"
-import robot from "./robot.vue"
-import soldier from "./soldier.vue"
+import robot from "./components/robot.vue"
+import soldier from "./components/soldier.vue"
+import three7 from "./components/three7.vue"
 import { useRoute } from "vue-router"
 
 const route = useRoute()
