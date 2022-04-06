@@ -97,6 +97,7 @@ export default defineComponent({
     background: $--color-primary;
     border-radius: 10px;
     cursor: pointer;
+    z-index: 100;
     .box {
         z-index: 2;
         height: 100%;

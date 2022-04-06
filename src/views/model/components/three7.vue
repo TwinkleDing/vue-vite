@@ -5,12 +5,12 @@
 </template>
 
 <script>
-import { onMounted, onUnmounted } from "vue"
+import { defineComponent, onMounted, onUnmounted } from "vue"
 import * as THREE from "three"
 import Stats from "three/examples/jsm/libs/stats.module.js"
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js"
 
-export default {
+export default defineComponent({
     name: "Models",
     props: {
         height: {
@@ -28,7 +28,8 @@ export default {
         let renderer
         let stats
         let meshDoor
-        let speed
+        let speed = 1
+        let open = true
         const init = () => {
             // 创建场景
             scene = new THREE.Scene()
@@ -42,19 +43,14 @@ export default {
             // 创建相机
             let w = props.width
             let h = props.height
-            // let k = w / h;
-            // let s = 200; // 三位场景显示范围控制系数，系数越大，显示的范围越大
-            // // 正投影相机
-            // camera = new THREE.OrthographicCamera(-s * k, s * k, s, -s, 1, 1000);
 
             // 透视相机
             camera = new THREE.PerspectiveCamera(45, w / h, 0.01, 100000)
-            //
             camera.position.set(-200, 150, 150)
             camera.lookAt(new THREE.Vector3(30, 10, 20))
 
             // 创建光源
-            let ambient = new THREE.HemisphereLight(0xffffff, 0x444444)
+            let ambient = new THREE.HemisphereLight(0xff0000, 0x444444)
             ambient.position.set(0, 20, 0)
             scene.add(ambient)
             let light = new THREE.DirectionalLight(0xffffff)
@@ -90,13 +86,14 @@ export default {
             document.getElementById("model").appendChild(stats.dom)
             render()
             controlsEvent()
-            simianti();
-            ding();
-            newBox();
-            keyDowns();
-            xuanZhuan();
-            tree();
-            sprite();
+
+            simianti() //四面体
+            ding()
+            newBox() //房屋
+            keyDowns() // 单击变色
+            xuanZhuan()
+            tree() //雪碧图复制
+            sprite() //雪碧图帧动画
         }
         const tree = () => {
             let textureTree = new THREE.TextureLoader().load("/static/tree.png")
@@ -187,8 +184,8 @@ export default {
             ])
             // 索引数据赋值给几何体的index属性
             geometry.index = new THREE.BufferAttribute(indexes, 1) //1个为一组
-            let mesh = new THREE.Mesh(geometry, material) //网格模型对象Mesh
-            mesh.name = "house"
+            let mesh1 = new THREE.Mesh(geometry, material) //网格模型对象Mesh
+            mesh1.name = "house"
             let mss = new THREE.PointsMaterial({
                 color: 0xaacc00,
                 side: THREE.DoubleSide //两面可见
@@ -224,7 +221,7 @@ export default {
             let axisHelper = new THREE.AxesHelper(1000)
             group.add(axisHelper)
             let house = new THREE.Group()
-            house.add(group, mesh)
+            house.add(group, mesh1)
             house.position.set(200, 200, 200)
 
             scene.add(house) // 网格模型添加到场景中
@@ -238,6 +235,7 @@ export default {
             let w = 20 // 主要管理半径，会影响位置
             let x = 0 // 主要管理位置X
             let z = 20 // 主要管理位置Z
+
             speed += Math.PI / 180
             let angle = speed
             meshDoor.rotation.y = Math.PI - angle // 指向圆心
@@ -308,12 +306,6 @@ export default {
             mesh.name = "zhui"
             scene.add(mesh) // 网格模型添加到场景中
         }
-        const onWindowResize = () => {
-            camera.aspect = window.innerWidth / window.innerHeight
-            camera.updateProjectionMatrix()
-            renderer.setSize(window.innerWidth, window.innerHeight)
-            render()
-        }
         const render = () => {
             renderer.render(scene, camera) //执行渲染操作
         }
@@ -348,12 +340,6 @@ export default {
                     cube.material = new THREE.MeshPhongMaterial({ color: 0xffff00 })
                 }
             }
-            document.getElementById("model").addEventListener("keydown", onKeyDown, false)
-            function onKeyDown(event) {
-                console.log(event.keyCode)
-                // if(event.keyCode === 87) {
-                // }
-            }
         }
         const getIntersects = (event) => {
             let raycaster = new THREE.Raycaster()
@@ -372,7 +358,7 @@ export default {
             document.getElementsByClassName("lil-gui")[0].remove()
         })
     }
-}
+})
 </script>
 
 <style lang='scss' scoped>
