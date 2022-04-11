@@ -13,6 +13,9 @@
             <el-tab-pane key="earth" label="earth">
                 <earth :height="height" :width="width" v-if="showModel === 'earth'" />
             </el-tab-pane>
+            <el-tab-pane key="earth1" label="earth1">
+                <earth1 :height="height" :width="width" v-if="showModel === 'earth1'" />
+            </el-tab-pane>
         </el-tabs>
     </div>
 </template>
@@ -22,7 +25,11 @@ import robot from "./components/robot.vue"
 import soldier from "./components/soldier.vue"
 import three7 from "./components/three7.vue"
 import earth from "@/components/Earth.vue"
+import earth1 from "./components/Earth1.vue"
 import { useRoute } from "vue-router"
+// loader/gltf
+// ammo/cloth
+// controls/fly
 
 const route = useRoute()
 
