@@ -45,10 +45,10 @@ export default defineComponent({
             camera.position.set(-200, 150, 150)
             camera.lookAt(new THREE.Vector3(30, 10, 20))
 
-            // // 环境光
-            // const ambient = new THREE.HemisphereLight(0xff0000)
-            // ambient.position.set(200, 200, 200)
-            // scene.add(ambient)
+            // 环境光
+            const ambient = new THREE.HemisphereLight(0x999999)
+            ambient.position.set(200, 200, 200)
+            scene.add(ambient)
 
             // // 光源
             // const light = new THREE.DirectionalLight(0xb9d3ff)
@@ -79,7 +79,7 @@ export default defineComponent({
             render()
             controlsEvent()
 
-            keyDowns() // 单击变色
+            // keyDowns() // 单击变色
             tree() //雪碧图复制
             sprite() //雪碧图帧动画
         }
@@ -154,32 +154,56 @@ export default defineComponent({
         }
         // 单击控制
         const keyDowns = () => {
-            const geometry = new THREE.SphereGeometry(25, 100, 100)
-            const cube = new THREE.Mesh(geometry, new THREE.MeshBasicMaterial({ color: 0x00ff00 }))
-            cube.position.set(100, 25, 100)
-            cube.name = "box"
-            cube.castShadow = true
-            scene.add(cube)
-            //点击射线
-            document
-                .getElementById("model")
-                .addEventListener("mousedown", onDocumentMouseDown, false)
-            function onDocumentMouseDown(event) {
-                event.preventDefault()
-                const intersects = getIntersects(event)
-                if (intersects.length > 0) {
-                    if (intersects[0].object.name === "box") {
-                        var material = new THREE.PointsMaterial({
-                            color: 0xff0000,
-                            side: THREE.DoubleSide, //两面可见
-                            size: 1.0 //点对象像素尺寸
-                        })
-                        intersects[0].object.material = material
-                    }
-                } else {
-                    cube.material = new THREE.MeshPhongMaterial({ color: 0xffff00 })
-                }
+            const geometry = new THREE.SphereGeometry(100, 25, 25) //球体
+
+            // TextureLoader创建一个纹理加载器对象，可以加载图片作为几何体纹理
+            var textureLoader = new THREE.TextureLoader()
+            // 加载纹理贴图
+            var texture = textureLoader.load("./static/sr111.webp")
+            // 加载法线贴图
+            var textureNormal = textureLoader.load("./static/EarthNormal.png")
+            var material = new THREE.MeshPhongMaterial({
+                map: texture, // 普通颜色纹理贴图
+                // normalMap: textureNormal, //法线贴图
+                //设置深浅程度，默认值(1,1)。
+                normalScale: new THREE.Vector2(1, 1)
+            }) //材质对象Material
+            const mesh = new THREE.Mesh(geometry, material) //网格模型对象Mesh
+            mesh.position.set(-100, 0, 0)
+            scene.add(mesh) //网格模型添加到场景中
+
+            const sRender = () => {
+                mesh.rotateY(0.01) //每次绕y轴旋转0.01弧度
+                render()
+                requestAnimationFrame(sRender)
             }
+            // sRender()
+            // const geometry = new THREE.SphereGeometry(25, 100, 100)
+            // const cube = new THREE.Mesh(geometry, new THREE.MeshBasicMaterial({ color: 0x00ff00 }))
+            // cube.position.set(100, 25, 100)
+            // cube.name = "box"
+            // cube.castShadow = true
+            // scene.add(cube)
+            // //点击射线
+            // document
+            //     .getElementById("model")
+            //     .addEventListener("mousedown", onDocumentMouseDown, false)
+            // function onDocumentMouseDown(event) {
+            //     event.preventDefault()
+            //     const intersects = getIntersects(event)
+            //     if (intersects.length > 0) {
+            //         if (intersects[0].object.name === "box") {
+            //             var material = new THREE.PointsMaterial({
+            //                 color: 0xff0000,
+            //                 side: THREE.DoubleSide, //两面可见
+            //                 size: 1.0 //点对象像素尺寸
+            //             })
+            //             intersects[0].object.material = material
+            //         }
+            //     } else {
+            //         cube.material = new THREE.MeshPhongMaterial({ color: 0xffff00 })
+            //     }
+            // }
         }
         const getIntersects = (event) => {
             const raycaster = new THREE.Raycaster()
