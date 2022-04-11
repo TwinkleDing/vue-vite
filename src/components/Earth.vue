@@ -1,7 +1,5 @@
 <template>
-    <div>
-        <div id="model" class="model-ca" @keydown="keyDown"></div>
-    </div>
+    <div id="model" class="model-ca"></div>
 </template>
 <script>
 import { onMounted, onUnmounted } from "vue"
@@ -82,18 +80,18 @@ export default {
 
             // 星星
             stars()
+            const renderModel = new RenderPass(scene, camera)
+            const effectFilm = new FilmPass(0.35, 0.75, 2048, false)
+            composer = new EffectComposer(renderer)
+            composer.addPass(renderModel)
+            composer.addPass(effectFilm)
 
             renderer.setPixelRatio(window.devicePixelRatio)
             renderer.setSize(SCREEN_WIDTH, SCREEN_HEIGHT)
             container = document.getElementById("model")
             container.appendChild(renderer.domElement)
             window.addEventListener("resize", onWindowResize)
-
-            const renderModel = new RenderPass(scene, camera)
-            const effectFilm = new FilmPass(0.35, 0.75, 2048, false)
-            composer = new EffectComposer(renderer)
-            composer.addPass(renderModel)
-            composer.addPass(effectFilm)
+            onWindowResize()
             animate()
         }
         const stars = () => {
@@ -150,10 +148,16 @@ export default {
         }
 
         const onWindowResize = () => {
-            camera.aspect = container.clientWidth / container.clientHeight
+            let width = container.parentNode.clientWidth
+            let height = container.parentNode.clientHeight
+            if (width === 0 || height === 0) {
+                width = SCREEN_WIDTH
+                height = SCREEN_HEIGHT
+            }
+            camera.aspect = width / height
             camera.updateProjectionMatrix()
-            renderer.setSize(container.clientWidth, container.clientHeight)
-            composer.setSize(container.clientWidth, container.clientHeight)
+            renderer.setSize(width, height)
+            composer.setSize(width, height)
         }
 
         const animate = () => {

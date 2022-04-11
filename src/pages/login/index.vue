@@ -24,6 +24,7 @@
                 <a target="_blank" :href="nodePath">{{ nodePath }}</a>
             </div>
         </div>
+        <earth class="model" />
     </div>
 </template>
 
@@ -33,6 +34,7 @@ import { useStore } from "vuex"
 //组件不需要注册
 import Login from "./components/Login.vue"
 import Registered from "./components/Registered.vue"
+import Earth from "@/components/Earth.vue"
 
 const { proxy }: any = getCurrentInstance()
 const store = useStore()
@@ -138,6 +140,11 @@ const throttle = (fn: any, wait: number) => {
         height: 100%;
         width: 100%;
         position: absolute;
+    }
+    .model {
+        position: absolute;
+        left: 0;
+        top: 0;
     }
 }
 </style>
