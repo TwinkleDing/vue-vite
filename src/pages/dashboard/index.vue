@@ -208,7 +208,7 @@ export default defineComponent({
             top: 60px;
             box-shadow: 6px 10px 10px 0px rgb(38 38 38 / 8%);
             background: #fff;
-            z-index: 2;
+            z-index: 100;
             padding: 6px;
             box-sizing: border-box;
             div {

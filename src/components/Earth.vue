@@ -49,7 +49,7 @@ export default {
 
             // 光源
             const dirLight = new THREE.DirectionalLight(0xffffff)
-            dirLight.position.set(-1, 0, 1).normalize()
+            dirLight.position.set(1, 0, 1).normalize()
             scene.add(dirLight)
 
             const materialNormalMap = new THREE.MeshPhongMaterial({
@@ -64,7 +64,7 @@ export default {
             // 地球
             const geometry = new THREE.SphereGeometry(radius, 100, 50)
             meshPlanet = new THREE.Mesh(geometry, materialNormalMap)
-            meshPlanet.rotation.y = 0
+            meshPlanet.rotation.y = 2.5
             meshPlanet.rotation.z = tilt
             scene.add(meshPlanet)
 
@@ -75,6 +75,7 @@ export default {
             })
             meshClouds = new THREE.Mesh(geometry, materialClouds)
             meshClouds.scale.set(cloudsScale, cloudsScale, cloudsScale)
+            meshClouds.rotation.y = 2.5
             meshClouds.rotation.z = tilt
             scene.add(meshClouds)
 

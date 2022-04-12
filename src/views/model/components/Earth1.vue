@@ -37,8 +37,8 @@ export default {
         const clock = new THREE.Clock()
         const renderer = new THREE.WebGLRenderer({ antialias: true }) // 抗锯齿
 
-        let SCREEN_HEIGHT = window.innerHeight - MARGIN * 2
-        let SCREEN_WIDTH = window.innerWidth
+        let SCREEN_HEIGHT = props.height
+        let SCREEN_WIDTH = props.width
         let camera
         let controls
         let scene
@@ -55,38 +55,36 @@ export default {
 
             // 相机
             camera = new THREE.PerspectiveCamera(25, SCREEN_WIDTH / SCREEN_HEIGHT, 50, 1e7)
-            camera.position.z = radius * 5
+            camera.position.z = radius * 7
 
             // 光源
             const dirLight = new THREE.DirectionalLight(0xffffff)
-            dirLight.position.set(-1, 0, 1).normalize()
+            dirLight.position.set(1, 0, 1).normalize()
             scene.add(dirLight)
-
             const materialNormalMap = new THREE.MeshPhongMaterial({
                 specular: 0x333333,
                 shininess: 15,
-                map: textureLoader.load("./static/planets/earth_atmos_2048.jpg"),
+                map: textureLoader.load("./static/planets/earth_atmos_4096.jpg"),
                 specularMap: textureLoader.load("./static/planets/earth_specular_2048.jpg"),
                 normalMap: textureLoader.load("./static/planets/earth_normal_2048.jpg"),
-
-                // y scale is negated to compensate for normal map handedness.
                 normalScale: new THREE.Vector2(0.85, -0.85)
             })
 
             // 地球
             const geometry = new THREE.SphereGeometry(radius, 100, 50)
             meshPlanet = new THREE.Mesh(geometry, materialNormalMap)
-            meshPlanet.rotation.y = 0
+            meshPlanet.rotation.y = 2.5
             meshPlanet.rotation.z = tilt
             scene.add(meshPlanet)
 
             // 云
             const materialClouds = new THREE.MeshLambertMaterial({
-                map: textureLoader.load("./static/planets/earth_clouds_1024.png"),
+                map: textureLoader.load("./static/planets/earth_clouds_2048.png"),
                 transparent: true
             })
             meshClouds = new THREE.Mesh(geometry, materialClouds)
             meshClouds.scale.set(cloudsScale, cloudsScale, cloudsScale)
+            meshClouds.rotation.y = 2.5
             meshClouds.rotation.z = tilt
             scene.add(meshClouds)
 
@@ -108,7 +106,7 @@ export default {
             container.appendChild(renderer.domElement)
             stats.dom.style.position = "absolute"
             container.appendChild(stats.dom)
-            window.addEventListener("resize", onWindowResize)
+            // window.addEventListener("resize", onWindowResize)
 
             const renderModel = new RenderPass(scene, camera)
             const effectFilm = new FilmPass(0.35, 0.75, 2048, false)
