@@ -25,9 +25,8 @@ export default defineComponent({
         let scene
         let camera
         let renderer
-        let meshDoor
-        let speed = 1
-        let open = true
+        const clock = new THREE.Clock()
+        let timer = 0
         const init = () => {
             // 创建场景
             scene = new THREE.Scene()
@@ -79,7 +78,6 @@ export default defineComponent({
             render()
             controlsEvent()
 
-            // keyDowns() // 单击变色
             tree() //雪碧图复制
             sprite() //雪碧图帧动画
         }
@@ -125,135 +123,74 @@ export default defineComponent({
             }
             sRender()
         }
-        const animation = () => {
-            //圆周运动
-            if (!meshDoor) {
-                return false
-            }
-            const w = 20 // 主要管理半径，会影响位置
-            const x = 0 // 主要管理位置X
-            const z = 20 // 主要管理位置Z
-
-            speed += Math.PI / 180
-            const angle = speed
-            meshDoor.rotation.y = Math.PI - angle // 指向圆心
-            const a = (x + w) / 2 + (-w / 2) * (1 - Math.cos(angle)) // 因为初始位X值设为了零
-            const b = 20
-            const c = z / 2 + (w / 2) * Math.sin(Math.abs(angle))
-            meshDoor.position.set(a, b, c)
-            requestAnimationFrame(animation)
-            render()
-        }
         const render = () => {
             renderer.render(scene, camera) //执行渲染操作
         }
         // 控制器
         const controlsEvent = () => {
             const controls = new OrbitControls(camera, renderer.domElement) //创建控件对象
-            controls.addEventListener("change", render) //监听鼠标、键盘事件
+            controls.autoRotate = true
+            controls.addEventListener("change", () => {
+                console.log(1) 
+            }) //监听鼠标、键盘事件
+            
+            controls.update(clock.getDelta())
+            // update()
         }
-        // 单击控制
-        const keyDowns = () => {
-            const geometry = new THREE.SphereGeometry(100, 25, 25) //球体
-
-            // TextureLoader创建一个纹理加载器对象，可以加载图片作为几何体纹理
-            var textureLoader = new THREE.TextureLoader()
-            // 加载纹理贴图
-            var texture = textureLoader.load("./static/sr111.webp")
-            // 加载法线贴图
-            var textureNormal = textureLoader.load("./static/EarthNormal.png")
-            var material = new THREE.MeshPhongMaterial({
-                map: texture, // 普通颜色纹理贴图
-                // normalMap: textureNormal, //法线贴图
-                //设置深浅程度，默认值(1,1)。
-                normalScale: new THREE.Vector2(1, 1)
-            }) //材质对象Material
-            const mesh = new THREE.Mesh(geometry, material) //网格模型对象Mesh
-            mesh.position.set(-100, 0, 0)
-            scene.add(mesh) //网格模型添加到场景中
-
-            const sRender = () => {
-                mesh.rotateY(0.01) //每次绕y轴旋转0.01弧度
-                render()
-                requestAnimationFrame(sRender)
-            }
-            // sRender()
-            // const geometry = new THREE.SphereGeometry(25, 100, 100)
-            // const cube = new THREE.Mesh(geometry, new THREE.MeshBasicMaterial({ color: 0x00ff00 }))
-            // cube.position.set(100, 25, 100)
-            // cube.name = "box"
-            // cube.castShadow = true
-            // scene.add(cube)
-            // //点击射线
-            // document
-            //     .getElementById("model")
-            //     .addEventListener("mousedown", onDocumentMouseDown, false)
-            // function onDocumentMouseDown(event) {
-            //     event.preventDefault()
-            //     const intersects = getIntersects(event)
-            //     if (intersects.length > 0) {
-            //         if (intersects[0].object.name === "box") {
-            //             var material = new THREE.PointsMaterial({
-            //                 color: 0xff0000,
-            //                 side: THREE.DoubleSide, //两面可见
-            //                 size: 1.0 //点对象像素尺寸
-            //             })
-            //             intersects[0].object.material = material
-            //         }
-            //     } else {
-            //         cube.material = new THREE.MeshPhongMaterial({ color: 0xffff00 })
-            //     }
-            // }
-        }
-        const getIntersects = (event) => {
-            const raycaster = new THREE.Raycaster()
-            const mouse = new THREE.Vector2()
-            mouse.x = (event.layerX / renderer.domElement.clientWidth) * 2 - 1
-            mouse.y = -(event.layerY / renderer.domElement.clientHeight) * 2 + 1
-            raycaster.setFromCamera(mouse, camera)
-            const intersects = raycaster.intersectObjects(scene.children, true)
-            return intersects
-        }
-
         const yy = () => {
             var geometry = new THREE.BoxGeometry(40, 100, 40)
             var material = new THREE.MeshLambertMaterial({
                 color: 0xffffff
             })
             var mesh = new THREE.Mesh(geometry, material)
-            mesh.position.set(160, 100, 0)
+            mesh.position.set(360, 50, 0)
             // 设置产生投影的网格模型
             mesh.castShadow = true
             scene.add(mesh)
 
-            let x = 160
-            let y = 200
-            let z = 0
-            var geometry1 = new THREE.BoxGeometry(10, 10, 10)
-            var material1 = new THREE.MeshLambertMaterial({
-                color: 0xff0000
-            })
-            var mesh1 = new THREE.Mesh(geometry1, material1)
-            mesh1.castShadow = true
-            mesh1.position.set(x, y, z)
-            scene.add(mesh1)
+            let x = 800
+            let y = 800
+            let z = 800
             // 方向光
             var directionalLight = new THREE.DirectionalLight(0xffffff, 1)
             // 设置光源位置
             directionalLight.position.set(x, y, z)
+            var directionalLightHelper = new THREE.DirectionalLightHelper(
+                directionalLight,
+                10,
+                0xff0000
+            )
+            scene.add(directionalLightHelper)
             scene.add(directionalLight)
             // 设置用于计算阴影的光源对象
             directionalLight.castShadow = true
             // 设置计算阴影的区域，最好刚好紧密包围在对象周围
             // 计算阴影的区域过大：模糊  过小：看不到或显示不完整
             directionalLight.shadow.camera.near = 5
-            directionalLight.shadow.camera.far = 300
-            directionalLight.shadow.camera.left = -y
-            directionalLight.shadow.camera.right = y
-            directionalLight.shadow.camera.top = y
-            directionalLight.shadow.camera.bottom = -y
+            directionalLight.shadow.camera.far = 5 * x
+            directionalLight.shadow.camera.left = -5 * x
+            directionalLight.shadow.camera.right = 5 * x
+            directionalLight.shadow.camera.top = 5 * x
+            directionalLight.shadow.camera.bottom = -5 * x
             // 设置mapSize属性可以使阴影更清晰，不那么模糊
-            directionalLight.shadow.mapSize.set(1024, 1024)
+            directionalLight.shadow.mapSize.set(10240, 10240)
+        }
+
+        const updateCamera = (delta) => {
+            timer += delta / 5
+
+            var x = 300 * Math.cos(timer)
+            var z = 300 * Math.sin(timer)
+            var y = 200
+
+            camera.position.set(x, y, z)
+            camera.lookAt(new THREE.Vector3())
+        }
+        const update = () => {
+            var delta = clock.getDelta()
+            updateCamera(delta)
+            renderer.render(scene, camera)
+            requestAnimationFrame(update) //不会卡塞，专门针对图形渲染刷新的方法
         }
 
         onMounted(() => {
