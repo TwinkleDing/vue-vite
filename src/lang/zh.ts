@@ -13,6 +13,8 @@ export default {
         userId: "请输入用户ID",
         userPassword: "请输入密码"
     },
+    chinese: "中",
+    english: "EN",
     home: "首页",
     nested: "嵌套路由",
     nested1: "嵌套路由1",

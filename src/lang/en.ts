@@ -13,6 +13,8 @@ export default {
         userId: "User ID",
         userPassword: "User Password"
     },
+    chinese: "中",
+    english: "EN",
     home: "Home",
     nested: "Nested",
     nested1: "Nested1",

@@ -4,16 +4,16 @@
             class="login-box-content"
             :class="registerAnimation === 'transformX' ? 'transformX' : ''"
         >
-            <div class="title">{{ $t("login.title") }}</div>
+            <div class="title text-center">{{ $t("login.title") }}</div>
             <login v-if="!register" @register="registerOpen" />
             <registered v-else @register="registerClose" />
             <div class="language">
                 <span @click="changeLan('zh')" :class="[language === 'zh' ? 'language-active' : '']"
-                    >中</span
+                    >{{ $t("chinese") }}</span
                 >
                 /
                 <span @click="changeLan('en')" :class="[language === 'en' ? 'language-active' : '']"
-                    >En</span
+                    >{{ $t("english") }}</span
                 >
             </div>
             <div class="node-path">
