@@ -49,8 +49,7 @@ export default defineComponent({
             camera.lookAt(new THREE.Vector3())
 
             // 环境光
-            const ambient = new THREE.HemisphereLight(0x999999)
-            ambient.position.set(0, 0, 0)
+            const ambient = new THREE.HemisphereLight(0x333333)
             scene.add(ambient)
 
             // // 光源
@@ -59,8 +58,10 @@ export default defineComponent({
             // scene.add(light)
 
             // 地面
+            const textureLoader = new THREE.TextureLoader()
             const material = new THREE.MeshPhongMaterial({
                 color: 0x999999,
+                map: textureLoader.load("./static/nitu.webp"),
                 side: THREE.DoubleSide //两面可见
             })
             ground = new THREE.Mesh(new THREE.PlaneBufferGeometry(2000, 2000), material)
@@ -218,18 +219,24 @@ export default defineComponent({
                 this.shadowMesh.castShadow = true
                 this.scene.add(this.shadowMesh)
 
-                let x = 1000
-                let y = 1000
-                let z = 0
                 // 方向光
                 this.directionalLight = new THREE.DirectionalLight(0xffffff, 1)
                 // 设置光源位置
-                this.directionalLight.position.set(x, y, z)
+                this.directionalLight.position.set(0, 0, 0)
                 this.directionalLightHelper = new THREE.DirectionalLightHelper(
                     this.directionalLight,
                     10,
                     0xffff00
                 )
+                const textureLoader = new THREE.TextureLoader()
+                const meshSun = new THREE.MeshPhongMaterial({
+                    map: textureLoader.load("./static/sun.jpeg")
+                })
+                this.sun = new THREE.Mesh(new THREE.SphereGeometry(50, 50, 50), meshSun)
+                this.sun.position.set(0, 0, 0)
+                this.sun.emissive =  this.sun.color;
+                this.sun.emissiveMap = this.sun.map ;
+                this.scene.add(this.sun)
                 this.scene.add(this.directionalLightHelper)
                 this.scene.add(this.directionalLight)
                 // 设置用于计算阴影的光源对象
@@ -237,11 +244,11 @@ export default defineComponent({
                 // 设置计算阴影的区域，最好刚好紧密包围在对象周围
                 // 计算阴影的区域过大：模糊  过小：看不到或显示不完整
                 this.directionalLight.shadow.camera.near = 5
-                this.directionalLight.shadow.camera.far = 5 * x
-                this.directionalLight.shadow.camera.left = -5 * x
-                this.directionalLight.shadow.camera.right = 5 * x
-                this.directionalLight.shadow.camera.top = 5 * x
-                this.directionalLight.shadow.camera.bottom = -5 * x
+                this.directionalLight.shadow.camera.far = 5000
+                this.directionalLight.shadow.camera.left = -5000
+                this.directionalLight.shadow.camera.right = 5000
+                this.directionalLight.shadow.camera.top = 5000
+                this.directionalLight.shadow.camera.bottom = -5000
                 // 设置mapSize属性可以使阴影更清晰，不那么模糊
                 this.directionalLight.shadow.mapSize.set(10240, 10240)
                 this.render()
@@ -253,11 +260,13 @@ export default defineComponent({
                 const y = 1000 * Math.sin(this.timer)
                 const z = 0
                 this.directionalLight.position.set(x, y, z)
+                this.sun.position.set(x, y, z)
                 this.directionalLightHelper.update()
                 render()
                 this.shadowAn = requestAnimationFrame(this.render)
             }
             this.remove = () => {
+                this.scene.remove(this.sun)
                 this.scene.remove(this.shadowMesh)
                 this.scene.remove(this.directionalLight)
                 this.scene.remove(this.directionalLightHelper)
