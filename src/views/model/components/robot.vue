@@ -240,14 +240,22 @@ export default {
                 }
 
                 if (e.keyCode === 81) {
-                    x += 1
-                    y += 1
-                    z += 1
+                    if (x === 2 || y === 2 || z === 2) {
+                        return false
+                    } else {
+                        x = x >= 0 ? x + 1 : x - 1
+                        y = y >= 0 ? y + 1 : y - 1
+                        z = z >= 0 ? z + 1 : z - 1
+                    }
                 }
                 if (e.keyCode === 69) {
-                    x -= 1
-                    y -= 1
-                    z -= 1
+                    if (x === 2 || y === 2 || z === 2) {
+                        return false
+                    } else {
+                        x = x >= 0 ? x - 1 : x + 1
+                        y = y >= 0 ? y - 1 : y + 1
+                        z = z >= 0 ? z - 1 : z + 1
+                    }
                 }
                 camera.position.set(x, y, z)
             }

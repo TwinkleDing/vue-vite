@@ -59,7 +59,7 @@ export default defineComponent({
 
             // 地面
             const textureLoader = new THREE.TextureLoader()
-            const material = new THREE.MeshPhongMaterial({
+            const material = new THREE.MeshLambertMaterial({
                 color: 0x999999,
                 map: textureLoader.load("./static/nitu.webp"),
                 side: THREE.DoubleSide //两面可见
@@ -91,9 +91,7 @@ export default defineComponent({
 
         const controlsEvent = () => {
             const controls = new OrbitControls(camera, renderer.domElement) //创建控件对象
-            controls.autoRotate = true
             controls.addEventListener("change", () => {}) //监听鼠标、键盘事件
-            controls.update(clock.getDelta())
         }
 
         const createGUI = () => {
@@ -210,7 +208,7 @@ export default defineComponent({
             this.timer = 0
             this.init = () => {
                 const geometry = new THREE.BoxGeometry(40, 100, 40)
-                const material = new THREE.MeshLambertMaterial({
+                const material = new THREE.MeshPhongMaterial({
                     color: 0xffffff
                 })
                 this.shadowMesh = new THREE.Mesh(geometry, material)
@@ -234,8 +232,8 @@ export default defineComponent({
                 })
                 this.sun = new THREE.Mesh(new THREE.SphereGeometry(50, 50, 50), meshSun)
                 this.sun.position.set(0, 0, 0)
-                this.sun.emissive =  this.sun.color;
-                this.sun.emissiveMap = this.sun.map ;
+                this.sun.emissive = this.sun.color
+                this.sun.emissiveMap = this.sun.map
                 this.scene.add(this.sun)
                 this.scene.add(this.directionalLightHelper)
                 this.scene.add(this.directionalLight)

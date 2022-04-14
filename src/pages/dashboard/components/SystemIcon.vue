@@ -94,7 +94,7 @@ export default defineComponent({
     top: 40%;
     color: #fff;
     font-size: 30px;
-    background: $--color-primary;
+    background-image: linear-gradient(to bottom right, $--color-primary, $--color-minor);
     border-radius: 10px;
     cursor: pointer;
     z-index: 100;
