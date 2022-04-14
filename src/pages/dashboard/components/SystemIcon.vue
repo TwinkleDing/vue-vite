@@ -32,6 +32,7 @@ export default defineComponent({
         const y: Ref<string> = ref("40%")
         const offsetX: Ref<number> = ref(0)
         const offsetY: Ref<number> = ref(0)
+        let timer: any = null
         const openSystem = () => {
             // drawer.value = true
         }
@@ -43,15 +44,19 @@ export default defineComponent({
             offsetY.value = e.offsetY
         }
         const mouseMove = (e: any) => {
+            clearTimeout(timer)
             if (!down.value) return
             x.value = e.clientX - offsetX.value + "px"
             y.value = e.clientY - offsetY.value + "px"
         }
 
         const mouseOut = () => {
-            down.value = false
+            timer = setTimeout(() => {
+                down.value = false
+            }, 500)
         }
         const mouseUp = () => {
+            clearTimeout(timer)
             if (new Date().getTime() - downTime.value < 300) {
                 drawer.value = true
                 return
