@@ -6,6 +6,7 @@
         mode="vertical"
         active-text-color="#ffffff"
         :default-active="route.name"
+        :collapse-transition="false"
     >
         <menu-item :menu="menu" />
     </el-menu>

@@ -41,7 +41,6 @@ import LeftMenu from "./components/LeftMenu.vue"
 import routeList from "@/router/routeList"
 import { RouterItem } from "@/utils/interface"
 import { CircleClose } from "@element-plus/icons-vue"
-import { ElMessageBox, ElMessage } from "element-plus"
 import SystemIcon from "./components/SystemIcon.vue"
 import HeaderTop from "./components/HeaderTop.vue"
 
@@ -83,24 +82,6 @@ export default defineComponent({
             store.commit("REMOVE_ROUTE_HISTORY", index)
         }
         const routeGo = (path: string) => router.push(path)
-        const drClick = (type: number) => {
-            if (type === 1) {
-                router.push("my")
-            } else if (type === 2) {
-                ElMessageBox.confirm("是否确认退出登录?", "提示", {
-                    confirmButtonText: "确定",
-                    cancelButtonText: "取消"
-                })
-                    .then(() => {
-                        router.push("login")
-                        ElMessage({
-                            type: "success",
-                            message: "退出成功"
-                        })
-                    })
-                    .catch(() => {})
-            }
-        }
 
         return {
             menuList,
@@ -108,7 +89,6 @@ export default defineComponent({
             route,
             store,
             routeGo,
-            drClick,
             closeCurrentRoute
         }
     }

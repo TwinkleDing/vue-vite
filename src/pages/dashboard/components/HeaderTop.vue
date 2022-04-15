@@ -29,21 +29,43 @@
 <script lang="ts">
 import { defineComponent, reactive, ref, Ref } from "vue"
 import { useStore } from "vuex"
+import { useRouter } from "vue-router"
 import { lighten } from "@/utils/themeColor"
+import { ElMessageBox, ElMessage } from "element-plus"
 export default defineComponent({
     setup() {
         const store = useStore()
+        const router = useRouter()
         const userInfo: any = reactive(store.getters.userInfo)
         const size: Ref<string> = ref("default")
         const imgUrl: Ref<string> = ref(
             "https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"
         )
+        const drClick = (type: number) => {
+            if (type === 1) {
+                router.push("my")
+            } else if (type === 2) {
+                ElMessageBox.confirm("是否确认退出登录?", "提示", {
+                    confirmButtonText: "确定",
+                    cancelButtonText: "取消"
+                })
+                    .then(() => {
+                        router.push("login")
+                        ElMessage({
+                            type: "success",
+                            message: "退出成功"
+                        })
+                    })
+                    .catch(() => {})
+            }
+        }
 
         return {
             imgUrl,
             size,
             userInfo,
             store,
+            drClick,
             lighten
         }
     }

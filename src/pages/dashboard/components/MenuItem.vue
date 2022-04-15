@@ -59,11 +59,13 @@ export default defineComponent({
     setup(props: any) {
         const route = useRoute()
         const router = useRouter()
-        const menu = props.menu
+        const menu: any = reactive(props.menu)
         const store = useStore()
 
         const open = (item: any) => {
             if (route.name !== item.name) {
+                console.log(1);
+                
                 router.push(item.path)
             }
         }
