@@ -15,6 +15,7 @@ declare module 'vue' {
     ElCol: typeof import('element-plus/es')['ElCol']
     ElDatePicker: typeof import('element-plus/es')['ElDatePicker']
     ElDialog: typeof import('element-plus/es')['ElDialog']
+    ElDivider: typeof import('element-plus/es')['ElDivider']
     ElDrawer: typeof import('element-plus/es')['ElDrawer']
     ElDropdown: typeof import('element-plus/es')['ElDropdown']
     ElDropdownItem: typeof import('element-plus/es')['ElDropdownItem']
@@ -41,6 +42,7 @@ declare module 'vue' {
     LineChart: typeof import('./src/components/Chart/LineChart.vue')['default']
     PieChar: typeof import('./src/components/Chart/PieChar.vue')['default']
     PieChart: typeof import('./src/components/Chart/PieChart.vue')['default']
+    ThemeColorPicker: typeof import('./src/components/ThemeColorPicker.vue')['default']
   }
 }
 

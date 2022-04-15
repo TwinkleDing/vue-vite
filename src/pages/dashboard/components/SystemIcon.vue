@@ -2,7 +2,6 @@
     <div class="system-setting" :style="{ left: x, top: y }">
         <div
             class="box"
-            @click="openSystem"
             @mousedown="mouseDown"
             @mousemove="mouseMove"
             @mouseup="mouseUp"
@@ -12,17 +11,25 @@
         <cpu class="icon" />
     </div>
     <el-drawer v-model="drawer" :title="$t('system')">
-        <div>{{ $t("themeColor") }}</div>
-        <div>{{ $t("language") }}</div>
+        <div>
+            <el-divider content-position="left">{{ $t("themeColor") }}</el-divider>
+            <theme-color-picker :colorList="colorList" />
+        </div>
+        <div>
+            <el-divider content-position="left">{{ $t("language") }}</el-divider>
+        </div>
     </el-drawer>
 </template>
 <script lang="ts">
 import { defineComponent, ref, Ref, onMounted } from "vue"
 import { useStore } from "vuex"
 import { Cpu } from "@element-plus/icons-vue"
+import { APP_PRESET_COLOR_LIST } from "@/settings/designSetting"
+import ThemeColorPicker from "@/components/ThemeColorPicker.vue"
+
 export default defineComponent({
     name: "SystemIcon",
-    components: { Cpu },
+    components: { Cpu ,ThemeColorPicker },
     setup() {
         const store = useStore()
         const drawer: Ref<boolean> = ref(false)
@@ -33,9 +40,7 @@ export default defineComponent({
         const offsetX: Ref<number> = ref(0)
         const offsetY: Ref<number> = ref(0)
         let timer: any = null
-        const openSystem = () => {
-            // drawer.value = true
-        }
+        const colorList = APP_PRESET_COLOR_LIST;
 
         const mouseDown = (e: any) => {
             downTime.value = new Date().getTime()
@@ -78,11 +83,11 @@ export default defineComponent({
             drawer,
             x,
             y,
-            openSystem,
             mouseDown,
             mouseMove,
             mouseUp,
-            mouseOut
+            mouseOut,
+            colorList
         }
     }
 })
