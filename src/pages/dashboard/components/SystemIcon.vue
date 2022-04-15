@@ -12,14 +12,30 @@
     </div>
     <el-drawer v-model="drawer" :title="$t('system')" custom-class="system-drawer">
         <div>
-            <el-divider class="title">{{ $t("themeColor") }}</el-divider>
-            <theme-color-picker :colorList="colorList" />
+            <el-divider class="title">{{ $t("systemTheme") }}</el-divider>
+            <theme-color-picker
+                :colorList="systemThemeList"
+                :def="systemTheme"
+                @change="systemThemeChange"
+            />
+            <el-divider class="title">{{ $t("headerTheme") }}</el-divider>
+            <theme-color-picker
+                :colorList="headerThemeList"
+                :def="headerTheme"
+                @change="headerThemeChange"
+            />
+            <el-divider class="title">{{ $t("menuTheme") }}</el-divider>
+            <theme-color-picker
+                :colorList="menuThemeList"
+                :def="menuTheme"
+                @change="menuThemeChange"
+            />
         </div>
         <div>
-            <el-divider class="title">{{ $t("InterfaceSettings") }}</el-divider>
+            <el-divider class="title">{{ $t("interfaceSettings") }}</el-divider>
             <el-row>
-                <el-col :span="20">标签页</el-col>
-                <el-col :span="4"><el-switch v-model="historyShow" /></el-col>
+                <el-col :span="20">{{ $t("labelTab") }}</el-col>
+                <el-col :span="4"><el-switch v-model="tabsShow" @change="tabsChange" /></el-col>
             </el-row>
         </div>
     </el-drawer>
@@ -28,15 +44,24 @@
 import { defineComponent, ref, Ref, onMounted } from "vue"
 import { useStore } from "vuex"
 import { Cpu } from "@element-plus/icons-vue"
-import { APP_PRESET_COLOR_LIST } from "@/settings/designSetting"
+import {
+    APP_PRESET_COLOR_LIST,
+    HEADER_PRESET_BG_COLOR_LIST,
+    SIDE_BAR_BG_COLOR_LIST
+} from "@/settings/designSetting"
 import ThemeColorPicker from "@/components/ThemeColorPicker.vue"
 export default defineComponent({
     name: "SystemIcon",
     components: { Cpu, ThemeColorPicker },
     setup() {
         const store = useStore()
-        const historyShow: Ref<boolean> = ref(true)
-        const colorList = APP_PRESET_COLOR_LIST
+        const tabsShow: Ref<boolean> = ref(store.getters.tabsShow)
+        const systemThemeList = APP_PRESET_COLOR_LIST
+        const headerThemeList = HEADER_PRESET_BG_COLOR_LIST
+        const menuThemeList = SIDE_BAR_BG_COLOR_LIST
+        const systemTheme = store.getters.systemTheme
+        const headerTheme = store.getters.headerTheme
+        const menuTheme = store.getters.menuTheme
 
         const systemMouse = new SystemMouse()
         const x: Ref<string> = ref(systemMouse.x)
@@ -65,6 +90,19 @@ export default defineComponent({
             })
         }
 
+        const systemThemeChange = (color: string) => {
+            store.commit("SET_SYSTEM_THEME", color)
+        }
+        const menuThemeChange = (color: string) => {
+            store.commit("SET_MENU_THEME", color)
+        }
+        const headerThemeChange = (color: string) => {
+            store.commit("SET_HEADER_THEME", color)
+        }
+        const tabsChange = (e: boolean) => {
+            store.commit("SET_TABS_SHOW", e)
+        }
+
         onMounted(() => {
             const systemIcon = store.getters.systemIcon
             if (store.getters.systemIcon) {
@@ -76,12 +114,21 @@ export default defineComponent({
             drawer,
             x,
             y,
+            systemTheme,
+            menuTheme,
+            systemThemeList,
+            menuThemeList,
+            tabsShow,
             mouseDown,
             mouseMove,
             mouseUp,
             mouseOut,
-            colorList,
-            historyShow
+            systemThemeChange,
+            menuThemeChange,
+            headerThemeList,
+            headerTheme,
+            headerThemeChange,
+            tabsChange
         }
     }
 })

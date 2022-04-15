@@ -2,6 +2,10 @@
     <div class="menu-item">
         <template v-for="item in menu" :key="item.name">
             <el-menu-item
+                :style="{
+                    background: item.path.includes(route.name) ? store.getters.systemTheme : ''
+                }"
+                class="menu-item-item"
                 v-if="!item.children || !item.children.length"
                 :index="item.name"
                 @click="open(item)"
@@ -30,8 +34,9 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue"
+import { defineComponent, reactive } from "vue"
 import { useRoute, useRouter } from "vue-router"
+import { useStore } from "vuex"
 import {
     Menu as IconMenu,
     Coordinate,
@@ -55,6 +60,7 @@ export default defineComponent({
         const route = useRoute()
         const router = useRouter()
         const menu = props.menu
+        const store = useStore()
 
         const open = (item: any) => {
             if (route.name !== item.name) {
@@ -65,7 +71,8 @@ export default defineComponent({
         return {
             menu,
             open,
-            route
+            route,
+            store
         }
     }
 })
@@ -74,6 +81,9 @@ export default defineComponent({
 <style lang="scss" scoped>
 @import "@/css/theme.scss";
 .menu-item {
+    &-item:hover {
+        color: #ffffff;
+    }
     .no-active {
         font-size: 14px;
         display: flex;

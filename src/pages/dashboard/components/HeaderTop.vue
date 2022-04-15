@@ -1,0 +1,96 @@
+<template>
+    <div
+        class="pages-header"
+        :style="{
+            'background-image': `linear-gradient(to top right, ${
+                store.getters.headerTheme
+            }, ${lighten(store.getters.headerTheme, 30)})`
+        }"
+    >
+        <div class="header-background"></div>
+        <div class="logo">
+            <img src="@/assets/logo.png" alt="" srcset="" />
+            <i>VUE+VITE+TS</i>
+        </div>
+        <el-dropdown placement="bottom-end">
+            <div class="avatar">
+                <span>{{ userInfo.account }}</span>
+                <el-avatar :size="size" :src="imgUrl" />
+            </div>
+            <template #dropdown>
+                <el-dropdown-menu>
+                    <el-dropdown-item @click="drClick(1)">{{ $t("myInfo") }}</el-dropdown-item>
+                    <el-dropdown-item @click="drClick(2)">{{ $t("logout") }}</el-dropdown-item>
+                </el-dropdown-menu>
+            </template>
+        </el-dropdown>
+    </div>
+</template>
+<script lang="ts">
+import { defineComponent, reactive, ref, Ref } from "vue"
+import { useStore } from "vuex"
+import { lighten } from "@/utils/themeColor"
+export default defineComponent({
+    setup() {
+        const store = useStore()
+        const userInfo: any = reactive(store.getters.userInfo)
+        const size: Ref<string> = ref("default")
+        const imgUrl: Ref<string> = ref(
+            "https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"
+        )
+
+        return {
+            imgUrl,
+            size,
+            userInfo,
+            store,
+            lighten
+        }
+    }
+})
+</script>
+
+<style lang="scss" scoped>
+@import "@/css/theme.scss";
+.pages-header {
+    height: 60px;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    position: relative;
+    .header-background {
+        position: absolute;
+        height: 100%;
+        width: 100%;
+        // background-image: linear-gradient(to top right, $--color-primary, $--color-minor);
+        z-index: -1;
+    }
+    .logo {
+        height: 100%;
+        min-width: 200px;
+        padding: 0 20px;
+        display: flex;
+        align-items: center;
+        img {
+            height: 50px;
+            width: 50px;
+        }
+        i {
+            color: #fff;
+            font-size: 36px;
+            font-family: fangsong;
+        }
+    }
+    .avatar {
+        height: 100%;
+        font-size: 18px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        min-width: 150px;
+        margin: 0 20px;
+        color: #fff;
+        cursor: pointer;
+    }
+}
+</style>

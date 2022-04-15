@@ -11,13 +11,13 @@
                 ]"
                 :style="{ background: color }"
             >
-                <check color="#fff" />
+                <check :color="iconColor" />
             </span>
         </template>
     </div>
 </template>
 <script lang="ts">
-import { defineComponent, PropType, ref, Ref } from "vue"
+import { defineComponent, PropType, ref, Ref, getCurrentInstance, onMounted } from "vue"
 import { useStore } from "vuex"
 import { Check } from "@element-plus/icons-vue"
 
@@ -28,21 +28,38 @@ export default defineComponent({
         colorList: {
             type: Array as PropType<string[]>,
             default: () => []
+        },
+        def: {
+            type: String,
+            default: ""
         }
     },
     setup(props) {
-        const store = useStore()
-        const active: Ref<string> = ref(props.colorList[0])
-        if (store.getters.themeColor) {
-            active.value = store.getters.themeColor
+        const { proxy }: any = getCurrentInstance()
+        const active: Ref<string> = ref(props.def || props.colorList[0])
+        const iconColor: Ref<string> = ref("#ffffff")
+
+        const judgeColor = () => {
+            if (active.value === "#ffffff") {
+                iconColor.value = "#000000"
+            } else {
+                iconColor.value = "#ffffff"
+            }
         }
 
-        function handleClick(color: string) {
+        const handleClick = (color: string) => {
             active.value = color
-            store.commit("SET_THEME_COLOR", color)
+            judgeColor()
+            proxy.$emit("change", color)
         }
+
+        onMounted(() => {
+            judgeColor()
+        })
+
         return {
             active,
+            iconColor,
             handleClick
         }
     }

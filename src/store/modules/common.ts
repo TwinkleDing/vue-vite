@@ -11,10 +11,24 @@ const common = {
             getStore({
                 name: "language"
             }) || "zh",
-        themeColor:
+        systemTheme:
             getStore({
-                name: "themeColor"
+                name: "systemTheme"
             }) || "#007dff",
+        headerTheme:
+            getStore({
+                name: "headerTheme"
+            }) || "#ffffff",
+        menuTheme:
+            getStore({
+                name: "menuTheme"
+            }) || "#ffffff",
+        tabsShow:
+            getStore({
+                name: "tabsShow"
+            }) === undefined
+                ? true
+                : getStore({ name: "tabsShow" }),
         userInfo:
             getStore({
                 name: "userInfo"
@@ -69,26 +83,47 @@ const common = {
                 content: state.language
             })
         },
-        SET_THEME_COLOR(state: any, color: string) {
-            state.themeColor = color
+        SET_SYSTEM_THEME(state: any, color: string) {
+            state.systemTheme = color
             let attribute = ""
             attribute += `--systemThemeColor: ${color};`
-            let result = lighten(color, 58)
+            let result = lighten(color, 30)
             attribute += `--systemThemeColorActive: ${result};`
             const root: any = document.querySelector(":root")
             if (root) {
                 root.setAttribute("style", attribute)
             }
             setStore({
-                name: "themeColor",
+                name: "systemTheme",
                 content: color
+            })
+        },
+        SET_HEADER_THEME(state: any, color: string) {
+            state.headerTheme = color
+            setStore({
+                name: "headerTheme",
+                content: color
+            })
+        },
+        SET_MENU_THEME(state: any, color: string) {
+            state.menuTheme = color
+            setStore({
+                name: "menuTheme",
+                content: color
+            })
+        },
+        SET_TABS_SHOW(state: any, status: boolean) {
+            state.tabsShow = status
+            setStore({
+                name: "tabsShow",
+                content: status
             })
         },
         SET_USER_INFO(state: any, userInfo: UserInfo) {
             state.userInfo = userInfo
             setStore({
                 name: "userInfo",
-                content: state.userInfo
+                content: userInfo
             })
         },
         REMOVE_USER_INFO(state: any) {

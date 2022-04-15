@@ -12,10 +12,16 @@ export default defineComponent({
         const store = useStore()
 
         store.commit(
-            "SET_THEME_COLOR",
-            getStore({ name: "themeColor" })
-                ? getStore({ name: "themeColor" })
-                : store.getters.themeColor
+            "SET_SYSTEM_THEME",
+            getStore({ name: "systemTheme" })
+                ? getStore({ name: "systemTheme" })
+                : store.getters.systemTheme
+        )
+        store.commit(
+            "SET_MENU_THEME",
+            getStore({ name: "menuTheme" })
+                ? getStore({ name: "menuTheme" })
+                : store.getters.menuTheme
         )
     }
 })
