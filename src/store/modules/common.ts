@@ -4,6 +4,11 @@ import { UserInfo } from "@/utils/interface"
 import { lighten } from "@/utils/themeColor"
 import routeList from "@/router/routeList"
 import { RouterItem } from "@/utils/interface"
+import {
+    APP_PRESET_COLOR_LIST,
+    HEADER_PRESET_BG_COLOR_LIST,
+    SIDE_BAR_BG_COLOR_LIST
+} from "@/settings/designSetting"
 
 const common = {
     state: {
@@ -14,15 +19,15 @@ const common = {
         systemTheme:
             getStore({
                 name: "systemTheme"
-            }) || "#007dff",
+            }) || APP_PRESET_COLOR_LIST[0],
         headerTheme:
             getStore({
                 name: "headerTheme"
-            }) || "#ffffff",
+            }) || HEADER_PRESET_BG_COLOR_LIST[0],
         menuTheme:
             getStore({
                 name: "menuTheme"
-            }) || "#ffffff",
+            }) || SIDE_BAR_BG_COLOR_LIST[0],
         tabsShow:
             getStore({
                 name: "tabsShow"

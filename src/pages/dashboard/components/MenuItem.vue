@@ -11,20 +11,17 @@
                 @click="open(item)"
             >
                 <template #title>
-                    <el-icon>
-                        <help v-if="item.path.includes('home')" />
-                        <coordinate v-if="item.path.includes('nested')" />
-                        <histogram v-if="item.path.includes('chart')" />
-                        <school v-if="item.path.includes('model')" />
-                        <setting v-if="item.path.includes('permission')" />
-                        <postcard v-if="item.path.includes('my')" />
-                    </el-icon>
+                    <div class="menu-icon">
+                        <component :is="item.meta.icon"></component>
+                    </div>
                     <span>{{ $t(item.name) }}</span>
                 </template>
             </el-menu-item>
             <el-sub-menu v-if="item.children && item.children.length" :index="item.name">
                 <template #title>
-                    <el-icon><icon-menu /></el-icon>
+                    <div class="menu-icon">
+                        <component :is="item.meta.icon"></component>
+                    </div>
                     <span>{{ $t(item.name) }}</span>
                 </template>
                 <menu-item :menu="item.children" />
@@ -64,8 +61,8 @@ export default defineComponent({
 
         const open = (item: any) => {
             if (route.name !== item.name) {
-                console.log(1);
-                
+                console.log(1)
+
                 router.push(item.path)
             }
         }
@@ -80,11 +77,12 @@ export default defineComponent({
 })
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 @import "@/css/theme.scss";
 .menu-item {
-    &-item:hover {
-        color: #ffffff;
+    .el-menu-item:hover,
+    .el-sub-menu__title:hover {
+        background-color: $--color-primary;
     }
     .no-active {
         font-size: 14px;
@@ -94,6 +92,15 @@ export default defineComponent({
     }
     .active {
         color: $--color-primary;
+    }
+    .menu-icon {
+        height: 20px;
+        width: 20px;
+        position: relative;
+        margin-right: 20px;
+        svg {
+            position: absolute;
+        }
     }
 }
 </style>

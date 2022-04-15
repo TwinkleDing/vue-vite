@@ -6,6 +6,7 @@ const routeList: RouterItem[] = [
         name: "home",
         meta: {
             label: "首页",
+            icon: "help",
             permission: true
         },
         component: "home"
@@ -16,6 +17,7 @@ const routeList: RouterItem[] = [
         redirect: "/nested1",
         meta: {
             label: "嵌套路由",
+            icon: "icon-menu",
             permission: true
         },
         children: [
@@ -25,6 +27,7 @@ const routeList: RouterItem[] = [
                 redirect: "/nested11",
                 meta: {
                     label: "嵌套路由1",
+                    icon: "icon-menu",
                     permission: true
                 },
                 children: [
@@ -33,6 +36,7 @@ const routeList: RouterItem[] = [
                         name: "nested11",
                         meta: {
                             label: "嵌套路由1-1",
+                            icon: "coordinate",
                             permission: true
                         },
                         component: "nested11"
@@ -42,6 +46,7 @@ const routeList: RouterItem[] = [
                         name: "nested12",
                         meta: {
                             label: "嵌套路由1-2",
+                            icon: "coordinate",
                             permission: true
                         },
                         component: "nested12"
@@ -53,6 +58,7 @@ const routeList: RouterItem[] = [
                 name: "nested2",
                 meta: {
                     label: "嵌套路由2",
+                    icon: "coordinate",
                     permission: true
                 },
                 component: "nested2"
@@ -64,6 +70,7 @@ const routeList: RouterItem[] = [
         name: "charts",
         meta: {
             label: "图表展示",
+            icon: "histogram",
             permission: true
         },
         component: "charts"
@@ -73,6 +80,7 @@ const routeList: RouterItem[] = [
         name: "model",
         meta: {
             label: "模型预览",
+            icon: "school",
             permission: true
         },
         component: "model"
@@ -82,6 +90,7 @@ const routeList: RouterItem[] = [
         name: "permission",
         meta: {
             label: "角色权限",
+            icon: "setting",
             permission: true
         },
         component: "permission"
@@ -91,6 +100,7 @@ const routeList: RouterItem[] = [
         name: "my",
         meta: {
             label: "我的信息",
+            icon: "postcard",
             permission: true
         },
         component: "my"

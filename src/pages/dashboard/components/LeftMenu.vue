@@ -5,7 +5,6 @@
         :style="{ background: store.getters.menuTheme + '!important' }"
         mode="vertical"
         active-text-color="#ffffff"
-        :default-active="route.name"
         :collapse-transition="false"
     >
         <menu-item :menu="menu" />
@@ -45,9 +44,5 @@ export default defineComponent({
 <style lang="scss">
 .left-menu {
     height: 100%;
-    .el-menu-item:hover,
-    .el-sub-menu__title:hover {
-        background: none;
-    }
 }
 </style>
