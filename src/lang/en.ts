@@ -33,5 +33,6 @@ export default {
     tip: "Tip",
     userId: "User ID",
     myInfo: "My Info",
-    themeColor: "Theme Color"
+    themeColor: "Theme Color",
+    InterfaceSettings: "Interface Settings"
 }

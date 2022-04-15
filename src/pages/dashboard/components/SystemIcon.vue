@@ -10,13 +10,17 @@
         </div>
         <cpu class="icon" />
     </div>
-    <el-drawer v-model="drawer" :title="$t('system')">
+    <el-drawer v-model="drawer" :title="$t('system')" custom-class="system-drawer">
         <div>
-            <el-divider content-position="left">{{ $t("themeColor") }}</el-divider>
+            <el-divider class="title">{{ $t("themeColor") }}</el-divider>
             <theme-color-picker :colorList="colorList" />
         </div>
         <div>
-            <el-divider content-position="left">{{ $t("language") }}</el-divider>
+            <el-divider class="title">{{ $t("InterfaceSettings") }}</el-divider>
+            <el-row>
+                <el-col :span="20">标签页</el-col>
+                <el-col :span="4"><el-switch v-model="historyShow" /></el-col>
+            </el-row>
         </div>
     </el-drawer>
 </template>
@@ -26,52 +30,41 @@ import { useStore } from "vuex"
 import { Cpu } from "@element-plus/icons-vue"
 import { APP_PRESET_COLOR_LIST } from "@/settings/designSetting"
 import ThemeColorPicker from "@/components/ThemeColorPicker.vue"
-
 export default defineComponent({
     name: "SystemIcon",
-    components: { Cpu ,ThemeColorPicker },
+    components: { Cpu, ThemeColorPicker },
     setup() {
         const store = useStore()
-        const drawer: Ref<boolean> = ref(false)
-        const downTime: Ref<number> = ref(0)
-        const down: Ref<boolean> = ref(false)
-        const x: Ref<string> = ref("0")
-        const y: Ref<string> = ref("40%")
-        const offsetX: Ref<number> = ref(0)
-        const offsetY: Ref<number> = ref(0)
-        let timer: any = null
-        const colorList = APP_PRESET_COLOR_LIST;
+        const historyShow: Ref<boolean> = ref(true)
+        const colorList = APP_PRESET_COLOR_LIST
 
+        const systemMouse = new SystemMouse()
+        const x: Ref<string> = ref(systemMouse.x)
+        const y: Ref<string> = ref(systemMouse.y)
+        const drawer: Ref<Boolean> = ref(false)
         const mouseDown = (e: any) => {
-            downTime.value = new Date().getTime()
-            down.value = true
-            offsetX.value = e.offsetX
-            offsetY.value = e.offsetY
+            systemMouse.mouseDown(e)
         }
-        const mouseMove = (e: any) => {
-            clearTimeout(timer)
-            if (!down.value) return
-            x.value = e.clientX - offsetX.value + "px"
-            y.value = e.clientY - offsetY.value + "px"
+        const mouseOut = systemMouse.mouseOut
+        const mouseMove = async (e: any) => {
+            const coordinates: any = await systemMouse.mouseMove(e)
+            x.value = coordinates.x
+            y.value = coordinates.y
         }
-
-        const mouseOut = () => {
-            timer = setTimeout(() => {
-                down.value = false
-            }, 500)
-        }
-        const mouseUp = () => {
-            clearTimeout(timer)
-            if (new Date().getTime() - downTime.value < 300) {
+        const mouseUp = async () => {
+            const coordinates: any = await systemMouse.mouseUp()
+            if (coordinates.drawer) {
                 drawer.value = true
                 return
             }
-            down.value = false
+            x.value = coordinates.x
+            y.value = coordinates.y
             store.commit("SET_SYSTEM_ICON_POSITION", {
-                x: x.value,
-                y: y.value
+                x: coordinates.x,
+                y: coordinates.y
             })
         }
+
         onMounted(() => {
             const systemIcon = store.getters.systemIcon
             if (store.getters.systemIcon) {
@@ -87,13 +80,64 @@ export default defineComponent({
             mouseMove,
             mouseUp,
             mouseOut,
-            colorList
+            colorList,
+            historyShow
         }
     }
 })
+
+class SystemMouse {
+    timer: any
+    downTime: number
+    down: boolean
+    offsetX: number
+    offsetY: number
+    x: string
+    y: string
+    constructor() {
+        this.timer = null
+        this.downTime = 0
+        this.down = false
+        this.offsetX = 0
+        this.offsetY = 0
+        this.x = "0"
+        this.y = "40%"
+    }
+    mouseDown = (e: any) => {
+        this.downTime = new Date().getTime()
+        this.down = true
+        this.offsetX = e.offsetX
+        this.offsetY = e.offsetY
+    }
+    mouseMove = (e: any) => {
+        return new Promise((resolve) => {
+            clearTimeout(this.timer)
+            if (!this.down) return
+            this.x = e.clientX - this.offsetX + "px"
+            this.y = e.clientY - this.offsetY + "px"
+            resolve({ x: this.x, y: this.y })
+        })
+    }
+    mouseOut = () => {
+        this.timer = setTimeout(() => {
+            this.down = false
+        }, 500)
+    }
+    mouseUp = () => {
+        return new Promise((resolve) => {
+            clearTimeout(this.timer)
+            if (new Date().getTime() - this.downTime < 300) {
+                resolve({ drawer: true })
+                return
+            }
+            this.down = false
+            resolve({ x: this.x, y: this.y })
+        })
+    }
+}
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 @import "@/css/theme.scss";
 
 .system-setting {
@@ -120,6 +164,14 @@ export default defineComponent({
         z-index: 0;
         left: 10px;
         top: 10px;
+    }
+}
+.system-drawer {
+    header {
+        margin: 0;
+    }
+    .title div {
+        font-size: 16px !important;
     }
 }
 </style>

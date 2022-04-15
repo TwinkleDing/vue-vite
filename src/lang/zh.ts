@@ -33,5 +33,6 @@ export default {
     tip: "提示",
     userId: "用户ID",
     myInfo: "我的信息",
-    themeColor: "主题颜色"
+    themeColor: "主题颜色",
+    InterfaceSettings: "界面设置"
 }
