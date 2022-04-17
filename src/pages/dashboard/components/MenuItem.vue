@@ -99,6 +99,8 @@ export default defineComponent({
         position: relative;
         margin-right: 20px;
         svg {
+            height: 20px;
+            width: 20px;
             position: absolute;
         }
     }
