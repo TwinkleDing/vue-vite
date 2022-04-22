@@ -20,19 +20,18 @@
     </div>
 </template>
 <script lang="ts">
-import { defineComponent, computed } from "vue"
+import { defineComponent } from "vue"
 import { useStore } from "vuex"
 import { useRoute } from "vue-router"
 import LeftMenu from "./components/LeftMenu.vue"
 import { RouterItem } from "@/utils/interface"
-import { CircleClose } from "@element-plus/icons-vue"
 import SystemIcon from "./components/SystemIcon.vue"
 import HeaderTop from "./components/HeaderTop.vue"
 import Tabs from "./components/Tabs.vue"
 
 export default defineComponent({
     name: "Dashboard",
-    components: { LeftMenu, CircleClose, SystemIcon, Tabs, HeaderTop },
+    components: { LeftMenu, SystemIcon, Tabs, HeaderTop },
     setup() {
         const store = useStore()
         const route = useRoute()

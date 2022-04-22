@@ -34,6 +34,12 @@ const common = {
             }) === undefined
                 ? true
                 : getStore({ name: "tabsShow" }),
+        tabsType:
+            getStore({
+                name: "tabsType"
+            }) === undefined
+                ? 1
+                : getStore({ name: "tabsType" }),
         menuPosition:
             getStore({
                 name: "menuPosition"
@@ -123,6 +129,13 @@ const common = {
             setStore({
                 name: "tabsShow",
                 content: status
+            })
+        },
+        SET_TABS_TYPE(state: any, value: number) {
+            state.tabsType = value
+            setStore({
+                name: "tabsType",
+                content: value
             })
         },
         SET_MENU_POSITION(state: any, status: boolean) {

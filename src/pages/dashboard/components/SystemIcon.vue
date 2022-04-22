@@ -34,21 +34,33 @@
                 @change="menuThemeChange"
             />
         </div>
-        <div>
+        <div class="interface-set">
             <el-divider class="title">{{ $t("interfaceSettings") }}</el-divider>
-            <el-row>
-                <el-col :span="16">{{ $t("labelTab") }}</el-col>
-                <el-col :span="8" align="center"
-                    ><el-switch v-model="tabsShow" @change="tabsChange"
-                /></el-col>
+            <el-row class="row">
+                <el-col :span="tabsShow ? 8 : 16">{{ $t("labelTab") }}</el-col>
+                <el-col :span="8" v-if="tabsShow" align="center">
+                    <el-select
+                        v-model="tabsType"
+                        @change="tabsTypeChange"
+                        placeholder="Select"
+                        size="small"
+                    >
+                        <el-option label="简约" :value="1" />
+                        <el-option label="卡片" :value="2" />
+                    </el-select>
+                </el-col>
+                <el-col :span="8" align="center">
+                    <el-switch v-model="tabsShow" @change="tabsChange" />
+                </el-col>
             </el-row>
-            <el-row>
+            <el-row class="row">
                 <el-col :span="16">{{ $t("menuPosition") }}</el-col>
                 <el-col :span="8" align="center">
                     <el-switch
                         inline-prompt
                         active-text="👈"
                         inactive-text="👆"
+                        :inactive-color="store.getters.systemTheme"
                         v-model="menuPosition"
                         @change="menuPositionChange"
                     />
@@ -74,6 +86,7 @@ export default defineComponent({
         const store = useStore()
         const tabsShow: Ref<boolean> = ref(store.getters.tabsShow)
         const menuPosition: Ref<boolean> = ref(store.getters.menuPosition)
+        const tabsType: Ref<number> = ref(store.getters.tabsType)
         const systemThemeList = APP_PRESET_COLOR_LIST
         const headerThemeList = HEADER_PRESET_BG_COLOR_LIST
         const menuThemeList = SIDE_BAR_BG_COLOR_LIST
@@ -120,6 +133,11 @@ export default defineComponent({
         const tabsChange = (e: boolean) => {
             store.commit("SET_TABS_SHOW", e)
         }
+        const tabsTypeChange = (e: number) => {
+            console.log(e);
+            
+            store.commit("SET_TABS_TYPE", e)
+        }
         const menuPositionChange = (e: boolean) => {
             store.commit("SET_MENU_POSITION", e)
         }
@@ -133,6 +151,7 @@ export default defineComponent({
         })
         return {
             drawer,
+            store,
             x,
             y,
             systemTheme,
@@ -140,7 +159,9 @@ export default defineComponent({
             systemThemeList,
             menuThemeList,
             tabsShow,
+            tabsType,
             menuPosition,
+            tabsTypeChange,
             mouseDown,
             mouseMove,
             mouseUp,
@@ -242,6 +263,11 @@ class SystemMouse {
     }
     .title div {
         font-size: 16px !important;
+    }
+    .interface-set {
+        .row {
+            align-items: center;
+        }
     }
 }
 </style>
