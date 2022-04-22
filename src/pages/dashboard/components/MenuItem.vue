@@ -3,10 +3,12 @@
         <template v-for="item in menu" :key="item.name">
             <el-menu-item
                 :style="{
-                    background: item.path.includes(route.name)
-                        ? store.getters.menuPosition
+                    background: store.getters.menuPosition
+                        ? item.path.includes(route.name)
                             ? store.getters.systemTheme
-                            : lighten(store.getters.headerTheme, 30)
+                            : ''
+                        : item.path.includes(route.name)
+                        ? lighten(store.getters.headerTheme, 30)
                         : ''
                 }"
                 class="menu-item-item"
@@ -86,11 +88,11 @@ export default defineComponent({
 .menu-item {
     .el-menu-item:hover,
     .el-sub-menu__title:hover {
-        background-color: $--header-minor !important;
+        background-color: $--color-primary !important;
     }
     .el-menu-item:active,
     .el-sub-menu__title:active {
-        background-color: $--header-minor !important;
+        background-color: $--color-primary !important;
     }
     &-item,
     .el-sub-menu__title {
@@ -123,6 +125,15 @@ export default defineComponent({
             .el-sub-menu .el-sub-menu__icon-arrow {
                 right: 0 !important;
             }
+        }
+
+        .el-menu-item:hover,
+        .el-sub-menu__title:hover {
+            background-color: $--header-minor !important;
+        }
+        .el-menu-item:active,
+        .el-sub-menu__title:active {
+            background-color: $--header-minor !important;
         }
     }
 }
