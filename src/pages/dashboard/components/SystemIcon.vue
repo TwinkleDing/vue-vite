@@ -38,14 +38,20 @@
             <el-divider class="title">{{ $t("interfaceSettings") }}</el-divider>
             <el-row>
                 <el-col :span="16">{{ $t("labelTab") }}</el-col>
-                <el-col :span="8" align="center"><el-switch v-model="tabsShow" @change="tabsChange" /></el-col>
+                <el-col :span="8" align="center"
+                    ><el-switch v-model="tabsShow" @change="tabsChange"
+                /></el-col>
             </el-row>
             <el-row>
                 <el-col :span="16">{{ $t("menuPosition") }}</el-col>
                 <el-col :span="8" align="center">
-                    <span style="display:inline-block;width:22px">{{ $t("leftPosition") }}</span>
-                    <el-switch v-model="menuPosition" @change="menuPositionChange" />
-                    <span style="display:inline-block;width:22px">{{ $t("topPosition") }}</span>
+                    <el-switch
+                        inline-prompt
+                        active-text="👈"
+                        inactive-text="👆"
+                        v-model="menuPosition"
+                        @change="menuPositionChange"
+                    />
                 </el-col>
             </el-row>
         </div>
