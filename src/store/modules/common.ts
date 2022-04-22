@@ -34,6 +34,12 @@ const common = {
             }) === undefined
                 ? true
                 : getStore({ name: "tabsShow" }),
+        menuPosition:
+            getStore({
+                name: "menuPosition"
+            }) === undefined
+                ? true
+                : getStore({ name: "menuPosition" }),
         userInfo:
             getStore({
                 name: "userInfo"
@@ -90,14 +96,7 @@ const common = {
         },
         SET_SYSTEM_THEME(state: any, color: string) {
             state.systemTheme = color
-            let attribute = ""
-            attribute += `--systemThemeColor: ${color};`
-            let result = lighten(color, 30)
-            attribute += `--systemThemeColorActive: ${result};`
-            const root: any = document.querySelector(":root")
-            if (root) {
-                root.setAttribute("style", attribute)
-            }
+            this.commit("SET_ALL_THEME_COLOR")
             setStore({
                 name: "systemTheme",
                 content: color
@@ -105,6 +104,7 @@ const common = {
         },
         SET_HEADER_THEME(state: any, color: string) {
             state.headerTheme = color
+            this.commit("SET_ALL_THEME_COLOR")
             setStore({
                 name: "headerTheme",
                 content: color
@@ -112,6 +112,7 @@ const common = {
         },
         SET_MENU_THEME(state: any, color: string) {
             state.menuTheme = color
+            this.commit("SET_ALL_THEME_COLOR")
             setStore({
                 name: "menuTheme",
                 content: color
@@ -121,6 +122,13 @@ const common = {
             state.tabsShow = status
             setStore({
                 name: "tabsShow",
+                content: status
+            })
+        },
+        SET_MENU_POSITION(state: any, status: boolean) {
+            state.menuPosition = status
+            setStore({
+                name: "menuPosition",
                 content: status
             })
         },
@@ -198,6 +206,19 @@ const common = {
                 name: "systemIcon",
                 content: state.systemIcon
             })
+        },
+        SET_ALL_THEME_COLOR(state: any) {
+            let attribute = ""
+            attribute += `--systemThemeColor: ${state.systemTheme};`
+            attribute += `--systemThemeColorActive: ${lighten(state.systemTheme, 30)};`
+            attribute += `--headerThemeColor: ${state.headerTheme};`
+            attribute += `--headerThemeColorActive: ${lighten(state.headerTheme, 30)};`
+            attribute += `--menuThemeColor: ${state.menuTheme};`
+            attribute += `--menuThemeColorActive: ${lighten(state.menuTheme, 30)};`
+            const root: any = document.querySelector(":root")
+            if (root) {
+                root.setAttribute("style", attribute)
+            }
         }
     },
     actions: {

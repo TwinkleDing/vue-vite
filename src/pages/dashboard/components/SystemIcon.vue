@@ -10,7 +10,10 @@
         </div>
         <cpu class="icon" />
     </div>
-    <el-drawer v-model="drawer" :title="$t('system')" custom-class="system-drawer">
+    <el-drawer v-model="drawer" size="350px" custom-class="system-drawer">
+        <template #title>
+            <h3>{{ $t("system") }}</h3>
+        </template>
         <div>
             <el-divider class="title">{{ $t("systemTheme") }}</el-divider>
             <theme-color-picker
@@ -34,8 +37,16 @@
         <div>
             <el-divider class="title">{{ $t("interfaceSettings") }}</el-divider>
             <el-row>
-                <el-col :span="20">{{ $t("labelTab") }}</el-col>
-                <el-col :span="4"><el-switch v-model="tabsShow" @change="tabsChange" /></el-col>
+                <el-col :span="16">{{ $t("labelTab") }}</el-col>
+                <el-col :span="8" align="center"><el-switch v-model="tabsShow" @change="tabsChange" /></el-col>
+            </el-row>
+            <el-row>
+                <el-col :span="16">{{ $t("menuPosition") }}</el-col>
+                <el-col :span="8" align="center">
+                    <span style="display:inline-block;width:22px">{{ $t("leftPosition") }}</span>
+                    <el-switch v-model="menuPosition" @change="menuPositionChange" />
+                    <span style="display:inline-block;width:22px">{{ $t("topPosition") }}</span>
+                </el-col>
             </el-row>
         </div>
     </el-drawer>
@@ -56,6 +67,7 @@ export default defineComponent({
     setup() {
         const store = useStore()
         const tabsShow: Ref<boolean> = ref(store.getters.tabsShow)
+        const menuPosition: Ref<boolean> = ref(store.getters.menuPosition)
         const systemThemeList = APP_PRESET_COLOR_LIST
         const headerThemeList = HEADER_PRESET_BG_COLOR_LIST
         const menuThemeList = SIDE_BAR_BG_COLOR_LIST
@@ -102,6 +114,9 @@ export default defineComponent({
         const tabsChange = (e: boolean) => {
             store.commit("SET_TABS_SHOW", e)
         }
+        const menuPositionChange = (e: boolean) => {
+            store.commit("SET_MENU_POSITION", e)
+        }
 
         onMounted(() => {
             const systemIcon = store.getters.systemIcon
@@ -119,6 +134,7 @@ export default defineComponent({
             systemThemeList,
             menuThemeList,
             tabsShow,
+            menuPosition,
             mouseDown,
             mouseMove,
             mouseUp,
@@ -128,7 +144,8 @@ export default defineComponent({
             headerThemeList,
             headerTheme,
             headerThemeChange,
-            tabsChange
+            tabsChange,
+            menuPositionChange
         }
     }
 })

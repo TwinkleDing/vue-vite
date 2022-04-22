@@ -1,9 +1,9 @@
 <template>
     <el-menu
         class="left-menu"
-        :text-color="store.getters.menuTheme === '#ffffff' ? '#303133' : '#b7bdc3'"
-        :style="{ background: store.getters.menuTheme + '!important' }"
-        mode="vertical"
+        :text-color="store.getters.menuTheme === '#ffffff' ? '#303133' : '#ffffffA6'"
+        :style="{ background: store.getters.menuPosition ? store.getters.menuTheme + '!important' : 'transform' }"
+        :mode="store.getters.menuPosition ? 'vertical' : 'horizontal'"
         active-text-color="#ffffff"
         :collapse-transition="false"
     >

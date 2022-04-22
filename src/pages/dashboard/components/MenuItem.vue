@@ -1,9 +1,13 @@
 <template>
-    <div class="menu-item">
+    <div :class="[!store.getters.menuPosition ? 'flex' : '', 'menu-item']">
         <template v-for="item in menu" :key="item.name">
             <el-menu-item
                 :style="{
-                    background: item.path.includes(route.name) ? store.getters.systemTheme : ''
+                    background: item.path.includes(route.name)
+                        ? store.getters.menuPosition
+                            ? store.getters.systemTheme
+                            : lighten(store.getters.headerTheme, 30)
+                        : ''
                 }"
                 class="menu-item-item"
                 v-if="!item.children || !item.children.length"
@@ -34,6 +38,7 @@
 import { defineComponent, reactive } from "vue"
 import { useRoute, useRouter } from "vue-router"
 import { useStore } from "vuex"
+import { lighten } from "@/utils/themeColor"
 import {
     Menu as IconMenu,
     Coordinate,
@@ -61,8 +66,6 @@ export default defineComponent({
 
         const open = (item: any) => {
             if (route.name !== item.name) {
-                console.log(1)
-
                 router.push(item.path)
             }
         }
@@ -71,7 +74,8 @@ export default defineComponent({
             menu,
             open,
             route,
-            store
+            store,
+            lighten
         }
     }
 })
@@ -82,7 +86,15 @@ export default defineComponent({
 .menu-item {
     .el-menu-item:hover,
     .el-sub-menu__title:hover {
-        background-color: $--color-primary;
+        background-color: $--header-minor !important;
+    }
+    .el-menu-item:active,
+    .el-sub-menu__title:active {
+        background-color: $--header-minor !important;
+    }
+    &-item,
+    .el-sub-menu__title {
+        height: 100%;
     }
     .no-active {
         font-size: 14px;
@@ -102,6 +114,27 @@ export default defineComponent({
             height: 20px;
             width: 20px;
             position: absolute;
+        }
+    }
+}
+.menu-top {
+    .el-menu--horizontal {
+        .menu-item {
+            .el-sub-menu .el-sub-menu__icon-arrow {
+                right: 0 !important;
+            }
+        }
+    }
+}
+.el-popper {
+    .el-menu--horizontal {
+        background: $--menu-primary;
+        .el-sub-menu__title,
+        .el-menu-item {
+            background: $--menu-primary;
+        }
+        .menu-item {
+            display: block;
         }
     }
 }

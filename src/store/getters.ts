@@ -8,6 +8,7 @@ const getters = {
     routeHistory: (state: any) => state.common.routeHistory,
     routeList: (state: any) => state.common.routeList,
     systemIcon: (state: any) => state.common.systemIcon,
-    tabsShow: (state: any) => state.common.tabsShow
+    tabsShow: (state: any) => state.common.tabsShow,
+    menuPosition: (state: any) => state.common.menuPosition
 }
 export default getters

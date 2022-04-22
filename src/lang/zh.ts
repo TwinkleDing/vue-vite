@@ -37,5 +37,8 @@ export default {
     systemTheme: "系统主题",
     menuTheme: "菜单主题",
     headerTheme: "顶栏主题",
-    labelTab: "标签页"
+    labelTab: "标签页",
+    menuPosition: "菜单位置",
+    leftPosition: "👈",
+    topPosition: "👆",
 }

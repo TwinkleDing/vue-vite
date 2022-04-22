@@ -1,8 +1,12 @@
 <template>
     <div class="pages">
-        <header-top />
+        <header-top>
+            <template v-if="!store.getters.menuPosition" #menu>
+                <left-menu :menuList="menuList" />
+            </template>
+        </header-top>
         <div class="pages-content">
-            <div class="pages-left">
+            <div v-if="store.getters.menuPosition" class="pages-left">
                 <left-menu :menuList="menuList" />
             </div>
             <div class="pages-right">

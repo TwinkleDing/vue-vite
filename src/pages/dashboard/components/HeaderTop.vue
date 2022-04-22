@@ -1,16 +1,12 @@
 <template>
-    <div
-        class="pages-header"
-        :style="{
-            'background-image': `linear-gradient(to top right, ${
-                store.getters.headerTheme
-            }, ${lighten(store.getters.headerTheme, 30)})`
-        }"
-    >
+    <div class="pages-header">
         <div class="header-background"></div>
         <div class="logo">
             <img src="@/assets/logo.png" alt="" srcset="" />
-            <i>VUE+VITE+TS</i>
+            <i>VUE3+TS</i>
+        </div>
+        <div v-if="!store.getters.menuPosition" class="menu-top">
+            <slot name="menu"></slot>
         </div>
         <el-dropdown placement="bottom-end">
             <div class="avatar">
@@ -30,7 +26,6 @@
 import { defineComponent, reactive, ref, Ref } from "vue"
 import { useStore } from "vuex"
 import { useRouter } from "vue-router"
-import { lighten } from "@/utils/themeColor"
 import { ElMessageBox, ElMessage } from "element-plus"
 export default defineComponent({
     setup() {
@@ -65,8 +60,7 @@ export default defineComponent({
             size,
             userInfo,
             store,
-            drClick,
-            lighten
+            drClick
         }
     }
 })
@@ -84,13 +78,13 @@ export default defineComponent({
         position: absolute;
         height: 100%;
         width: 100%;
-        // background-image: linear-gradient(to top right, $--color-primary, $--color-minor);
+        background-image: linear-gradient(to top right, $--header-primary, $--header-minor);
         z-index: -1;
     }
     .logo {
         height: 100%;
         min-width: 200px;
-        padding: 0 20px;
+        padding: 0 10px;
         display: flex;
         align-items: center;
         img {
@@ -113,6 +107,9 @@ export default defineComponent({
         margin: 0 20px;
         color: #fff;
         cursor: pointer;
+    }
+    .menu-top {
+        flex: 1;
     }
 }
 </style>

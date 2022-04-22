@@ -37,5 +37,8 @@ export default {
     systemTheme: "System Theme",
     menuTheme: "Menu Theme",
     headerTheme: "Header Theme",
-    labelTab: "Tabs"
+    labelTab: "Tabs",
+    menuPosition: "Menu Position",
+    leftPosition: "👈",
+    topPosition: "👆",
 }

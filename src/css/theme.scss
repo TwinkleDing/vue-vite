@@ -1,6 +1,10 @@
 :root {
     --systemThemeColor: #007dff;
     --systemThemeColorActive: #4dcaff;
+    --headerThemeColor: #007dff;
+    --headerThemeColorActive: #4dcaff;
+    --menuThemeColor: #007dff;
+    --menuThemeColorActive: #4dcaff;
     --el-color-primary: var(--systemThemeColor);
     --el-color-primary-light-3: var(--systemThemeColorActive);
     --el-color-primary-dark-2: var(--systemThemeColor);
@@ -8,6 +12,10 @@
 
 $--color-primary: var(--systemThemeColor);
 $--color-minor: var(--systemThemeColorActive);
+$--header-primary: var(--headerThemeColor);
+$--header-minor: var(--headerThemeColorActive);
+$--menu-primary: var(--menuThemeColor);
+$--menu-minor: var(--menuThemeColorActive);
 
 :export {
     primaryColor: $--color-primary;
