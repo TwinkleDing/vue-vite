@@ -2,10 +2,16 @@
     <el-menu
         class="left-menu"
         :text-color="store.getters.menuTheme === '#ffffff' ? '#303133' : '#ffffffA6'"
-        :style="{ background: store.getters.menuPosition ? store.getters.menuTheme + '!important' : 'transform' }"
+        :style="{
+            background: store.getters.menuPosition
+                ? store.getters.menuTheme + '!important'
+                : 'transform'
+        }"
         :mode="store.getters.menuPosition ? 'vertical' : 'horizontal'"
         active-text-color="#ffffff"
         :collapse-transition="false"
+        :ellipsis="false"
+        :collapse="false"
     >
         <menu-item :menu="menu" />
     </el-menu>
@@ -29,9 +35,7 @@ export default defineComponent({
     setup(props: any) {
         const route = useRoute()
         const store = useStore()
-
         const menu: any = reactive(props.menuList)
-
         return {
             menu,
             route,

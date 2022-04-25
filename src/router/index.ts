@@ -4,7 +4,7 @@ import Empty from "@/pages/Empty.vue"
 import { RouterItem } from "@/utils/interface"
 
 let firstGetRoute = false
-const _importComponent = (file) => () => import(`../views/${file}/index.vue`)
+const _importComponent = (file: string) => () => import(`../views/${file}/index.vue`)
 
 const router: any = new (createRouter as any)({
     history: createWebHashHistory(),
@@ -39,7 +39,7 @@ router.beforeEach(async (to: any) => {
         firstGetRoute = true
         const list = [...(await store.dispatch("getRouteList"))]
         const routerList = filterAsyncRouter(list)
-        routerList.map((item: RouterItem[]) => {
+        routerList.map((item: RouterItem) => {
             router.addRoute("index", item)
         })
 

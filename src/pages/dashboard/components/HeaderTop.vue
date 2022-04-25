@@ -110,6 +110,7 @@ export default defineComponent({
     }
     .menu-top {
         flex: 1;
+        min-width: 400px;
     }
 }
 </style>
