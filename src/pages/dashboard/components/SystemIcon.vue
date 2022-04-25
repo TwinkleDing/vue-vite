@@ -45,8 +45,8 @@
                         placeholder="Select"
                         size="small"
                     >
-                        <el-option label="简约" :value="1" />
-                        <el-option label="卡片" :value="2" />
+                        <el-option :label="$t('tabSimple')" :value="1" />
+                        <el-option :label="$t('tabCard')" :value="2" />
                     </el-select>
                 </el-col>
                 <el-col :span="8" align="center">

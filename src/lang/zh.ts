@@ -41,4 +41,6 @@ export default {
     menuPosition: "菜单位置",
     leftPosition: "👈",
     topPosition: "👆",
+    tabSimple: "简约",
+    tabCard: "卡片"
 }

@@ -41,4 +41,6 @@ export default {
     menuPosition: "Menu Position",
     leftPosition: "👈",
     topPosition: "👆",
+    tabSimple: "Simple",
+    tabCard: "Card"
 }
