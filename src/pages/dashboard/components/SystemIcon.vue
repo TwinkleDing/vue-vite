@@ -66,11 +66,24 @@
                     />
                 </el-col>
             </el-row>
+            <el-row>
+                <el-col :span="16">{{ $t("language") }}</el-col>
+                <el-col :span="8" align="center">
+                    <el-switch
+                        inline-prompt
+                        :active-text="$t('chinese')"
+                        :inactive-text="$t('english')"
+                        :inactive-color="store.getters.systemTheme"
+                        v-model="language"
+                        @change="languageChange"
+                    />
+                </el-col>
+            </el-row>
         </div>
     </el-drawer>
 </template>
 <script lang="ts">
-import { defineComponent, ref, Ref, onMounted } from "vue"
+import { defineComponent, getCurrentInstance, ref, Ref, onMounted } from "vue"
 import { useStore } from "vuex"
 import { Cpu } from "@element-plus/icons-vue"
 import {
@@ -83,10 +96,13 @@ export default defineComponent({
     name: "SystemIcon",
     components: { Cpu, ThemeColorPicker },
     setup() {
+        const { proxy }: any = getCurrentInstance()
         const store = useStore()
         const tabsShow: Ref<boolean> = ref(store.getters.tabsShow)
         const menuPosition: Ref<boolean> = ref(store.getters.menuPosition)
         const tabsType: Ref<number> = ref(store.getters.tabsType)
+        const language: Ref<boolean> = ref(store.getters.language === "zh" ? true : false)
+
         const systemThemeList = APP_PRESET_COLOR_LIST
         const headerThemeList = HEADER_PRESET_BG_COLOR_LIST
         const menuThemeList = SIDE_BAR_BG_COLOR_LIST
@@ -134,12 +150,16 @@ export default defineComponent({
             store.commit("SET_TABS_SHOW", e)
         }
         const tabsTypeChange = (e: number) => {
-            console.log(e);
-            
             store.commit("SET_TABS_TYPE", e)
         }
         const menuPositionChange = (e: boolean) => {
             store.commit("SET_MENU_POSITION", e)
+        }
+        const languageChange = (e: boolean) => {
+            const lang = e ? "zh" : "en"
+            proxy.$i18n.locale = lang
+            language.value = e
+            store.commit("SET_LANGUAGE", lang)
         }
 
         onMounted(() => {
@@ -161,6 +181,7 @@ export default defineComponent({
             tabsShow,
             tabsType,
             menuPosition,
+            language,
             tabsTypeChange,
             mouseDown,
             mouseMove,
@@ -172,7 +193,8 @@ export default defineComponent({
             headerTheme,
             headerThemeChange,
             tabsChange,
-            menuPositionChange
+            menuPositionChange,
+            languageChange
         }
     }
 })
@@ -260,9 +282,15 @@ class SystemMouse {
 .system-drawer {
     header {
         margin: 0;
+        h3 {
+            line-height: 24px;
+        }
     }
     .title div {
         font-size: 16px !important;
+        display: inline-block;
+        position: relative;
+        text-align: center;
     }
     .interface-set {
         .row {

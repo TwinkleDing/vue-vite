@@ -6,7 +6,7 @@
             :key="index"
         >
             <span v-if="route.path === item.path" class="current-router"></span>
-            <span @click="routeGo(item.path)">{{ item.label }}</span>
+            <span @click="routeGo(item.path)">{{ $t(item.label) }}</span>
             <span v-if="!item.path.includes('home')">
                 <el-icon
                     :size="16"
@@ -23,7 +23,7 @@
             v-for="(item, index) in routeHistory"
             :key="index"
         >
-            <span class="router-history-name" @click="routeGo(item.path)">{{ item.label }}</span>
+            <span class="router-history-name" @click="routeGo(item.path)">{{ $t(item.label) }}</span>
             <span>
                 <el-icon
                     v-if="!item.path.includes('home')"

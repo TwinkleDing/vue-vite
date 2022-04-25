@@ -16,13 +16,13 @@
                     >{{ $t("english") }}</span
                 >
             </div>
-            <div class="node-path">
+            <!-- <div class="node-path">
                 vue path: <a target="_blank" :href="vuePath">{{ vuePath }}</a>
             </div>
             <div class="node-path">
                 node path:
                 <a target="_blank" :href="nodePath">{{ nodePath }}</a>
-            </div>
+            </div> -->
         </div>
         <earth class="model" />
     </div>

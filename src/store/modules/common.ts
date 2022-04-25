@@ -54,7 +54,7 @@ const common = {
             name: "routeHistory"
         }) || [
             {
-                label: "首页",
+                label: "home",
                 path: "/home"
             }
         ],
@@ -178,7 +178,7 @@ const common = {
                 state.routeHistory = [
                     ...history,
                     {
-                        label: to.meta.label,
+                        label: to.name,
                         path: to.path
                     }
                 ]
@@ -193,7 +193,7 @@ const common = {
             if (!state.routeHistory.length) {
                 state.routeHistory = [
                     {
-                        label: "首页",
+                        label: "home",
                         path: "/home"
                     }
                 ]
