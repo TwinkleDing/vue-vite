@@ -26,6 +26,7 @@ export default {
     system: "系统设置",
     permission: "角色权限",
     my: "我的信息",
+    d3: "d3",
     cancel: "取消",
     confirm: "确认",
     language: "选择语言",

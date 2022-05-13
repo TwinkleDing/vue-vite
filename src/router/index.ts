@@ -27,7 +27,7 @@ const router: any = new (createRouter as any)({
             component: () => import(/* webpackChunkName: 'login' */ "@/pages/login/index.vue")
         },
         {
-            path: "/404", //重定向
+            path: "/:cathchAll(.*)",
             name: "404",
             component: () => import("@/pages/notFound.vue")
         }

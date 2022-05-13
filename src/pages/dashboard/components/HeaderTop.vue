@@ -45,10 +45,12 @@ export default defineComponent({
                     cancelButtonText: "取消"
                 })
                     .then(() => {
-                        router.push("login")
-                        ElMessage({
-                            type: "success",
-                            message: "退出成功"
+                        router.push("login").then(() => {
+                            store.commit("REMOVE_ROUTER_LIST")
+                            ElMessage({
+                                type: "success",
+                                message: "退出成功"
+                            })
                         })
                     })
                     .catch(() => {})

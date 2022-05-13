@@ -232,6 +232,12 @@ const common = {
             if (root) {
                 root.setAttribute("style", attribute)
             }
+        },
+        REMOVE_ROUTER_LIST(state: any) {
+            state.routeList = []
+            removeStore({
+                name: "routeList"
+            })
         }
     },
     actions: {

@@ -26,6 +26,7 @@ export default {
     system: "System",
     permission: "Permission",
     my: "My Info",
+    d3: "d3",
     cancel: "Cancel",
     confirm: "OK",
     language: "Language",
