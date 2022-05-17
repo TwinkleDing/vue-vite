@@ -114,6 +114,16 @@ const routeList: RouterItem[] = [
             permission: true
         },
         component: "d3"
+    },
+    {
+        path: "/canvas",
+        name: "canvas",
+        meta: {
+            label: "canvas",
+            icon: "school",
+            permission: true
+        },
+        component: "canvas"
     }
 ]
 
