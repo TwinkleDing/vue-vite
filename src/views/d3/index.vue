@@ -34,14 +34,10 @@
             </g>
         </svg>
         <svg id="drawChart" :width="400" :height="200"></svg>
-        <svg id="barChart" :width="400" :height="200"></svg>
         <svg id="circleChart" :width="400" :height="200"></svg>
-        <svg id="lineChart" :width="400" :height="300">
-            <g transform="translate(50,20)">
-                <path id="sss" fill="none" stroke="#ac0" stroke-width="5px"></path>
-            </g>
-        </svg>
+        <svg id="lineChart" :width="400" :height="300"></svg>
         <svg id="pieChart" :width="400" :height="400"></svg>
+        <svg id="barChart" :width="600" :height="400"></svg>
     </div>
 </template>
 <script setup>
@@ -174,37 +170,111 @@ const drawChart = () => {
 
 // 绘制条形图
 const barChart = () => {
-    const data = [10, 5, 12, 15]
-    const scaleFactor = 20
-    const barHeight = 20
-    const graph = d3
-        .select("#barChart")
-        .append("svg")
-        .attr("height", barHeight * data.length)
-    const bar = graph
-        .selectAll("g")
+    const data = [
+        { year: "2006", population: 40 },
+        { year: "2007", population: 45 },
+        { year: "2008", population: 48 },
+        { year: "2009", population: 51 },
+        { year: "2010", population: 53 },
+        { year: "2011", population: 57 },
+        { year: "2012", population: 68 }
+    ]
+    const svg = d3.select("#barChart"),
+        margin = 200,
+        width = svg.attr("width") - margin,
+        height = svg.attr("height") - margin
+    svg.append("text")
+        .attr("transform", "translate(100,0)")
+        .attr("x", 50)
+        .attr("y", 50)
+        .attr("font-size", "20px")
+        .attr("class", "title")
+        .text("Population bar chart")
+    const x = d3.scaleBand().range([0, width]).padding(0.4),
+        y = d3.scaleLinear().range([height, 0])
+    const g = svg.append("g").attr("transform", "translate(" + 100 + "," + 100 + ")")
+    x.domain(
+        data.map(function (d) {
+            return d.year
+        })
+    )
+    y.domain([
+        0,
+        d3.max(data, function (d) {
+            return d.population
+        })
+    ])
+    g.append("g")
+        .attr("transform", "translate(0," + height + ")")
+        .call(d3.axisBottom(x))
+        .append("text")
+        .attr("y", height - 150)
+        .attr("x", width - 250)
+        .attr("text-anchor", "end")
+        .attr("font-size", "18px")
+        .attr("stroke", "blue")
+        .text("year")
+    g.append("g")
+        .append("text")
+        .attr("transform", "rotate(-90)")
+        .attr("dx", "-4em")
+        .attr("dy", "-2em")
+        .attr("text-anchor", "end")
+        .attr("font-size", "18px")
+        .attr("stroke", "blue")
+        .text("population")
+    g.append("g").attr("transform", "translate(0, 0)").call(d3.axisLeft(y))
+    g.selectAll(".bar")
         .data(data)
         .enter()
-        .append("g")
-        .attr("transform", function (d, i) {
-            return "translate(0," + i * barHeight + ")"
-        })
-    bar.append("rect")
-        .attr("width", function (d) {
-            return d * scaleFactor
-        })
-        .attr("height", barHeight - 1)
-        .style("fill", "gray")
-    bar.append("text")
+        .append("rect")
+        .attr("class", "bar")
+        .on("mouseover", onMouseOver)
+        .on("mouseout", onMouseOut)
         .attr("x", function (d) {
-            return d * scaleFactor
+            return x(d.year)
         })
-        .attr("y", barHeight / 2)
-        .attr("dy", ".35em")
-        .text(function (d) {
-            return d
+        .attr("y", function (d) {
+            return y(d.population)
         })
-        .style("font", "12px arial")
+        .attr("width", x.bandwidth())
+        .transition()
+        .ease(d3.easeLinear)
+        .duration(200)
+        .delay(function (d, i) {
+            return i * 25
+        })
+        .attr("height", function (d) {
+            return height - y(d.population)
+        })
+        .attr("fill", "#ac0")
+    function onMouseOver() {
+        d3.select(this)
+            .transition()
+            .duration(200)
+            .attr("width", x.bandwidth() + 5)
+            .attr("height", function (d) {
+                return height - y(d.population) + 10
+            })
+            .attr("y", function (d) {
+                return y(d.population) - 10
+            })
+            .attr("fill", "red")
+    }
+    function onMouseOut() {
+        d3.select(this)
+            .transition()
+            .duration(200)
+            .attr("width", x.bandwidth())
+            .attr("height", function (d) {
+                return height - y(d.population)
+            })
+            .attr("y", function (d) {
+                return y(d.population)
+            })
+            .attr("fill", "#ac0")
+        d3.selectAll(".val").remove()
+    }
 }
 
 // 绘制圆图
@@ -326,10 +396,6 @@ const lineChart = () => {
         .select("#lineChart")
         .append("g")
         .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
-    data.forEach(function (d) {
-        d.year = d.year
-        d.population = +d.population
-    })
     x.domain(
         d3.extent(data, function (d) {
             return d.year
@@ -348,9 +414,6 @@ const lineChart = () => {
         .style("fill", "none")
         .style("stroke", "#ac0")
         .style("stroke-width", "5px")
-    // 半静态半代码
-    // const path = d3.select("#sss")
-    // path.data([data]).attr("d", valueLine)
 
     svg.append("g")
         .attr("transform", "translate(0," + height + ")")

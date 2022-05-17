@@ -48,9 +48,9 @@ const openDraw = (e) => {
     ctx.stroke()
 }
 const clear = () => {
-    const w = canvas.value.width;
-    const h = canvas.value.height;
-    context.value.beginPath();
+    const w = canvas.value.width
+    const h = canvas.value.height
+    context.value.beginPath()
     context.value.clearRect(0, 0, w, h)
 }
 
