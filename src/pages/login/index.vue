@@ -24,7 +24,7 @@
                 <a target="_blank" :href="nodePath">{{ nodePath }}</a>
             </div> -->
         </div>
-        <earth class="model" />
+        <Waves :height="height" :width="width" class="model" />
     </div>
 </template>
 
@@ -34,7 +34,7 @@ import { useStore } from "vuex"
 //组件不需要注册
 import Login from "./components/Login.vue"
 import Registered from "./components/Registered.vue"
-import Earth from "@/components/Earth.vue"
+import Waves from "@/components/Waves.vue"
 
 const { proxy }: any = getCurrentInstance()
 const store = useStore()
@@ -45,6 +45,8 @@ const language: Ref<string> = ref(store.getters.language)
 const register: Ref<boolean> = ref(false)
 const timer: any = ref(false)
 const registerAnimation: Ref<string> = ref("transformX")
+const height: Ref<number> = ref(window.innerHeight)
+const width: Ref<number> = ref(window.innerWidth)
 
 const changeLan = (lang: string) => {
     proxy.$i18n.locale = lang

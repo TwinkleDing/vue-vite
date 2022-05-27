@@ -5,10 +5,11 @@
 </template>
 
 <script >
-import { onMounted, onUnmounted } from "vue"
+import { onMounted } from "vue"
 import { useStore } from "vuex"
 import * as THREE from "three"
 export default {
+    name: "Waves",
     props: {
         height: {
             type: Number,
@@ -34,7 +35,7 @@ export default {
         let particles
         let count = 0
         let mouseX = 0
-        let mouseY = 0
+        let mouseY = -200
         let windowHalfX = SCREEN_WIDTH / 2
         let windowHalfY = SCREEN_HEIGHT / 2
 
@@ -105,9 +106,10 @@ export default {
         }
         const onPointerMove = (event) => {
             if (event.isPrimary === false) return
-
-            mouseX = event.clientX - windowHalfX
-            mouseY = event.clientY - windowHalfY
+            
+            // 取消鼠标移动改变
+            // mouseX = event.clientX - windowHalfX
+            // mouseY = event.clientY - windowHalfY
         }
         const animate = () => {
             requestAnimationFrame(animate)
