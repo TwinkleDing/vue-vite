@@ -1,44 +1,30 @@
-const validatenull = (val: any) => {
-    if (typeof val === "boolean") {
-        return false
-    }
-    if (typeof val === "number") {
-        return false
-    }
-    if (val instanceof Array) {
-        if (val.length === 0) {
-            return true
-        }
-    } else if (val instanceof Object) {
-        if (JSON.stringify(val) === "{}") {
-            return true
-        }
-    } else {
-        if (
-            val === "null" ||
-            val === null ||
-            val === "undefined" ||
-            val === undefined ||
-            val === ""
-        ) {
-            return true
-        }
-        return false
-    }
-    return false
+import { validateNull } from "./utils"
+
+const SESSION = "session"
+const LOCAL = "local"
+interface storageParams {
+    name: string
+    content?: any
+    type?: string
 }
+interface storage {
+    dataType: string
+    content: any
+    dateTime: number
+}
+
 /**
  * 存储localStorage
+ * @param params 存储的值
  */
-export const setStore = (params: any = {}) => {
+export const setStore = (params: storageParams = {}) => {
     let { name, content, type } = params
-    let obj: any = {
+    let obj: storage = {
         dataType: typeof content,
         content: content,
-        type: type,
-        datetime: new Date().getTime()
+        dateTime: new Date().getTime()
     }
-    if (type) {
+    if (SESSION === type) {
         window.sessionStorage.setItem(name, JSON.stringify(obj))
     } else {
         window.localStorage.setItem(name, JSON.stringify(obj))
@@ -46,25 +32,25 @@ export const setStore = (params: any = {}) => {
 }
 /**
  * 获取localStorage
+ * @param name storage的name
+ * @returns storage的内容
  */
 
-export const getStore = (params: any = {}) => {
-    let { name, debug } = params
+export const getStore = (params: storageParams = {}) => {
+    let { name, type } = params
     let obj: any = {}
     let content: any
-    obj = window.sessionStorage.getItem(name)
-    if (validatenull(obj)) {
+    if (SESSION === type) {
+        obj = window.sessionStorage.getItem(name)
+    } else {
         obj = window.localStorage.getItem(name)
     }
-    if (validatenull(obj)) {
+    if (validateNull(obj)) {
         return
     }
     try {
         obj = JSON.parse(obj)
     } catch {
-        return obj
-    }
-    if (debug) {
         return obj
     }
     if (obj.dataType === "string") {
@@ -78,12 +64,14 @@ export const getStore = (params: any = {}) => {
     }
     return content
 }
+
 /**
- * 删除localStorage
+ *删除localStorage
+ * @param params 要删除的storage的name
  */
-export const removeStore = (params: any = {}) => {
+export const removeStore = (params: storageParams = {}) => {
     let { name, type } = params
-    if (type === "session") {
+    if (SESSION === type) {
         window.sessionStorage.removeItem(name)
     } else {
         window.localStorage.removeItem(name)
@@ -93,16 +81,20 @@ export const removeStore = (params: any = {}) => {
 /**
  * 获取全部localStorage
  */
-export const getAllStore = (params: any = {}) => {
+/**
+ *
+ * @param params 类型
+ * @returns 全部的storage
+ */
+export const getAllStore = (type?: string) => {
     let list = []
-    let { type } = params
     if (type) {
         for (let i = 0; i <= window.sessionStorage.length; i++) {
             list.push({
                 name: window.sessionStorage.key(i),
                 content: getStore({
                     name: window.sessionStorage.key(i),
-                    type: "session"
+                    type: SESSION
                 })
             })
         }
@@ -122,9 +114,12 @@ export const getAllStore = (params: any = {}) => {
 /**
  * 清空全部localStorage
  */
-export const clearStore = (params: any = {}) => {
-    let { type } = params
-    if (type) {
+/**
+ *
+ * @param params 类型
+ */
+export const clearStore = (type: string) => {
+    if (SESSION === type) {
         window.sessionStorage.clear()
     } else {
         window.localStorage.clear()

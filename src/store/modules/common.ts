@@ -65,6 +65,10 @@ const common = {
         systemIcon:
             getStore({
                 name: "systemIcon"
+            }) || null,
+        currentRoute:
+            getStore({
+                name: "currentRoute"
             }) || null
     },
     mutations: {
@@ -238,6 +242,9 @@ const common = {
             removeStore({
                 name: "routeList"
             })
+        },
+        SET_CURRENT_ROUTE(state: any, route: any) {
+            state.currentRoute = route
         }
     },
     actions: {

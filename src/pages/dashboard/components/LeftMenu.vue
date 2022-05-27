@@ -9,6 +9,7 @@
         }"
         :mode="store.getters.menuPosition ? 'vertical' : 'horizontal'"
         active-text-color="#ffffff"
+        :default-active="store.getters.currentRoute.name"
         :collapse-transition="false"
         :ellipsis="false"
         :collapse="false"

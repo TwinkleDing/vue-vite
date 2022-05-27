@@ -9,7 +9,14 @@
                             : ''
                         : item.path.includes(route.name)
                         ? lighten(store.getters.headerTheme, 30)
-                        : ''
+                        : '',
+                    color: store.getters.menuPosition
+                        ? item.path.includes(route.name)
+                            ? '#fff'
+                            : ''
+                        : item.path.includes(route.name)
+                        ? lighten(store.getters.headerTheme, 30)
+                        : '',
                 }"
                 class="menu-item-item"
                 v-if="!item.children || !item.children.length"

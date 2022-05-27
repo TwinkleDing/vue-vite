@@ -50,6 +50,7 @@ router.beforeEach(async (to: any) => {
         return "/login"
     } else {
         // 添加路由到路有记录
+        store.commit("SET_CURRENT_ROUTE", to)
         store.commit("SET_ROUTE_HISTORY", to)
     }
 })

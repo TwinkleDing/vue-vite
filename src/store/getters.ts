@@ -5,6 +5,7 @@ const getters = {
     headerTheme: (state: any) => state.common.headerTheme,
     menuTheme: (state: any) => state.common.menuTheme,
     router: (state: any) => state.common.router,
+    currentRoute: (state: any) => state.common.currentRoute,
     routeHistory: (state: any) => state.common.routeHistory,
     routeList: (state: any) => state.common.routeList,
     systemIcon: (state: any) => state.common.systemIcon,
