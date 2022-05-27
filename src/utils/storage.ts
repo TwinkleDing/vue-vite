@@ -88,7 +88,7 @@ export const removeStore = (params: storageParams = {}) => {
  */
 export const getAllStore = (type?: string) => {
     let list = []
-    if (type) {
+    if (SESSION === type) {
         for (let i = 0; i <= window.sessionStorage.length; i++) {
             list.push({
                 name: window.sessionStorage.key(i),

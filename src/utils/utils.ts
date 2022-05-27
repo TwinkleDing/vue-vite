@@ -60,12 +60,12 @@ export const validateNull = (val: any) => {
     }
     return false
 }
+
 /**
  * 获取对象类型
  * @param obj
  * @returns 对象类型
  */
-
 export const getObjType = (obj: any) => {
     const toString: string = Object.prototype.toString
     const map: obj = {

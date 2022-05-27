@@ -28,7 +28,7 @@
 </template>
 
 <script lang="ts" setup>
-import { getCurrentInstance, reactive } from "vue"
+import { reactive } from "vue"
 import { User, UserFilled } from "@element-plus/icons-vue"
 import { ElLoading, ElMessage } from "element-plus"
 import { useRouter } from "vue-router"
