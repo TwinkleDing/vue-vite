@@ -17,7 +17,7 @@ interface storage {
  * 存储localStorage
  * @param params 存储的值
  */
-export const setStore = (params: storageParams = {}) => {
+export const setStore = (params: storageParams) => {
     let { name, content, type } = params
     let obj: storage = {
         dataType: typeof content,
@@ -36,7 +36,7 @@ export const setStore = (params: storageParams = {}) => {
  * @returns storage的内容
  */
 
-export const getStore = (params: storageParams = {}) => {
+export const getStore = (params: storageParams) => {
     let { name, type } = params
     let obj: any = {}
     let content: any
@@ -69,7 +69,7 @@ export const getStore = (params: storageParams = {}) => {
  *删除localStorage
  * @param params 要删除的storage的name
  */
-export const removeStore = (params: storageParams = {}) => {
+export const removeStore = (params: storageParams) => {
     let { name, type } = params
     if (SESSION === type) {
         window.sessionStorage.removeItem(name)

@@ -69,6 +69,7 @@
     </div>
 </template>
 <script lang="ts" setup>
+import { FormInstance } from "element-plus"
 import { reactive, ref } from "vue"
 
 const formSize = ref("default")

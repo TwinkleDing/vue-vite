@@ -67,8 +67,8 @@ export const validateNull = (val: any) => {
  * @returns 对象类型
  */
 export const getObjType = (obj: any) => {
-    const toString: string = Object.prototype.toString
-    const map: obj = {
+    const toString: any = Object.prototype.toString
+    const map: any = {
         "[object Boolean]": "boolean",
         "[object Number]": "number",
         "[object String]": "string",
@@ -84,4 +84,40 @@ export const getObjType = (obj: any) => {
         return "element"
     }
     return map[toString.call(obj)]
+}
+
+/**
+ * 打开小窗口
+ */
+export const openWindow = (url: string, title: string, w: number, h: number) => {
+    // Fixes dual-screen position                            Most browsers       Firefox
+    const width = window.innerWidth
+        ? window.innerWidth
+        : document.documentElement.clientWidth
+        ? document.documentElement.clientWidth
+        : screen.width
+    const height: number = window.innerHeight
+        ? window.innerHeight
+        : document.documentElement.clientHeight
+        ? document.documentElement.clientHeight
+        : screen.height
+    const left: number = width / 2 - w / 2
+    const top: number = height / 2 - h / 2
+    const newWindow: any = window.open(
+        url,
+        title,
+        "toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=no, resizable=yes, copyhistory=no, width=" +
+            w +
+            ", height=" +
+            h +
+            ", top=" +
+            top +
+            ", left=" +
+            left
+    )
+
+    // Puts focus on the newWindow
+    if (window.focus) {
+        newWindow.focus()
+    }
 }
