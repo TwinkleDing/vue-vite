@@ -24,7 +24,7 @@
                 <a target="_blank" :href="nodePath">{{ nodePath }}</a>
             </div> -->
         </div>
-        <Waves :height="height" :width="width" class="model" />
+        <Waves class="model" />
     </div>
 </template>
 
@@ -45,8 +45,6 @@ const language: Ref<string> = ref(store.getters.language)
 const register: Ref<boolean> = ref(false)
 const timer: any = ref(false)
 const registerAnimation: Ref<string> = ref("transformX")
-const height: Ref<number> = ref(window.innerHeight)
-const width: Ref<number> = ref(window.innerWidth)
 
 const changeLan = (lang: string) => {
     proxy.$i18n.locale = lang

@@ -4,55 +4,44 @@
     </div>
 </template>
 
-<script >
+<script lang="ts">
 import { onMounted } from "vue"
 import { useStore } from "vuex"
 import * as THREE from "three"
 export default {
     name: "Waves",
-    props: {
-        height: {
-            type: Number,
-            default: 765
-        },
-        width: {
-            type: Number,
-            default: 1360
-        }
-    },
-    setup(props) {
+    setup() {
         const store = useStore()
-        const SCREEN_HEIGHT = props.height
-        const SCREEN_WIDTH = props.width
-        const SEPARATION = 100
-        const AMOUNTX = 50
-        const AMOUNTY = 50
 
-        let container
-        let camera
-        let scene
-        let renderer
-        let particles
-        let count = 0
-        let mouseX = 0
-        let mouseY = -200
-        let windowHalfX = SCREEN_WIDTH / 2
-        let windowHalfY = SCREEN_HEIGHT / 2
+        const height: number = window.innerHeight
+        const width: number = window.innerWidth
+        const SCREEN_HEIGHT: number = height
+        const SCREEN_WIDTH: number = width
+        const SEPARATION: number = 100
+        const AMOUNT_X: number = 50
+        const AMOUNT_Y: number = 50
+
+        let container: any
+        let particles: any
+        let renderer: any
+        let camera: any
+        let scene: any
+        let count: number = 0
 
         const init = () => {
             camera = new THREE.PerspectiveCamera(75, SCREEN_WIDTH / SCREEN_HEIGHT, 1, 10000)
             camera.position.z = 1000
             scene = new THREE.Scene()
-            const numParticles = AMOUNTX * AMOUNTY
+            const numParticles = AMOUNT_X * AMOUNT_Y
             const positions = new Float32Array(numParticles * 3)
             const scales = new Float32Array(numParticles)
             let i = 0,
                 j = 0
-            for (let ix = 0; ix < AMOUNTX; ix++) {
-                for (let iy = 0; iy < AMOUNTY; iy++) {
-                    positions[i] = ix * SEPARATION - (AMOUNTX * SEPARATION) / 2 // x
+            for (let ix = 0; ix < AMOUNT_X; ix++) {
+                for (let iy = 0; iy < AMOUNT_Y; iy++) {
+                    positions[i] = ix * SEPARATION - (AMOUNT_X * SEPARATION) / 2 // x
                     positions[i + 1] = 0 // y
-                    positions[i + 2] = iy * SEPARATION - (AMOUNTY * SEPARATION) / 2 // z
+                    positions[i + 2] = iy * SEPARATION - (AMOUNT_Y * SEPARATION) / 2 // z
 
                     scales[j] = 1
 
@@ -63,7 +52,6 @@ export default {
             const geometry = new THREE.BufferGeometry()
             geometry.setAttribute("position", new THREE.BufferAttribute(positions, 3))
             geometry.setAttribute("scale", new THREE.BufferAttribute(scales, 1))
-
             const material = new THREE.ShaderMaterial({
                 uniforms: {
                     color: { value: new THREE.Color(store.getters.systemTheme) }
@@ -98,18 +86,12 @@ export default {
         }
 
         const onWindowResize = () => {
-            windowHalfX = SCREEN_WIDTH / 2
-            windowHalfY = SCREEN_HEIGHT / 2
             camera.aspect = SCREEN_WIDTH / SCREEN_HEIGHT
             camera.updateProjectionMatrix()
             renderer.setSize(SCREEN_WIDTH, SCREEN_HEIGHT)
         }
-        const onPointerMove = (event) => {
+        const onPointerMove = (event: any) => {
             if (event.isPrimary === false) return
-            
-            // 取消鼠标移动改变
-            // mouseX = event.clientX - windowHalfX
-            // mouseY = event.clientY - windowHalfY
         }
         const animate = () => {
             requestAnimationFrame(animate)
@@ -117,16 +99,16 @@ export default {
         }
 
         const render = () => {
-            camera.position.x += (mouseX - camera.position.x) * 0.05
-            camera.position.y += (-mouseY - camera.position.y) * 0.05
+            camera.position.x += camera.position.x * 0.05
+            camera.position.y += (200 - camera.position.y) * 0.05
             camera.lookAt(scene.position)
             const positions = particles.geometry.attributes.position.array
             const scales = particles.geometry.attributes.scale.array
             let i = 0
             let j = 0
 
-            for (let ix = 0; ix < AMOUNTX; ix++) {
-                for (let iy = 0; iy < AMOUNTY; iy++) {
+            for (let ix = 0; ix < AMOUNT_X; ix++) {
+                for (let iy = 0; iy < AMOUNT_Y; iy++) {
                     positions[i + 1] =
                         Math.sin((ix + count) * 0.3) * 50 + Math.sin((iy + count) * 0.5) * 50
 
