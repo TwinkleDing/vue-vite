@@ -28,6 +28,7 @@ export default {
     my: "My Info",
     d3: "d3",
     canvas: "Canvas Draw",
+    media: "Media",
     cancel: "Cancel",
     confirm: "OK",
     language: "Language",

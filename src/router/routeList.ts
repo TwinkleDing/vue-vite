@@ -110,7 +110,7 @@ const routeList: RouterItem[] = [
         name: "d3",
         meta: {
             label: "d3",
-            icon: "school",
+            icon: "pie-chart",
             permission: true
         },
         component: "d3"
@@ -120,10 +120,20 @@ const routeList: RouterItem[] = [
         name: "canvas",
         meta: {
             label: "canvas",
-            icon: "school",
+            icon: "opportunity",
             permission: true
         },
         component: "canvas"
+    },
+    {
+        path: "/media",
+        name: "media",
+        meta: {
+            label: "media",
+            icon: "video-camera-filled",
+            permission: true
+        },
+        component: "media"
     }
 ]
 
