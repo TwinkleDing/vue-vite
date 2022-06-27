@@ -4,7 +4,9 @@
             class="login-box-content"
             :class="registerAnimation === 'transformX' ? 'transformX' : ''"
         >
-            <div class="title text-center">{{ $t("login.title") }}</div>
+            <div class="title text-center" :style="{color: store.getters.systemTheme}">
+                {{ $t("login.title") }}
+            </div>
             <login v-if="!register" @register="registerOpen" />
             <registered v-else @register="registerClose" />
             <div class="language">

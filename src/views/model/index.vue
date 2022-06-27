@@ -1,19 +1,19 @@
 <template>
     <div class="model">
         <el-tabs class="model-tabs" type="border-card" @tab-click="tabClick" tab-position="left">
-            <el-tab-pane key="robot" label="Robot">
+            <el-tab-pane key="robot" label="Robot" :lazy="true">
                 <robot :height="height" :width="width" v-if="showModel === 'Robot'" />
             </el-tab-pane>
-            <el-tab-pane key="soldier" label="Soldier">
+            <el-tab-pane key="soldier" label="Soldier" :lazy="true">
                 <soldier :height="height" :width="width" v-if="showModel === 'Soldier'" />
             </el-tab-pane>
-            <el-tab-pane key="three7" label="Three7">
+            <el-tab-pane key="three7" label="Three7" :lazy="true">
                 <three7 :height="height" :width="width" v-if="showModel === 'Three7'" />
             </el-tab-pane>
-            <el-tab-pane key="earth" label="earth">
+            <el-tab-pane key="earth" label="earth" :lazy="true">
                 <earth :height="height" :width="width" v-if="showModel === 'earth'" />
             </el-tab-pane>
-            <el-tab-pane key="waves" label="waves">
+            <el-tab-pane key="waves" label="waves" :lazy="true">
                 <waves :height="height" :width="width" v-if="showModel === 'waves'" />
             </el-tab-pane>
         </el-tabs>
