@@ -27,7 +27,7 @@ export default {
     permission: "Permission",
     my: "My Info",
     d3: "d3",
-    canvas: "canvas",
+    canvas: "Canvas Draw",
     cancel: "Cancel",
     confirm: "OK",
     language: "Language",

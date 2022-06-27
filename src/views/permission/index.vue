@@ -5,7 +5,7 @@
         <el-table-column prop="userName" label="userName" width="180" />
         <el-table-column prop="description" label="description" />
         <el-table-column label="Operations">
-            <template #default="scope">
+            <template>
                 <el-button type="primary" size="small" @click="permissionRoute">
                     权限页面设置
                 </el-button>

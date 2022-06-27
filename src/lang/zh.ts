@@ -27,7 +27,7 @@ export default {
     permission: "角色权限",
     my: "我的信息",
     d3: "d3",
-    canvas: "canvas",
+    canvas: "canvas 画布",
     cancel: "取消",
     confirm: "确认",
     language: "选择语言",

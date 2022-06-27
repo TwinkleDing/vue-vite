@@ -68,18 +68,18 @@ module.exports = {
         "object-shorthand": 0, //强制对象字面量缩写语法
         quotes: [1, "double"] //引号类型 `` "" ''
     },
-    overrides: [
-        {
-            files: ["**/__tests__/*.{j,t}s?(x)", "**/tests/unit/**/*.spec.{j,t}s?(x)"],
-            env: {
-                jest: true
-            }
+    overrides: [{
+        files: ["**/__tests__/*.{j,t}s?(x)", "**/tests/unit/**/*.spec.{j,t}s?(x)"],
+        env: {
+            jest: true
         }
-    ],
+    }],
     settings: {
         "import/resolver": {
             alias: {
-                map: [["@", "./src/"]]
+                map: [
+                    ["@", "./src/"]
+                ]
             }
         }
     }

@@ -26,6 +26,7 @@ const mouseY = ref(0)
 const color = ref(store.getters.systemTheme)
 
 const drawStart = (e) => {
+    context.value.beginPath()
     mouseBeginX.value = e.clientX - canvas.value.offsetLeft - 200
     mouseBeginY.value = e.clientY - canvas.value.offsetTop - 100
     context.value.moveTo(mouseBeginX.value, mouseBeginY.value)
@@ -38,10 +39,13 @@ const drawing = (e) => {
 }
 const drawEnd = (e) => {
     start.value = false
+    let ctx = context.value
+     ctx.closePath();
 }
 const openDraw = (e) => {
     let ctx = context.value
     ctx.strokeStyle = color.value
+    console.log(color.value)
     mouseX.value = e.clientX - canvas.value.offsetLeft - 200
     mouseY.value = e.clientY - canvas.value.offsetTop - 100
     ctx.lineTo(mouseX.value, mouseY.value)
@@ -61,6 +65,9 @@ onMounted(() => {
 </script>
 
 <style scoped>
+.canvas {
+    border: 1px  solid #000;
+}
 .clear-button {
     position: absolute;
 }
