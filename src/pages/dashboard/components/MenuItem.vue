@@ -14,8 +14,6 @@
                         ? item.path.includes(route.name)
                             ? '#fff'
                             : ''
-                        : item.path.includes(route.name)
-                        ? lighten(store.getters.headerTheme, 30)
                         : ''
                 }"
                 class="menu-item-item"
