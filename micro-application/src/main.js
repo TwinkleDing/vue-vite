@@ -16,7 +16,7 @@ let instance = null;
 function render() {
     const proxyPrefix =
         process.env.NODE_ENV === 'development' ?
-        '/Micro' :
+        '/micro' :
         window.systemConfig.prod;
     const prefixPath =
         process.env.NODE_ENV === 'development' ?

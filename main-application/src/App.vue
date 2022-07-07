@@ -1,5 +1,6 @@
 <template>
     <router-view />
+    <div id="frame"></div>
 </template>
 <script lang="ts">
 import { defineComponent } from "vue"

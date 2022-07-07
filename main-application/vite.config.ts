@@ -32,6 +32,7 @@ export default defineConfig({
         open: true
     },
     build: {
+        outDir:"../dist",
         rollupOptions: {
             output: {
                 manualChunks(id) {
@@ -40,10 +41,11 @@ export default defineConfig({
                     }
                 },
                 assetFileNames: 'static/[ext]/[name]-[hash].[ext]'
-            },
-            brotliSize: false,
-            target: 'esnext',
-            minify: 'esbuild'
-        }
+            }
+        },
+        brotliSize: false,
+        target: 'esnext',
+        minify: 'esbuild'
     }
 })
+
