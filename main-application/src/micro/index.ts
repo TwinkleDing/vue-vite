@@ -5,6 +5,8 @@ import { registerMicroApps, addGlobalUncaughtErrorHandler, start } from "qiankun
 // 子应用注册信息
 import apps from "./apps"
 
+window.__POWERED_BY_QIANKUN__ = true
+
 /**
  * 注册子应用
  * 第一个参数 - 子应用的注册信息
