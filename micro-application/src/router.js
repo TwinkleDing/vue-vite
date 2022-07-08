@@ -14,7 +14,7 @@ const router = createRouter({
         path: '/home',
         component: () => import('@/view/home.vue'),
     }],
-    history: createWebHistory(window.__POWERED_BY_QIANKUN__ ? '/Micro' : '/'),
+    history: createWebHistory(window.__POWERED_BY_QIANKUN__ ? '/micro' : '/'),
     scrollBehavior(to, from, savedPosition) {
         const scrollBehavior = {
             el: '#layout-main',

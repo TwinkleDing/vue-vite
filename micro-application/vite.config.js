@@ -11,6 +11,7 @@ import {
 import {
   visualizer
 } from 'rollup-plugin-visualizer';
+import qiankun from 'vite-plugin-qiankun';
 
 export default defineConfig({
   plugins: [
@@ -22,6 +23,9 @@ export default defineConfig({
       resolvers: [ElementPlusResolver()]
     }),
     visualizer(),
+    qiankun('micro', {
+      useDevMode: true
+    })
   ],
   base: "/",
   mode: "development",
@@ -30,11 +34,12 @@ export default defineConfig({
     alias: {
       "@": path.resolve(__dirname, "src"),
       "vue-i18n": "vue-i18n/dist/vue-i18n.cjs.js"
-    }
+    },
   },
   server: {
     host: "0.0.0.0",
     port: 668,
+    origin: '//localhost:668',
     open: true
   },
   build: {
