@@ -6,12 +6,6 @@ import {
 const router = createRouter({
     routes: [{
         path: '/',
-        redirect:"/login"
-    },{
-        path: '/login',
-        component: () => import('@/view/login.vue'),
-    }, {
-        path: '/home',
         component: () => import('@/view/home.vue'),
     }],
     history: createWebHistory(window.__POWERED_BY_QIANKUN__ ? '/micro' : '/'),
