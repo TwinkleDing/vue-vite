@@ -15,22 +15,21 @@ const router: any = new (createRouter as any)({
             redirect: "/home"
         },
         {
-            path: "/index",
-            name: "index",
-            redirect: "/home",
-            component: () =>
-                import(/* webpackChunkName: 'dashboard' */ "@/pages/dashboard/index.vue")
-        },
-        {
             path: "/login",
             name: "login",
             component: () => import(/* webpackChunkName: 'login' */ "@/pages/login/index.vue")
         },
         {
-            path: "/:cathchAll(.*)",
-            name: "404",
-            component: () => import("@/pages/notFound.vue")
-        }
+            path: "/micro",
+            name: "index",
+            component: () =>
+                import(/* webpackChunkName: 'dashboard' */ "@/pages/dashboard/index.vue")
+        },
+        // {
+        //     path: "/:cathchAll(.*)",
+        //     name: "404",
+        //     component: () => import("@/pages/notFound.vue")
+        // }
     ]
 })
 

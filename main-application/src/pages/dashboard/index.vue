@@ -12,7 +12,10 @@
             <div class="pages-right">
                 <tabs v-if="store.getters.tabsShow" />
                 <div :class="['right-content', !store.getters.tabsShow || 'mg-t-40']">
-                    <router-view></router-view>
+                    <div v-show="micro" id="frame"></div>
+                    <div v-show="!micro" id="main">
+                        <router-view></router-view>
+                    </div>
                 </div>
             </div>
         </div>
@@ -20,7 +23,7 @@
     </div>
 </template>
 <script lang="ts">
-import { defineComponent } from "vue"
+import { defineComponent, ref, Ref, watch } from "vue"
 import { useStore } from "vuex"
 import { useRoute } from "vue-router"
 import LeftMenu from "./components/LeftMenu.vue"
@@ -28,6 +31,7 @@ import { RouterItem } from "@/utils/interface"
 import SystemIcon from "./components/SystemIcon.vue"
 import HeaderTop from "./components/HeaderTop.vue"
 import Tabs from "./components/Tabs.vue"
+import initMicro from "@/micro"
 
 export default defineComponent({
     name: "Dashboard",
@@ -35,9 +39,34 @@ export default defineComponent({
     setup() {
         const store = useStore()
         const route = useRoute()
+        const micro: Ref<boolean> = ref(false)
         const menuList: RouterItem[] = [...store.getters.routeList]
 
+         watch(
+                () => route,
+                () => {
+                    if(route.path.includes('micro')) {
+                        micro.value = true
+                        const apps = [
+                            {
+                                name: "MicroApp",
+                                entry: "//localhost:668",
+                                container: "#frame",
+                                activeRule: "/micro",
+                            }
+                        ]
+                        initMicro(apps)
+                    } else {
+                        micro.value = false
+                    }
+                },
+                {
+                    immediate: true, // 立即执行
+                    deep: true // 深度监听
+                }
+            )
         return {
+            micro,
             menuList,
             route,
             store
