@@ -1,8 +1,6 @@
 <template>
     <div>home</div>
 </template>
-<script lang="ts" setup>
-</script>
+<script lang="ts"></script>
 
-<style scoped>
-</style>
+<style scoped></style>

@@ -19,40 +19,49 @@
         </el-tabs>
     </div>
 </template>
-<script lang="ts" setup>
-import { ref, Ref } from "vue"
-import robot from "./components/robot.vue"
-import soldier from "./components/soldier.vue"
-import three7 from "./components/three7.vue"
-import earth from "@/components/Earth.vue"
-import waves from "./components/waves.vue"
-import { useRoute } from "vue-router"
-// loader/gltf
-// ammo/cloth
-// controls/fly
+<script lang="ts">
+    import { defineComponent, ref, Ref } from "vue"
+    import robot from "./components/robot.vue"
+    import soldier from "./components/soldier.vue"
+    import three7 from "./components/three7.vue"
+    import earth from "@/components/Earth.vue"
+    import waves from "./components/waves.vue"
+    import { useRoute } from "vue-router"
+    // loader/gltf
+    // ammo/cloth
+    // controls/fly
+    export default defineComponent({
+        setup() {
+            const route = useRoute()
 
-const route = useRoute()
+            const showModel: Ref<string> = ref("Robot")
 
-const showModel: Ref<string> = ref("Robot")
+            const height: Ref<number> = ref(765)
+            const width: Ref<number> = ref(1360)
 
-const height: Ref<number> = ref(765)
-const width: Ref<number> = ref(1360)
-
-const tabClick = (e: any) => {
-    showModel.value = e.props.label
-}
+            const tabClick = (e: any) => {
+                showModel.value = e.props.label
+            }
+            return {
+                showModel,
+                height,
+                width,
+                tabClick
+            }
+        }
+    })
 </script>
 
 <style lang="scss">
-.lil-gui.autoPlace {
-    top: 120px !important;
-    position: fixed;
-    right: 20px;
-}
-.model {
-    height: 795px;
-    &-tabs {
-        height: 100%;
+    .lil-gui.autoPlace {
+        top: 120px !important;
+        position: fixed;
+        right: 20px;
     }
-}
+    .model {
+        height: 795px;
+        &-tabs {
+            height: 100%;
+        }
+    }
 </style>
