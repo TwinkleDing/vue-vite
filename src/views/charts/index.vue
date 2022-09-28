@@ -4,7 +4,13 @@
     </div>
 </template>
 <script lang="ts">
+    import { defineComponent } from "vue"
     import VChart from "./chart.vue"
+    export default defineComponent({
+        components: {
+            VChart
+        }
+    })
 </script>
 
 <style scoped lang="scss">

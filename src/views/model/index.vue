@@ -31,6 +31,13 @@
     // ammo/cloth
     // controls/fly
     export default defineComponent({
+        components: {
+            robot,
+            soldier,
+            three7,
+            earth,
+            waves
+        },
         setup() {
             const route = useRoute()
 
