@@ -1,6 +1,6 @@
 <template>
     <el-menu
-        class="left-menu"
+        class="left-menu scrollbar header-scrollbar-color"
         :text-color="store.getters.menuTheme === '#ffffff' ? '#303133' : '#ffffffA6'"
         :style="{
             background: store.getters.menuPosition
@@ -49,5 +49,7 @@ export default defineComponent({
 <style lang="scss">
 .left-menu {
     height: 100%;
+    overflow-x: auto;
+    overflow-y: hidden;
 }
 </style>
