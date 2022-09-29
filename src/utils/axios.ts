@@ -25,7 +25,7 @@ axios.interceptors.request.use(
         const meta = config.meta || {}
 
         config.headers["Content-Type"] = "application/json;charset=utf-8"
-        const token: string = store.getState()?.token?.value || ""
+        const token: string = store.state.token || ""
 
         if (token) {
             config.headers.Authorization = token
@@ -49,18 +49,18 @@ axios.interceptors.request.use(
 axios.interceptors.response.use(
     (res: any) => {
         NProgress.done()
-        const status = res.status || 200
-        const message = res.data || "未知错误"
+        const status = parseInt(res.status) || 200
+        
         // 如果是401则跳转到登录页面
-
         if (status === 401) {
             window.location.hash = "login"
         }
-        // 如果请求为非200否者默认统一处理
-        if (status !== 200) {
-            return Promise.reject(message)
-        }
-        return res.data
+        // // 如果请求为非200否者默认统一处理
+        // const message = res.data || "未知错误"
+        // if (status !== 200) {
+        //     return Promise.reject(message)
+        // }
+        return Promise.resolve(res.data)
     },
     (error) => {
         NProgress.done()

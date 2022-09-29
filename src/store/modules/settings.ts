@@ -1,16 +1,14 @@
 import { setStore, getStore, removeStore } from "@/utils/storage"
 import router from "@/router"
-import { UserInfo } from "@/utils/interface"
 import { lighten } from "@/utils/themeColor"
 import routeList from "@/router/routeList"
-import { RouterItem } from "@/utils/interface"
 import {
     APP_PRESET_COLOR_LIST,
     HEADER_PRESET_BG_COLOR_LIST,
     SIDE_BAR_BG_COLOR_LIST
 } from "@/settings/designSetting"
 
-const common = {
+const settings = {
     state: {
         language:
             getStore({
@@ -46,10 +44,6 @@ const common = {
             }) === undefined
                 ? true
                 : getStore({ name: "menuPosition" }),
-        userInfo:
-            getStore({
-                name: "userInfo"
-            }) || {},
         routeHistory: getStore({
             name: "routeHistory"
         }) || [
@@ -149,19 +143,7 @@ const common = {
                 content: status
             })
         },
-        SET_USER_INFO(state: any, userInfo: UserInfo) {
-            state.userInfo = userInfo
-            setStore({
-                name: "userInfo",
-                content: userInfo
-            })
-        },
-        REMOVE_USER_INFO(state: any) {
-            state.userInfo = {}
-            removeStore({
-                name: "userInfo"
-            })
-        },
+        
         SET_ROUTE_HISTORY(state: any, to: any) {
             if (Array.isArray(to)) {
                 state.routeHistory = to
@@ -264,4 +246,4 @@ const common = {
         }
     }
 }
-export default common
+export default settings

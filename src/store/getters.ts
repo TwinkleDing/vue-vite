@@ -1,16 +1,16 @@
 const getters = {
-    language: (state: any) => state.common.language,
-    userInfo: (state: any) => state.common.userInfo,
-    systemTheme: (state: any) => state.common.systemTheme,
-    headerTheme: (state: any) => state.common.headerTheme,
-    menuTheme: (state: any) => state.common.menuTheme,
-    router: (state: any) => state.common.router,
-    currentRoute: (state: any) => state.common.currentRoute,
-    routeHistory: (state: any) => state.common.routeHistory,
-    routeList: (state: any) => state.common.routeList,
-    systemIcon: (state: any) => state.common.systemIcon,
-    tabsShow: (state: any) => state.common.tabsShow,
-    menuPosition: (state: any) => state.common.menuPosition,
-    tabsType: (state: any) => state.common.tabsType
+    language: (state: any) => state.settings.language,
+    userInfo: (state: any) => state.user.userInfo,
+    systemTheme: (state: any) => state.settings.systemTheme,
+    headerTheme: (state: any) => state.settings.headerTheme,
+    menuTheme: (state: any) => state.settings.menuTheme,
+    router: (state: any) => state.settings.router,
+    currentRoute: (state: any) => state.settings.currentRoute,
+    routeHistory: (state: any) => state.settings.routeHistory,
+    routeList: (state: any) => state.settings.routeList,
+    systemIcon: (state: any) => state.settings.systemIcon,
+    tabsShow: (state: any) => state.settings.tabsShow,
+    menuPosition: (state: any) => state.settings.menuPosition,
+    tabsType: (state: any) => state.settings.tabsType
 }
 export default getters

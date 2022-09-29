@@ -35,7 +35,7 @@ const router: any = new (createRouter as any)({
 })
 
 router.beforeEach(async (to: any) => {
-    if (!firstGetRoute && store.getters.userInfo.userId) {
+    if (!firstGetRoute && store.getters.userInfo.userName) {
         firstGetRoute = true
         const list = [...(await store.dispatch("getRouteList"))]
         const routerList = filterAsyncRouter(list)
@@ -46,7 +46,7 @@ router.beforeEach(async (to: any) => {
         return to.fullPath
     } else if (to.fullPath.includes("login")) {
         store.commit("REMOVE_USER_INFO")
-    } else if (!store.getters.userInfo.userId) {
+    } else if (!store.getters.userInfo.userName) {
         return "/login"
     } else {
         // 添加路由到路有记录
