@@ -2,6 +2,7 @@ import { setStore, getStore, removeStore } from "@/utils/storage"
 import router from "@/router"
 import { lighten } from "@/utils/themeColor"
 import routeList from "@/router/routeList"
+import { routerApi } from "@/api/common"
 import {
     APP_PRESET_COLOR_LIST,
     HEADER_PRESET_BG_COLOR_LIST,
@@ -143,7 +144,7 @@ const settings = {
                 content: status
             })
         },
-        
+
         SET_ROUTE_HISTORY(state: any, to: any) {
             if (Array.isArray(to)) {
                 state.routeHistory = to
@@ -237,12 +238,23 @@ const settings = {
         },
         getRouteList(context: any) {
             return new Promise((resolve: any) => {
+                routerApi().then((res) => {
+                    const list = res.data
+                    context.commit("SET_ROUTE_LIST", list)
+                    resolve(list)
+                })
+            })
+
+            // /*
+            // 本体获取路由
+            return new Promise((resolve: any) => {
                 const list = getStore({ name: "routeList" })
                     ? getStore({ name: "routeList" })
                     : routeList
                 context.commit("SET_ROUTE_LIST", list)
                 resolve(list)
             })
+            // */
         }
     }
 }

@@ -10,7 +10,7 @@
         </div>
         <el-dropdown placement="bottom-end">
             <div class="avatar">
-                <span>{{ userInfo.account }}</span>
+                <span>{{ userInfo.userName }}</span>
                 <el-avatar :size="size" :src="imgUrl" />
             </div>
             <template #dropdown>

@@ -3,7 +3,7 @@ import store from "@/store"
 import Empty from "@/pages/Empty.vue"
 import { RouterItem } from "@/utils/interface"
 
-let firstGetRoute = false
+let firstGetRoute = true
 const _importComponent = (file: string) => () => import(`../views/${file}/index.vue`)
 
 const router: any = new (createRouter as any)({
@@ -35,8 +35,8 @@ const router: any = new (createRouter as any)({
 })
 
 router.beforeEach(async (to: any) => {
-    if (!firstGetRoute && store.getters.userInfo.userName) {
-        firstGetRoute = true
+    if (firstGetRoute && store.getters.userInfo.userName) {
+        firstGetRoute = false
         const list = [...(await store.dispatch("getRouteList"))]
         const routerList = filterAsyncRouter(list)
         routerList.map((item: RouterItem) => {
