@@ -16,6 +16,9 @@
             <el-tab-pane key="waves" label="waves" :lazy="true">
                 <waves :height="height" :width="width" v-if="showModel === 'waves'" />
             </el-tab-pane>
+            <el-tab-pane key="bee" label="bee" :lazy="true">
+                <bee :height="height" :width="width" v-if="showModel === 'bee'" />
+            </el-tab-pane>
         </el-tabs>
     </div>
 </template>
@@ -26,6 +29,7 @@
     import three7 from "./components/three7.vue"
     import earth from "@/components/Earth.vue"
     import waves from "./components/waves.vue"
+    import bee from "./components/bee.vue"
     import { useRoute } from "vue-router"
     // loader/gltf
     // ammo/cloth
@@ -36,7 +40,8 @@
             soldier,
             three7,
             earth,
-            waves
+            waves,
+            bee
         },
         setup() {
             const route = useRoute()

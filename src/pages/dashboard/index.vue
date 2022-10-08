@@ -50,7 +50,7 @@ export default defineComponent({
 .pages {
     height: 100%;
     width: 100%;
-    min-width: 1000px;
+    min-width: 1200px;
     &-content {
         width: 100%;
         height: calc(100% - 60px);
