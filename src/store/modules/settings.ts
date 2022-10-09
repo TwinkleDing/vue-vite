@@ -67,6 +67,9 @@ const settings = {
             }) || null
     },
     mutations: {
+        /**
+         * 设置语言/正反向语言
+         */
         SET_LANGUAGE: (state: any, language: string) => {
             state.language = language
             var head = document.getElementsByTagName("head")[0]
@@ -81,7 +84,7 @@ const settings = {
                     }
                 }
             }
-            if (language === "fan") {
+            if (language === "en") {
                 loadStyles("../../css/ar_public.css")
             } else {
                 loadStyles("../../css/public.css")
@@ -99,6 +102,9 @@ const settings = {
                 content: state.language
             })
         },
+        /**
+         * 设置系统颜色
+         */
         SET_SYSTEM_THEME(state: any, color: string) {
             state.systemTheme = color
             this.commit("SET_ALL_THEME_COLOR")
@@ -107,6 +113,9 @@ const settings = {
                 content: color
             })
         },
+        /**
+         * 设置顶部颜色
+         */
         SET_HEADER_THEME(state: any, color: string) {
             state.headerTheme = color
             this.commit("SET_ALL_THEME_COLOR")
@@ -115,6 +124,9 @@ const settings = {
                 content: color
             })
         },
+        /**
+         * 设置菜单颜色
+         */
         SET_MENU_THEME(state: any, color: string) {
             state.menuTheme = color
             this.commit("SET_ALL_THEME_COLOR")
@@ -123,6 +135,9 @@ const settings = {
                 content: color
             })
         },
+        /**
+         * 设置标签页是否想展示
+         */
         SET_TABS_SHOW(state: any, status: boolean) {
             state.tabsShow = status
             setStore({
@@ -130,6 +145,9 @@ const settings = {
                 content: status
             })
         },
+        /**
+         * 设置标签页样式
+         */
         SET_TABS_TYPE(state: any, value: number) {
             state.tabsType = value
             setStore({
@@ -137,6 +155,9 @@ const settings = {
                 content: value
             })
         },
+        /**
+         * 设置菜单的位置
+         */
         SET_MENU_POSITION(state: any, status: boolean) {
             state.menuPosition = status
             setStore({
@@ -144,7 +165,9 @@ const settings = {
                 content: status
             })
         },
-
+        /**
+         * 设置路由历史
+         */
         SET_ROUTE_HISTORY(state: any, to: any) {
             if (Array.isArray(to)) {
                 state.routeHistory = to
@@ -175,7 +198,10 @@ const settings = {
                 })
             }
         },
-        REMOVE_ROUTE_HISTORY(state: any, index: number) {
+        /**
+         * 移除指定路由历史
+         */
+        REMOVE_ROUTE_HISTORY_INDEX(state: any, index: number) {
             const history = state.routeHistory.splice(index, 1)
             if (!state.routeHistory.length) {
                 state.routeHistory = [
@@ -186,13 +212,30 @@ const settings = {
                 ]
             }
             if (history[0].path === router.currentRoute.value.path) {
-                router.push(state.routeHistory[state.routeHistory.length - 1].path)
+                router.push(state.routeHistory[index - 1].path)
             }
             setStore({
                 name: "routeHistory",
                 content: state.routeHistory
             })
         },
+        /**
+         * 移除全部路由历史
+         */
+        REMOVE_ROUTER_HISTORY(state: any) {
+            state.routeHistory = [
+                {
+                    label: "home",
+                    path: "/home"
+                }
+            ]
+            removeStore({
+                name: "routeHistory"
+            })
+        },
+        /**
+         * 设置路由列表
+         */
         SET_ROUTE_LIST(state: any, list: any) {
             state.routeList = list
             setStore({
@@ -200,6 +243,18 @@ const settings = {
                 content: state.routeList
             })
         },
+        /**
+         * 移除路由列表
+         */
+        REMOVE_ROUTER_LIST(state: any) {
+            state.routeList = []
+            removeStore({
+                name: "routeList"
+            })
+        },
+        /**
+         * 设置系统设置icon位置
+         */
         SET_SYSTEM_ICON_POSITION(state: any, position: any) {
             state.systemIcon = position
             setStore({
@@ -207,6 +262,9 @@ const settings = {
                 content: state.systemIcon
             })
         },
+        /**
+         * 颜色设置
+         */
         SET_ALL_THEME_COLOR(state: any) {
             let attribute = ""
             attribute += `--systemThemeColor: ${state.systemTheme};`
@@ -220,28 +278,31 @@ const settings = {
                 root.setAttribute("style", attribute)
             }
         },
-        REMOVE_ROUTER_LIST(state: any) {
-            state.routeList = []
-            removeStore({
-                name: "routeList"
-            })
-        },
+        /**
+         * 设置当前路由
+         */
         SET_CURRENT_ROUTE(state: any, route: any) {
             state.currentRoute = route
         }
     },
     actions: {
+        /**
+         * 设置动态路由
+         */
         router() {
             return new Promise((resolve: any) => {
                 resolve(routeList)
             })
         },
+        /**
+         * 获取路由列表
+         */
         getRouteList(context: any) {
             return new Promise((resolve: any) => {
                 routerApi().then((res) => {
-                    const list = res.data
-                    context.commit("SET_ROUTE_LIST", list)
-                    resolve(list)
+                    context.state.routeList = res.data
+                    context.commit("SET_ROUTE_LIST", context.state.routeList)
+                    resolve(context.state.routeList)
                 })
             })
 
@@ -255,6 +316,13 @@ const settings = {
                 resolve(list)
             })
             // */
+        },
+        /**
+         * 移除所有非必要信息
+         */
+        removeAll(context: any) {
+            context.commit("REMOVE_ROUTER_LIST")
+            context.commit("REMOVE_USER_INFO")
         }
     }
 }

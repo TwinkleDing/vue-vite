@@ -9,6 +9,9 @@ const user = {
             }) || {}
     },
     mutations: {
+        /**
+         * 设置用户信息
+         */
         SET_USER_INFO(state: any, userInfo: UserInfo) {
             state.userInfo = userInfo
             setStore({
@@ -16,6 +19,9 @@ const user = {
                 content: userInfo
             })
         },
+        /**
+         * 移除用户信息
+         */
         REMOVE_USER_INFO(state: any) {
             state.userInfo = {}
             removeStore({

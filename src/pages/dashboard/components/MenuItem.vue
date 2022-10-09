@@ -2,6 +2,9 @@
     <div :class="[!store.getters.menuPosition ? 'flex' : '', 'menu-item']">
         <template v-for="item in menu" :key="item.name">
             <el-menu-item
+                v-if="!item.children || !item.children.length"
+                class="menu-item-item"
+                :index="item.name"
                 :style="{
                     background: store.getters.menuPosition
                         ? item.path.includes(route.name)
@@ -16,9 +19,6 @@
                             : ''
                         : ''
                 }"
-                class="menu-item-item"
-                v-if="!item.children || !item.children.length"
-                :index="item.name"
                 @click="open(item)"
             >
                 <template #title>

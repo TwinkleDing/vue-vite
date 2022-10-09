@@ -1,3 +1,4 @@
-body {
-    direction: ltr;
+body,
+div {
+    direction: ltr !important;
 }

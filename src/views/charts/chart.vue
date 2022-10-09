@@ -233,6 +233,9 @@
                 var chartDom = document.getElementById("main")!
                 var myChart = echarts.init(chartDom)
                 option && myChart.setOption(option)
+                window.onresize = () => {
+                    myChart.resize()
+                }
             })
         }
     })

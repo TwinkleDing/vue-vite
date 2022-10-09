@@ -47,6 +47,7 @@ router.beforeEach(async (to: any) => {
     } else if (to.fullPath.includes("login")) {
         store.commit("REMOVE_USER_INFO")
     } else if (!store.getters.userInfo.userName) {
+        store.dispatch("removeAll")
         return "/login"
     } else {
         // 添加路由到路有记录

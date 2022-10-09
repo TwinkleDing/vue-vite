@@ -79,7 +79,7 @@
             const routeGo = (path: string) => router.push(path)
 
             const closeCurrentRoute = (index: number) => {
-                store.commit("REMOVE_ROUTE_HISTORY", index)
+                store.commit("REMOVE_ROUTE_HISTORY_INDEX", index)
             }
             return {
                 routeHistory,
