@@ -19,7 +19,7 @@ export default {
     nested: "嵌套路由",
     nested1: "嵌套路由1",
     nested11: "嵌套路由1-1",
-    nested12: "嵌套路由1-2",
+    systemLog: "系统日志",
     nested2: "嵌套路由2",
     charts: "图表展示",
     model: "模型预览",

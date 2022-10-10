@@ -1,3 +1,4 @@
+import { shallowRef } from "vue"
 import { createRouter, createWebHashHistory } from "vue-router"
 import store from "@/store"
 import Empty from "@/pages/Empty.vue"
@@ -62,7 +63,7 @@ function filterAsyncRouter(asyncRouterMap: RouterItem[]) {
         if (route.component) {
             route.component = _importComponent(route.component)
         } else {
-            route.component = Empty
+            route.component = shallowRef(Empty)
         }
         if (route.children && route.children.length) {
             route.children = filterAsyncRouter(route.children)

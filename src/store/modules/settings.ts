@@ -2,7 +2,7 @@ import { setStore, getStore, removeStore } from "@/utils/storage"
 import router from "@/router"
 import { lighten } from "@/utils/themeColor"
 import routeList from "@/router/routeList"
-import { routerApi } from "@/api/common"
+import { routerApi } from "@/api/commonApi"
 import {
     APP_PRESET_COLOR_LIST,
     HEADER_PRESET_BG_COLOR_LIST,

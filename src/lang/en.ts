@@ -19,7 +19,7 @@ export default {
     nested: "Nested",
     nested1: "Nested1",
     nested11: "Nested1-1",
-    nested12: "Nested1-2",
+    systemLog: "SystemLog",
     nested2: "Nested2",
     charts: "Charts",
     model: "Models",

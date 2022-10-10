@@ -37,7 +37,7 @@
     import { useRouter } from "vue-router"
     import { useStore } from "vuex"
     import { UserInfo } from "@/utils/interface"
-    import { loginApi } from "@/api/login"
+    import { loginApi } from "@/api/loginApi"
 
     const router = useRouter()
     const store = useStore()

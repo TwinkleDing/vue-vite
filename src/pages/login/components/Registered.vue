@@ -25,10 +25,10 @@
 </template>
 
 <script lang="ts" setup>
-    import { getCurrentInstance, ref, Ref } from "vue"
+    import { ref, Ref } from "vue"
     import { User, UserFilled } from "@element-plus/icons-vue"
     import { ElMessage } from "element-plus"
-    import { registerApi } from "@/api/login"
+    import { registerApi } from "@/api/loginApi"
 
     const $emit = defineEmits(["register"])
 
