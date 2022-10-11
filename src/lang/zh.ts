@@ -45,5 +45,6 @@ export default {
     leftPosition: "👈",
     topPosition: "👆",
     tabSimple: "简约",
-    tabCard: "卡片"
+    tabCard: "卡片",
+    delete: "删除"
 }

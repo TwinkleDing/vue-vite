@@ -8,3 +8,12 @@ export const systemLogApi = (params: any) => {
         params
     })
 }
+
+
+export const deleteLogApi = (data: any) => {
+    return axios({
+        url: `${BaseUrl}/api/systemLog`,
+        method: "DELETE",
+        data
+    })
+}

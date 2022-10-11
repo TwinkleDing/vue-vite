@@ -62,7 +62,7 @@
                 password: password.value
             }
             loginApi(params).then((res: any) => {
-                if (res.status === "200") {
+                if (res.status === 200) {
                     ElMessage({
                         type: "success",
                         message: res.message

@@ -45,5 +45,6 @@ export default {
     leftPosition: "👈",
     topPosition: "👆",
     tabSimple: "Simple",
-    tabCard: "Card"
+    tabCard: "Card",
+    delete: "Delete"
 }

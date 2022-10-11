@@ -11,7 +11,7 @@
             </div>
             <div class="pages-right">
                 <tabs v-if="store.getters.tabsShow" />
-                <div :class="['right-content', !store.getters.tabsShow || 'mg-t-40']">
+                <div :class="['right-content', !store.getters.tabsShow || 'mg-t-40', 'scrollbar']">
                     <router-view></router-view>
                 </div>
             </div>
@@ -65,15 +65,16 @@ export default defineComponent({
     &-right {
         height: 100%;
         flex: 1;
-        overflow: auto;
+        overflow: hidden;
         position: relative;
         .right-content {
-            padding: 20px;
+            padding: 24px;
             box-sizing: border-box;
             position: absolute;
             top: 0;
             width: 100%;
-            min-height: calc(100% - 40px);
+            height: calc(100% - 40px);
+            overflow: auto;
         }
     }
 }
