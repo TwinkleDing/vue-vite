@@ -17,3 +17,11 @@ export const deleteLogApi = (data: any) => {
         data
     })
 }
+
+export const deleteSelectLogApi = (data: any) => {
+    return axios({
+        url: `${BaseUrl}/api/systemLog/deleteSelect`,
+        method: "DELETE",
+        data
+    })
+}

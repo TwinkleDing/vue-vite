@@ -1,7 +1,17 @@
 <template>
     <div class="system-log">
         <div> 系统日志 </div>
-        <el-table :data="tableData.list" stripe max-height="740">
+        <div class="setting">
+            <el-button type="primary" @click="deleteSelect">批量删除</el-button>
+            <el-button type="primary" @click="deleteAll">全部删除</el-button>
+        </div>
+        <el-table
+            :data="tableData.list"
+            stripe
+            max-height="684"
+            @selection-change="handleSelectionChange"
+        >
+            <el-table-column type="selection" width="55" />
             <el-table-column prop="create_by" label="创建者" width="180" />
             <el-table-column prop="create_time" label="创建时间" width="180" />
             <el-table-column prop="ip" label="IP地址" width="100" />
@@ -41,27 +51,41 @@
 </template>
 <script lang="ts">
     import { defineComponent, onBeforeMount, reactive } from "vue"
-    import { systemLogApi, deleteLogApi } from "@/api/systemApi"
+    import { systemLogApi, deleteLogApi, deleteSelectLogApi } from "@/api/systemApi"
     import { ElMessage, ElMessageBox } from "element-plus"
+    import { Res, Page } from "@/utils/interface"
+
+    interface SystemLogItem {
+        id: string
+        create_by: string
+        create_time: string
+        ip: string
+        log_type: string
+        log_content: string
+    }
 
     export default defineComponent({
         name: "SystemLog",
         setup() {
-            let tableData: any = reactive({
-                list: []
+            const tableData: any = reactive({
+                list: <SystemLogItem[]>[]
             })
-            const page: any = reactive({
+            const page: Page = reactive({
                 number: 1,
                 size: 10,
                 total: 0,
                 sizes: [10, 50, 100, 200]
             })
+            const selectList: any = reactive({
+                list: <SystemLogItem[]>[]
+            })
+
             const getList = () => {
                 const params = {
                     number: page.number,
                     size: page.size
                 }
-                systemLogApi(params).then((res: any) => {
+                systemLogApi(params).then((res: Res) => {
                     console.log(res)
                     page.total = res.data.total
                     tableData.list = res.data.list
@@ -73,7 +97,7 @@
             }
             const handleCurrentChange = () => getList()
             const deleteRow = (id: string) => {
-                deleteLogApi(id).then((res: any) => {
+                deleteLogApi(id).then((res: Res) => {
                     if (res.status === 200) {
                         page.number = 1
                         getList()
@@ -103,6 +127,32 @@
                         })
                     })
             }
+            const deleteSelect = () => {
+                if (selectList.list.length === 0) {
+                    ElMessage({
+                        type: "warning",
+                        message: "您还未选择任何一项！"
+                    })
+                    return
+                }
+                const list: Array<String> = selectList.list.map((item: SystemLogItem) => {
+                    return item.id
+                })
+                const params = list
+                deleteSelectLogApi(params).then((res: Res) => {
+                    console.log(res)
+                    if (res.status === 200) {
+                    } else {
+                        ElMessage({
+                            type: "warning",
+                            message: res.data
+                        })
+                    }
+                })
+            }
+            const handleSelectionChange = (val: SystemLogItem[]) => {
+                selectList.list = val
+            }
             onBeforeMount(() => {
                 getList()
             })
@@ -112,7 +162,10 @@
                 getList,
                 handleSizeChange,
                 handleCurrentChange,
-                deleteRow
+                deleteRow,
+                handleSelectionChange,
+                deleteAll,
+                deleteSelect
             }
         }
     })
@@ -120,6 +173,10 @@
 
 <style lang="scss" scoped>
     .system-log {
+        .setting {
+            text-align: right;
+            margin: 12px 0;
+        }
         .pagination {
             margin-top: 24px;
             position: relative;
