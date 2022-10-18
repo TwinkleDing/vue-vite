@@ -35,24 +35,35 @@
         </div>
         <el-dialog v-model="dialogVisible" title="Tips" width="600px" :before-close="handleClose">
             <el-form ref="ruleFormRef" :model="form" :rules="rules" label-width="80px" status-icon>
-                <el-form-item label="name">
+                <el-form-item label="name" prop="name">
                     <el-input v-model="form.name" />
                 </el-form-item>
-                <el-form-item label="quantity">
-                    <el-input v-model="form.quantity" />
+                <el-form-item label="quantity" prop="quantity">
+                    <el-select v-model="form.quantity" placeholder="Activity zone">
+                        <el-option label="Zone one" :value="0" />
+                        <el-option label="Zone two" :value="1" />
+                    </el-select>
                 </el-form-item>
-                <el-form-item label="state">
-                    <el-input v-model="form.state" />
+                <el-form-item label="state" prop="state">
+                    <el-switch v-model="form.state" />
                 </el-form-item>
-                <el-form-item label="type">
-                    <el-input v-model="form.type" />
+                <el-form-item label="type" prop="type">
+                    <el-checkbox-group v-model="form.type">
+                        <el-checkbox label="aaa" name="type" />
+                        <el-checkbox label="bbb" name="type" />
+                        <el-checkbox label="ccc" name="type" />
+                        <el-checkbox label="ddd" name="type" />
+                    </el-checkbox-group>
                 </el-form-item>
-                <el-form-item label="content">
+                <el-form-item label="content" prop="content">
                     <el-input type="textarea" v-model="form.content" />
                 </el-form-item>
             </el-form>
             <template #footer>
                 <span class="dialog-footer">
+                    <el-button type="primary" plain @click="reset(ruleFormRef)">
+                        {{ $t("reset") }}
+                    </el-button>
                     <el-button @click="dialogVisible = false">{{ $t("cancel") }}</el-button>
                     <el-button type="primary" @click="submit">{{ $t("confirm") }}</el-button>
                 </span>
@@ -119,7 +130,7 @@
                 content: "",
                 quantity: "",
                 state: "",
-                type: ""
+                type: []
             })
             const rules = reactive<FormRules>({
                 name: [
@@ -140,6 +151,10 @@
             const addNew = () => {
                 dialogVisible.value = true
             }
+            const reset = (formEl: FormInstance | undefined) => {
+                if (!formEl) return
+                formEl.resetFields()
+            }
             const submit = () => {}
             const deleteMessage = () => {}
             const handleSelectionChange = () => {}
@@ -148,7 +163,9 @@
                 getList()
             }
             const handleCurrentChange = () => getList()
-            const handleClose = () => {}
+            const handleClose = () => {
+                dialogVisible.value = false
+            }
 
             onBeforeMount(() => {
                 getList()
@@ -167,7 +184,8 @@
                 deleteMessage,
                 addNew,
                 submit,
-                handleClose
+                handleClose,
+                reset
             }
         }
     })

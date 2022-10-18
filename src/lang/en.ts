@@ -29,6 +29,7 @@ export default {
     d3: "d3",
     canvas: "Canvas Draw",
     media: "Media",
+    reset: "Reset",
     cancel: "Cancel",
     confirm: "OK",
     language: "Language",
