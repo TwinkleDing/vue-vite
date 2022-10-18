@@ -69,3 +69,15 @@ body,
     background: transparent;
     border-radius: 10px;
 }
+
+/* 表格页码 */
+.pagination {
+    margin-top: 24px;
+    position: relative;
+    height: 36px;
+
+    .el-pagination {
+        position: absolute;
+        right: 0;
+    }
+}

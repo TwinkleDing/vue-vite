@@ -18,7 +18,7 @@ export default {
     home: "首页",
     nested: "嵌套路由",
     nested1: "嵌套路由1",
-    nested11: "嵌套路由1-1",
+    tableTest: "表格测试",
     systemLog: "系统日志",
     nested2: "嵌套路由2",
     charts: "图表展示",

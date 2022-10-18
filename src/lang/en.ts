@@ -18,7 +18,7 @@ export default {
     home: "Home",
     nested: "Nested",
     nested1: "Nested1",
-    nested11: "Nested1-1",
+    tableText: "TableTest",
     systemLog: "SystemLog",
     nested2: "Nested2",
     charts: "Charts",

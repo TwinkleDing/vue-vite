@@ -181,14 +181,5 @@
             text-align: right;
             margin: 12px 0;
         }
-        .pagination {
-            margin-top: 24px;
-            position: relative;
-            height: 36px;
-            .el-pagination {
-                position: absolute;
-                right: 0;
-            }
-        }
     }
 </style>

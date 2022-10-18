@@ -41,6 +41,7 @@ declare module 'vue' {
     ElTimePicker: typeof import('element-plus/es')['ElTimePicker']
     ElTree: typeof import('element-plus/es')['ElTree']
     LineChart: typeof import('./src/components/Chart/LineChart.vue')['default']
+    Pagination: typeof import('./src/components/Pagination.vue')['default']
     PieChart: typeof import('./src/components/Chart/PieChart.vue')['default']
     ThemeColorPicker: typeof import('./src/components/ThemeColorPicker.vue')['default']
     Waves: typeof import('./src/components/Waves.vue')['default']
