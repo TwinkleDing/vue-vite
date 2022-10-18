@@ -9,7 +9,6 @@ export const systemLogApi = (params: any) => {
     })
 }
 
-
 export const deleteLogApi = (data: any) => {
     return axios({
         url: `${BaseUrl}/api/systemLog`,
@@ -23,5 +22,11 @@ export const deleteSelectLogApi = (data: any) => {
         url: `${BaseUrl}/api/systemLog/deleteSelect`,
         method: "DELETE",
         data
+    })
+}
+export const deleteAllApi = () => {
+    return axios({
+        url: `${BaseUrl}/api/systemLog/deleteAll`,
+        method: "DELETE"
     })
 }

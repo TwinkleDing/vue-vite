@@ -2,8 +2,8 @@
     <div class="system-log">
         <div> 系统日志 </div>
         <div class="setting">
-            <el-button type="primary" @click="deleteSelect">批量删除</el-button>
-            <el-button type="primary" @click="deleteAll">全部删除</el-button>
+            <el-button type="primary" @click="deleteMessage('selected')">批量删除</el-button>
+            <el-button type="primary" @click="deleteMessage('all')">全部删除</el-button>
         </div>
         <el-table
             :data="tableData.list"
@@ -12,11 +12,11 @@
             @selection-change="handleSelectionChange"
         >
             <el-table-column type="selection" width="55" />
-            <el-table-column prop="create_by" label="创建者" width="180" />
-            <el-table-column prop="create_time" label="创建时间" width="180" />
+            <el-table-column prop="createBy" label="创建者" width="180" />
+            <el-table-column prop="createTime" label="创建时间" width="180" />
             <el-table-column prop="ip" label="IP地址" width="100" />
-            <el-table-column prop="log_type" label="日志类型" width="100" />
-            <el-table-column prop="log_content" label="日志内容" />
+            <el-table-column prop="logType" label="日志类型" width="100" />
+            <el-table-column prop="logContent" label="日志内容" />
             <el-table-column label="操作" width="100">
                 <template #default="scope">
                     <el-popconfirm
@@ -50,8 +50,8 @@
     </div>
 </template>
 <script lang="ts">
-    import { defineComponent, onBeforeMount, reactive } from "vue"
-    import { systemLogApi, deleteLogApi, deleteSelectLogApi } from "@/api/systemApi"
+    import { defineComponent, onBeforeMount, reactive, getCurrentInstance } from "vue"
+    import { systemLogApi, deleteLogApi, deleteSelectLogApi, deleteAllApi } from "@/api/systemApi"
     import { ElMessage, ElMessageBox } from "element-plus"
     import { Res, Page } from "@/utils/interface"
 
@@ -67,6 +67,7 @@
     export default defineComponent({
         name: "SystemLog",
         setup() {
+            const { proxy }: any = getCurrentInstance()
             const tableData: any = reactive({
                 list: <SystemLogItem[]>[]
             })
@@ -105,48 +106,52 @@
                 })
             }
             const deleteAll = () => {
-                ElMessageBox.confirm(
-                    "proxy will permanently delete the file. Continue?",
-                    "Warning",
-                    {
-                        confirmButtonText: "OK",
-                        cancelButtonText: "Cancel",
-                        type: "warning"
+                deleteAllApi().then((res: Res) => {
+                    if (res.status === 200) {
+                        page.number = 1
+                        getList()
+                    } else {
+                        ElMessage({
+                            type: "warning",
+                            message: res.data
+                        })
                     }
-                )
-                    .then(() => {
-                        ElMessage({
-                            type: "success",
-                            message: "Delete completed"
-                        })
-                    })
-                    .catch(() => {
-                        ElMessage({
-                            type: "info",
-                            message: "Delete canceled"
-                        })
-                    })
+                })
             }
             const deleteSelect = () => {
-                if (selectList.list.length === 0) {
+                const list: Array<String> = selectList.list.map((item: SystemLogItem) => {
+                    return item.id
+                })
+                const params = list
+                deleteSelectLogApi(params).then((res: Res) => {
+                    if (res.status === 200) {
+                        page.number = 1
+                        getList()
+                    } else {
+                        ElMessage({
+                            type: "warning",
+                            message: res.data
+                        })
+                    }
+                })
+            }
+            const deleteMessage = (type: string) => {
+                if (type === "selected" && selectList.list.length === 0) {
                     ElMessage({
                         type: "warning",
                         message: "您还未选择任何一项！"
                     })
                     return
                 }
-                const list: Array<String> = selectList.list.map((item: SystemLogItem) => {
-                    return item.id
-                })
-                const params = list
-                deleteSelectLogApi(params).then((res: Res) => {
-                    console.log(res)
-                    if (res.status === 200) {
+                ElMessageBox.confirm("确定要删除这些数据么?", "Warning", {
+                    confirmButtonText: proxy.$t("confirm"),
+                    cancelButtonText: proxy.$t("cancel"),
+                    type: "warning"
+                }).then(() => {
+                    if (type === "selected") {
+                        deleteSelect()
                     } else {
-                        ElMessage({
-                            type: "warning",
-                            message: res.data
-                        })
+                        deleteAll()
                     }
                 })
             }
@@ -164,8 +169,7 @@
                 handleCurrentChange,
                 deleteRow,
                 handleSelectionChange,
-                deleteAll,
-                deleteSelect
+                deleteMessage
             }
         }
     })
