@@ -8,3 +8,11 @@ export const tableListApi = (params: any) => {
         params
     })
 }
+
+export const tableAddApi = (data: any) => {
+    return axios({
+        url: `${BaseUrl}/api/tableTest`,
+        method: "POST",
+        data
+    })
+}

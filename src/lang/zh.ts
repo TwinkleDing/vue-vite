@@ -47,5 +47,6 @@ export default {
     topPosition: "👆",
     tabSimple: "简约",
     tabCard: "卡片",
-    delete: "删除"
+    delete: "删除",
+    edit: "修改"
 }

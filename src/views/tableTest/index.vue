@@ -2,7 +2,15 @@
     <div class="table-test">
         <div> 表格测试 </div>
         <div class="setting">
-            <el-button type="primary" @click="addNew()">新增</el-button>
+            <el-input
+                v-model="searchValue"
+                clearable
+                class="search"
+                placeholder="搜索name"
+                :suffix-icon="Search"
+                @change="search"
+            />
+            <el-button type="primary" @click="openDialog()">新增</el-button>
             <el-button type="primary" @click="deleteMessage('selected')">批量删除</el-button>
             <el-button type="primary" @click="deleteMessage('all')">全部删除</el-button>
         </div>
@@ -16,9 +24,29 @@
             <el-table-column
                 v-for="item in column"
                 :key="item.prop"
+                :label="item.prop"
                 :prop="item.prop"
                 :width="item.width"
             />
+            <el-table-column label="操作" width="200">
+                <template #default="scope">
+                    <el-button type="primary" @click="openDialog(scope.row)">
+                        {{ $t("edit") }}
+                    </el-button>
+                    <el-popconfirm
+                        title="确定删除吗?"
+                        :confirm-button-text="$t('confirm')"
+                        :cancel-button-text="$t('cancel')"
+                        @confirm="deleteRow(scope.row.id)"
+                    >
+                        <template #reference>
+                            <el-button link type="primary">
+                                {{ $t("delete") }}
+                            </el-button>
+                        </template>
+                    </el-popconfirm>
+                </template>
+            </el-table-column>
         </el-table>
         <div class="pagination">
             <el-pagination
@@ -65,7 +93,9 @@
                         {{ $t("reset") }}
                     </el-button>
                     <el-button @click="dialogVisible = false">{{ $t("cancel") }}</el-button>
-                    <el-button type="primary" @click="submit">{{ $t("confirm") }}</el-button>
+                    <el-button type="primary" @click="submit(ruleFormRef)">{{
+                        $t("confirm")
+                    }}</el-button>
                 </span>
             </template>
         </el-dialog>
@@ -74,7 +104,9 @@
 <script lang="ts">
     import { defineComponent, onBeforeMount, reactive, ref, Ref } from "vue"
     import type { FormInstance, FormRules } from "element-plus"
-    import { tableListApi } from "@/api/tableTestApi"
+    import { ElMessage } from "element-plus"
+    import { Search } from "@element-plus/icons-vue"
+    import { tableListApi, tableAddApi } from "@/api/tableTestApi"
     import { Res, Page } from "@/utils/interface"
 
     interface TableTestItem {
@@ -83,10 +115,14 @@
         name: string
         content: string
         create_time: string
+        quantity: number
+        state: boolean
+        type: Array<string>
     }
 
     export default defineComponent({
         name: "TableTst",
+        components: { Search },
         setup() {
             const column = [
                 {
@@ -103,11 +139,11 @@
                 },
                 {
                     prop: "quantity",
-                    width: "180"
+                    width: "100"
                 },
                 {
                     prop: "state",
-                    width: "180"
+                    width: "100"
                 },
                 {
                     prop: "type",
@@ -115,6 +151,7 @@
                 }
             ]
             const dialogVisible: Ref<boolean> = ref(false)
+            const searchValue: Ref<string> = ref("")
             const ruleFormRef = ref<FormInstance>()
             const tableData: any = reactive({
                 list: <TableTestItem[]>[]
@@ -126,44 +163,93 @@
                 sizes: [10, 50, 100, 200]
             })
             const form = reactive({
+                id: null,
                 name: "",
                 content: "",
                 quantity: "",
-                state: "",
+                state: false,
                 type: []
             })
             const rules = reactive<FormRules>({
-                name: [
-                    { required: true, message: "Please input Activity name", trigger: "blur" },
-                    { min: 3, max: 10, message: "Length should be 3 to 5", trigger: "blur" }
-                ]
+                name: [{ required: true, message: "Please input Activity name", trigger: "blur" }]
             })
 
+            //获取列表
             const getList = () => {
                 const params = {
                     number: page.number,
-                    size: page.size
+                    size: page.size,
+                    searchName: searchValue.value
                 }
                 tableListApi(params).then((res: Res) => {
-                    console.log(res)
+                    page.total = res.data.total
+                    tableData.list = res.data.list
                 })
             }
-            const addNew = () => {
-                dialogVisible.value = true
-            }
+            // 重置
             const reset = (formEl: FormInstance | undefined) => {
                 if (!formEl) return
                 formEl.resetFields()
             }
-            const submit = () => {}
+            // 提交
+            const submit = async (formEl: FormInstance | undefined) => {
+                if (!formEl) return
+                await formEl.validate((valid, fields) => {
+                    if (valid) {
+                        let params = {
+                            id: form.id ? form.id : null,
+                            name: form.name,
+                            content: form.content,
+                            quantity: form.quantity,
+                            state: form.state ? 1 : 0,
+                            type: form.type.toString()
+                        }
+                        tableAddApi(params).then((res: Res) => {
+                            if (res.status === 200) {
+                                page.number = 1
+                                getList()
+                                closeDialog()
+                            } else {
+                                ElMessage({
+                                    type: "warning",
+                                    message: res.data
+                                })
+                            }
+                        })
+                    }
+                })
+            }
+            const search = () => {
+                page.number = 1
+                getList()
+            }
+            const deleteRow = () => {}
+            // 删除
             const deleteMessage = () => {}
+            // 多选
             const handleSelectionChange = () => {}
+            // 分页操作
             const handleSizeChange = () => {
                 page.number = 1
                 getList()
             }
             const handleCurrentChange = () => getList()
+            // 关闭弹窗
             const handleClose = () => {
+                closeDialog()
+            }
+            const openDialog = (row: any) => {
+                dialogVisible.value = true
+                if (row) {
+                    form.name = row.name
+                    form.content = row.content
+                    form.id = row.id
+                    form.quantity = row.quantity
+                    form.state = row.state
+                    form.type = row.type ? row.type.split(",") : []
+                }
+            }
+            const closeDialog = () => {
                 dialogVisible.value = false
             }
 
@@ -172,6 +258,7 @@
             })
             return {
                 dialogVisible,
+                searchValue,
                 form,
                 column,
                 tableData,
@@ -182,10 +269,13 @@
                 handleSizeChange,
                 handleCurrentChange,
                 deleteMessage,
-                addNew,
+                openDialog,
                 submit,
                 handleClose,
-                reset
+                reset,
+                deleteRow,
+                search,
+                Search
             }
         }
     })
@@ -196,6 +286,10 @@
         .setting {
             text-align: right;
             margin: 12px 0;
+        }
+        .search {
+            width: 300px;
+            float: left;
         }
     }
 </style>
