@@ -27,7 +27,13 @@
                 :label="item.prop"
                 :prop="item.prop"
                 :width="item.width"
-            />
+            >
+                <template #default="scope">
+                    <div v-if="item.prop === 'state'">
+                        {{ scope.row.state === 1 ? true : false }}
+                    </div>
+                </template>
+            </el-table-column>
             <el-table-column label="操作" width="200">
                 <template #default="scope">
                     <el-button type="primary" @click="openDialog(scope.row)">
@@ -68,12 +74,12 @@
                 </el-form-item>
                 <el-form-item label="quantity" prop="quantity">
                     <el-select v-model="form.quantity" placeholder="Activity zone">
-                        <el-option label="Zone one" :value="0" />
-                        <el-option label="Zone two" :value="1" />
+                        <el-option label="quantity0" :value="0" />
+                        <el-option label="quantity1" :value="1" />
                     </el-select>
                 </el-form-item>
                 <el-form-item label="state" prop="state">
-                    <el-switch v-model="form.state" />
+                    <el-switch v-model="form.state" :active-value="1" :inactive-value="0" />
                 </el-form-item>
                 <el-form-item label="type" prop="type">
                     <el-checkbox-group v-model="form.type">
@@ -165,8 +171,8 @@
             const form = reactive({
                 id: null,
                 name: "",
-                content: "",
-                quantity: "",
+                content: 0,
+                quantity: 0,
                 state: false,
                 type: []
             })
@@ -201,7 +207,7 @@
                             name: form.name,
                             content: form.content,
                             quantity: form.quantity,
-                            state: form.state ? 1 : 0,
+                            state: form.state,
                             type: form.type.toString()
                         }
                         tableAddApi(params).then((res: Res) => {
@@ -247,6 +253,8 @@
                     form.quantity = row.quantity
                     form.state = row.state
                     form.type = row.type ? row.type.split(",") : []
+                } else {
+                    form.id = null
                 }
             }
             const closeDialog = () => {
