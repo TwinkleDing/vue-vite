@@ -10,10 +10,9 @@
                 :suffix-icon="Search"
                 @change="search"
             />
-            <el-button type="primary" @click="openDialog()">新增</el-button>
-            <el-button type="primary" @click="tableVolume()">批量新增</el-button>
-            <el-button type="primary" @click="deleteMessage('selected')">批量删除</el-button>
-            <el-button type="primary" @click="deleteMessage('all')">全部删除</el-button>
+            <el-button type="primary" @click="openDialog">新增</el-button>
+            <el-button type="primary" @click="tableVolume">批量新增</el-button>
+            <el-button type="primary" @click="deleteMessage">批量删除</el-button>
         </div>
         <el-table
             :data="tableData.list"
@@ -113,7 +112,7 @@
     import type { FormInstance, FormRules } from "element-plus"
     import { ElMessage } from "element-plus"
     import { Search } from "@element-plus/icons-vue"
-    import { tableListApi, tableAddApi, tableVolumeApi } from "@/api/tableTestApi"
+    import { tableListApi, tableAddApi, tableVolumeApi, tableDeleteApi } from "@/api/tableTestApi"
     import { Res, Page } from "@/utils/interface"
 
     interface TableTestItem {
@@ -172,7 +171,7 @@
             const form = reactive({
                 id: null,
                 name: "",
-                content: 0,
+                content: "",
                 quantity: 0,
                 state: false,
                 type: []
@@ -181,6 +180,14 @@
                 name: [{ required: true, message: "Please input Activity name", trigger: "blur" }]
             })
 
+            const selectList: any = reactive({
+                list: <TableTestItem[]>[]
+            })
+
+            const init = () => {
+                page.number = 1
+                getList()
+            }
             //获取列表
             const getList = () => {
                 const params = {
@@ -193,12 +200,7 @@
                     tableData.list = res.data.list
                 })
             }
-            // 重置
-            const reset = (formEl: FormInstance | undefined) => {
-                if (!formEl) return
-                formEl.resetFields()
-            }
-            // 提交
+            // 提交新增或修改
             const submit = async (formEl: FormInstance | undefined) => {
                 if (!formEl) return
                 await formEl.validate((valid, fields) => {
@@ -213,9 +215,9 @@
                         }
                         tableAddApi(params).then((res: Res) => {
                             if (res.status === 200) {
-                                page.number = 1
-                                getList()
                                 closeDialog()
+                                params.id && (page.number = 1)
+                                getList()
                             } else {
                                 ElMessage({
                                     type: "warning",
@@ -226,10 +228,14 @@
                     }
                 })
             }
-            const search = () => {
-                page.number = 1
-                getList()
+            // 重置弹窗内容
+            const reset = (formEl: FormInstance | undefined) => {
+                if (!formEl) return
+                formEl.resetFields()
             }
+            // 模糊查询
+            const search = () => init()
+            // 批量新增
             const tableVolume = () => {
                 const Item = {
                     name: "",
@@ -245,45 +251,48 @@
                     item.name = parseInt(a).toString()
                     list.push(item)
                 }
-                tableVolumeApi(list).then((res: Res) => {
-                    page.number = 1
-                    getList()
-                })
+                tableVolumeApi(list).then(() => init())
             }
-            const deleteRow = () => {}
             // 删除
-            const deleteMessage = () => {}
-            // 多选
-            const handleSelectionChange = () => {}
-            // 分页操作
-            const handleSizeChange = () => {
-                page.number = 1
-                getList()
+            const deleteRow = (id: string) => {
+                tableDeleteApi([id]).then(() => init())
             }
+            // 批量删除
+            const deleteMessage = () => {
+                const list: Array<String> = selectList.list.map((item: TableTestItem) => {
+                    return item.id
+                })
+                tableDeleteApi(list).then(() => init())
+            }
+            // 多选
+            const handleSelectionChange = (val: TableTestItem[]) => {
+                selectList.list = val
+            }
+            // 分页操作
+            const handleSizeChange = () => init()
+            // 分页切换
             const handleCurrentChange = () => getList()
             // 关闭弹窗
-            const handleClose = () => {
-                closeDialog()
-            }
+            const handleClose = () => closeDialog()
+            // 打开新增或修改弹窗
             const openDialog = (row: any) => {
                 dialogVisible.value = true
                 if (row) {
-                    form.name = row.name
-                    form.content = row.content
                     form.id = row.id
-                    form.quantity = row.quantity
+                    form.name = row.name
                     form.state = row.state
+                    form.content = row.content
+                    form.quantity = row.quantity
                     form.type = row.type ? row.type.split(",") : []
-                } else {
-                    form.id = null
                 }
             }
+            // 关闭弹窗
             const closeDialog = () => {
                 dialogVisible.value = false
             }
 
             onBeforeMount(() => {
-                getList()
+                init()
             })
             return {
                 Search,

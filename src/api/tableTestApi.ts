@@ -24,3 +24,11 @@ export const tableVolumeApi = (data: any) => {
         data
     })
 }
+
+export const tableDeleteApi = (data: any) => {
+    return axios({
+        url: `${BaseUrl}/api/tableDelete`,
+        method: "DELETE",
+        data
+    })
+}
