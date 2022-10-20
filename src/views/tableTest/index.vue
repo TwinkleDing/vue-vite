@@ -11,6 +11,7 @@
                 @change="search"
             />
             <el-button type="primary" @click="openDialog()">新增</el-button>
+            <el-button type="primary" @click="tableVolume()">批量新增</el-button>
             <el-button type="primary" @click="deleteMessage('selected')">批量删除</el-button>
             <el-button type="primary" @click="deleteMessage('all')">全部删除</el-button>
         </div>
@@ -112,7 +113,7 @@
     import type { FormInstance, FormRules } from "element-plus"
     import { ElMessage } from "element-plus"
     import { Search } from "@element-plus/icons-vue"
-    import { tableListApi, tableAddApi } from "@/api/tableTestApi"
+    import { tableListApi, tableAddApi, tableVolumeApi } from "@/api/tableTestApi"
     import { Res, Page } from "@/utils/interface"
 
     interface TableTestItem {
@@ -229,6 +230,26 @@
                 page.number = 1
                 getList()
             }
+            const tableVolume = () => {
+                const Item = {
+                    name: "",
+                    content: "",
+                    quantity: 0,
+                    state: 0,
+                    type: ""
+                }
+                let list = []
+                for (let i = 0; i < 10; i++) {
+                    let item = { ...Item }
+                    let a = (Math.random() * 1000).toString()
+                    item.name = parseInt(a).toString()
+                    list.push(item)
+                }
+                tableVolumeApi(list).then((res: Res) => {
+                    page.number = 1
+                    getList()
+                })
+            }
             const deleteRow = () => {}
             // 删除
             const deleteMessage = () => {}
@@ -265,6 +286,7 @@
                 getList()
             })
             return {
+                Search,
                 dialogVisible,
                 searchValue,
                 form,
@@ -283,7 +305,7 @@
                 reset,
                 deleteRow,
                 search,
-                Search
+                tableVolume
             }
         }
     })

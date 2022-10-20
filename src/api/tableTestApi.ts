@@ -16,3 +16,11 @@ export const tableAddApi = (data: any) => {
         data
     })
 }
+
+export const tableVolumeApi = (data: any) => {
+    return axios({
+        url: `${BaseUrl}/api/tableVolume`,
+        method: "POST",
+        data
+    })
+}
