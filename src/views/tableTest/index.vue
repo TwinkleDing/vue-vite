@@ -2,14 +2,25 @@
     <div class="table-test">
         <div> 表格测试 </div>
         <div class="setting">
-            <el-input
-                v-model="searchValue"
-                clearable
-                class="search"
-                placeholder="搜索name"
-                :suffix-icon="Search"
-                @change="search"
-            />
+            <div class="left">
+                <el-input
+                    v-model="searchValue"
+                    clearable
+                    class="search"
+                    placeholder="搜索name"
+                    :suffix-icon="Search"
+                    @change="search"
+                />
+                <el-select
+                    class="select"
+                    v-model="sort"
+                    placeholder="排序方式"
+                    @change="sortChange"
+                >
+                    <el-option label="正序" value="asc" />
+                    <el-option label="倒序" value="desc" />
+                </el-select>
+            </div>
             <el-button type="primary" @click="openDialog">新增</el-button>
             <el-button type="primary" @click="tableVolume">批量新增</el-button>
             <el-button type="primary" @click="deleteMessage">批量删除</el-button>
@@ -61,7 +72,7 @@
                 v-model:page-size="page.size"
                 :page-sizes="page.sizes"
                 background
-                layout="sizes, prev, pager, next, jumper"
+                layout="total, sizes, prev, pager, next, jumper"
                 :total="page.total"
                 @size-change="handleSizeChange"
                 @current-change="handleCurrentChange"
@@ -108,9 +119,9 @@
     </div>
 </template>
 <script lang="ts">
-    import { defineComponent, onBeforeMount, reactive, ref, Ref } from "vue"
+    import { defineComponent, onBeforeMount, reactive, ref, Ref, getCurrentInstance } from "vue"
     import type { FormInstance, FormRules } from "element-plus"
-    import { ElMessage } from "element-plus"
+    import { ElMessage, ElMessageBox } from "element-plus"
     import { Search } from "@element-plus/icons-vue"
     import { tableListApi, tableAddApi, tableVolumeApi, tableDeleteApi } from "@/api/tableTestApi"
     import { Res, Page } from "@/utils/interface"
@@ -130,6 +141,7 @@
         name: "TableTst",
         components: { Search },
         setup() {
+            const { proxy }: any = getCurrentInstance()
             const column = [
                 {
                     prop: "sort",
@@ -144,12 +156,16 @@
                     width: "auto"
                 },
                 {
-                    prop: "quantity",
-                    width: "100"
+                    prop: "quantityName",
+                    width: "120"
                 },
                 {
                     prop: "state",
                     width: "100"
+                },
+                {
+                    prop: "createTime",
+                    width: "200"
                 },
                 {
                     prop: "type",
@@ -168,6 +184,7 @@
                 total: 0,
                 sizes: [10, 50, 100, 200]
             })
+            const sort: Ref<string> = ref("asc")
             const form = reactive({
                 id: null,
                 name: "",
@@ -193,7 +210,8 @@
                 const params = {
                     number: page.number,
                     size: page.size,
-                    searchName: searchValue.value
+                    searchName: searchValue.value,
+                    sort: sort.value
                 }
                 tableListApi(params).then((res: Res) => {
                     page.total = res.data.total
@@ -259,11 +277,25 @@
             }
             // 批量删除
             const deleteMessage = () => {
-                const list: Array<String> = selectList.list.map((item: TableTestItem) => {
-                    return item.id
+                if (!selectList.list.length) {
+                    ElMessage({
+                        type: "warning",
+                        message: "您还未选择任何一项！"
+                    })
+                    return
+                }
+                ElMessageBox.confirm("确定要删除这些数据么?", "警告", {
+                    confirmButtonText: proxy.$t("confirm"),
+                    cancelButtonText: proxy.$t("cancel"),
+                    type: "warning"
+                }).then(() => {
+                    const list: Array<String> = selectList.list.map((item: TableTestItem) => {
+                        return item.id
+                    })
+                    tableDeleteApi(list).then(() => init())
                 })
-                tableDeleteApi(list).then(() => init())
             }
+            const sortChange = () => init()
             // 多选
             const handleSelectionChange = (val: TableTestItem[]) => {
                 selectList.list = val
@@ -304,6 +336,7 @@
                 page,
                 rules,
                 ruleFormRef,
+                sort,
                 handleSelectionChange,
                 handleSizeChange,
                 handleCurrentChange,
@@ -314,7 +347,8 @@
                 reset,
                 deleteRow,
                 search,
-                tableVolume
+                tableVolume,
+                sortChange
             }
         }
     })
@@ -326,9 +360,15 @@
             text-align: right;
             margin: 12px 0;
         }
-        .search {
-            width: 300px;
+        .left {
             float: left;
+            .search {
+                width: 300px;
+            }
+            .select {
+                width: 100px;
+                margin-left: 20px;
+            }
         }
     }
 </style>

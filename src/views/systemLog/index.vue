@@ -41,7 +41,7 @@
                 v-model:page-size="page.size"
                 :page-sizes="page.sizes"
                 background
-                layout="sizes, prev, pager, next, jumper"
+                layout="total, sizes, prev, pager, next, jumper"
                 :total="page.total"
                 @size-change="handleSizeChange"
                 @current-change="handleCurrentChange"
@@ -87,7 +87,6 @@
                     size: page.size
                 }
                 systemLogApi(params).then((res: Res) => {
-                    console.log(res)
                     page.total = res.data.total
                     tableData.list = res.data.list
                 })
@@ -143,7 +142,7 @@
                     })
                     return
                 }
-                ElMessageBox.confirm("确定要删除这些数据么?", "Warning", {
+                ElMessageBox.confirm("确定要删除这些数据么?", "警告", {
                     confirmButtonText: proxy.$t("confirm"),
                     cancelButtonText: proxy.$t("cancel"),
                     type: "warning"
