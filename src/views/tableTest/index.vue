@@ -20,6 +20,16 @@
                     <el-option label="正序" value="asc" />
                     <el-option label="倒序" value="desc" />
                 </el-select>
+                <el-select
+                    class="select"
+                    v-model="quantity"
+                    placeholder="quantity"
+                    @change="quantityChange"
+                >
+                    <el-option label="全部" value="" />
+                    <el-option label="quantity0" value="0" />
+                    <el-option label="quantity1" value="1" />
+                </el-select>
             </div>
             <el-button type="primary" @click="openDialog">新增</el-button>
             <el-button type="primary" @click="tableVolume">批量新增</el-button>
@@ -185,6 +195,7 @@
                 sizes: [10, 50, 100, 200]
             })
             const sort: Ref<string> = ref("asc")
+            const quantity: Ref<string> = ref('')
             const form = reactive({
                 id: null,
                 name: "",
@@ -207,11 +218,12 @@
             }
             //获取列表
             const getList = () => {
-                const params = {
+                let params = {
                     number: page.number,
                     size: page.size,
                     searchName: searchValue.value,
-                    sort: sort.value
+                    sort: sort.value,
+                    quantity: quantity.value 
                 }
                 tableListApi(params).then((res: Res) => {
                     page.total = res.data.total
@@ -296,6 +308,7 @@
                 })
             }
             const sortChange = () => init()
+            const quantityChange = () => init()
             // 多选
             const handleSelectionChange = (val: TableTestItem[]) => {
                 selectList.list = val
@@ -337,6 +350,7 @@
                 rules,
                 ruleFormRef,
                 sort,
+                quantity,
                 handleSelectionChange,
                 handleSizeChange,
                 handleCurrentChange,
@@ -348,7 +362,8 @@
                 deleteRow,
                 search,
                 tableVolume,
-                sortChange
+                sortChange,
+                quantityChange
             }
         }
     })
