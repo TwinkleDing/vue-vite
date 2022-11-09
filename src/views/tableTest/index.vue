@@ -144,7 +144,7 @@
         create_time: string
         quantity: number
         state: boolean
-        type: Array<string>
+        type: string[]
     }
 
     export default defineComponent({
@@ -195,7 +195,7 @@
                 sizes: [10, 50, 100, 200]
             })
             const sort: Ref<string> = ref("asc")
-            const quantity: Ref<string> = ref('')
+            const quantity: Ref<string> = ref("")
             const form = reactive({
                 id: null,
                 name: "",
@@ -207,7 +207,6 @@
             const rules = reactive<FormRules>({
                 name: [{ required: true, message: "Please input Activity name", trigger: "blur" }]
             })
-
             const selectList: any = reactive({
                 list: <TableTestItem[]>[]
             })
@@ -223,7 +222,7 @@
                     size: page.size,
                     searchName: searchValue.value,
                     sort: sort.value,
-                    quantity: quantity.value 
+                    quantity: quantity.value
                 }
                 tableListApi(params).then((res: Res) => {
                     page.total = res.data.total
@@ -284,9 +283,7 @@
                 tableVolumeApi(list).then(() => init())
             }
             // 删除
-            const deleteRow = (id: string) => {
-                tableDeleteApi([id]).then(() => init())
-            }
+            const deleteRow = (id: string) => tableDeleteApi([id]).then(() => init())
             // 批量删除
             const deleteMessage = () => {
                 if (!selectList.list.length) {
@@ -301,18 +298,17 @@
                     cancelButtonText: proxy.$t("cancel"),
                     type: "warning"
                 }).then(() => {
-                    const list: Array<String> = selectList.list.map((item: TableTestItem) => {
+                    const list: String[] = selectList.list.map((item: TableTestItem) => {
                         return item.id
                     })
                     tableDeleteApi(list).then(() => init())
                 })
             }
+            // 更换排序
             const sortChange = () => init()
             const quantityChange = () => init()
             // 多选
-            const handleSelectionChange = (val: TableTestItem[]) => {
-                selectList.list = val
-            }
+            const handleSelectionChange = (val: TableTestItem[]) => (selectList.list = val)
             // 分页操作
             const handleSizeChange = () => init()
             // 分页切换
