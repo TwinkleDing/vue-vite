@@ -298,11 +298,15 @@ const settings = {
          * 获取路由列表
          */
         getRouteList(context: any) {
-            return new Promise((resolve: any) => {
+            return new Promise((resolve: any, reject: any) => {
                 routerApi().then((res) => {
-                    context.state.routeList = res.data
-                    context.commit("SET_ROUTE_LIST", context.state.routeList)
-                    resolve(context.state.routeList)
+                    if (Array.isArray(res.data)) {
+                        context.state.routeList = res.data
+                        context.commit("SET_ROUTE_LIST", context.state.routeList)
+                        resolve(context.state.routeList)
+                    } else {
+                        reject()
+                    }
                 })
             })
 

@@ -3,6 +3,7 @@ import NProgress from "nprogress"
 import "nprogress/nprogress.css"
 import { serialize } from "@/utils/utils"
 import store from "@/store/index"
+import { ElMessage } from "element-plus"
 
 // 设置超时时间
 axios.defaults.timeout = 100000
@@ -23,14 +24,9 @@ axios.interceptors.request.use(
     (config: any) => {
         NProgress.start() // start progress bar
         const meta = config.meta || {}
-
         config.headers["Content-Type"] = "application/json;charset=utf-8"
-        const token: string = store.state.token || ""
-
-        if (token) {
-            config.headers.Authorization = token
-            config.headers.accessToken = token
-        }
+        const token: string = store.getters.token || ""
+        config.headers.token = token
         // headers中配置serialize为true开启序列化
         if (config.method === "post" && meta.isSerialize === true) {
             config.data = serialize(config.data)
@@ -48,9 +44,21 @@ axios.interceptors.request.use(
 // HTTPresponse拦截
 axios.interceptors.response.use(
     (res: any) => {
+        console.log(res)
+        if (res.config.url.includes("/auth/login")) {
+            if (res.data.data === "") {
+                ElMessage({
+                    type: "error",
+                    message: "帐号或密码错误！"
+                })
+                return Promise.reject(new Error("帐号或密码错误！"))
+            } else {
+                store.commit("SET_TOKEN", res.data.data)
+            }
+        }
         NProgress.done()
-        const status = parseInt(res.status) || 200
-        
+        const status = parseInt(res.data.status) || 200
+
         // 如果是401则跳转到登录页面
         if (status === 401) {
             window.location.hash = "login"

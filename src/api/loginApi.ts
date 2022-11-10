@@ -3,7 +3,7 @@ import { BaseUrl } from "./baseApi"
 
 export const loginApi = (data: any) => {
     return axios({
-        url: `${BaseUrl}/api/login`,
+        url: `${BaseUrl}/auth/login`,
         method: "POST",
         data
     })
@@ -11,7 +11,7 @@ export const loginApi = (data: any) => {
 
 export const registerApi = (data: any) => {
     return axios({
-        url: `${BaseUrl}/api/register`,
+        url: `${BaseUrl}/auth/register`,
         method: "POST",
         data
     })

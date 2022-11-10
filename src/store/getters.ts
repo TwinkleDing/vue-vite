@@ -1,6 +1,7 @@
 const getters = {
-    language: (state: any) => state.settings.language,
     userInfo: (state: any) => state.user.userInfo,
+    token: (state: any) => state.user.token,
+    language: (state: any) => state.settings.language,
     systemTheme: (state: any) => state.settings.systemTheme,
     headerTheme: (state: any) => state.settings.headerTheme,
     menuTheme: (state: any) => state.settings.menuTheme,

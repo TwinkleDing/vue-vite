@@ -47,40 +47,47 @@
     const password: Ref<string> = ref("")
 
     const login = () => {
-        if (!userName) {
+        if (!userName.value) {
             ElMessage({
                 type: "error",
-                message: "请输入账号"
+                message: "请输入账号！"
             })
-        } else {
-            // ElMessage({
-            //     type: "warning",
-            //     message: "暂无服务器，无法注册，请使用游客登陆！"
-            // })
-            const params = {
-                username: userName.value,
-                password: password.value
-            }
-            loginApi(params).then((res: any) => {
-                if (res.status === 200) {
-                    ElMessage({
-                        type: "success",
-                        message: res.message
-                    })
-                    const userInfo: UserInfo = {
-                        userName: userName.value,
-                        type: "user"
-                    }
-                    store.commit("SET_USER_INFO", userInfo)
-                    goIndex()
-                } else {
-                    ElMessage({
-                        type: "error",
-                        message: res.message
-                    })
-                }
-            })
+            return
         }
+        if (!password.value) {
+            ElMessage({
+                type: "error",
+                message: "请输入密码！"
+            })
+            return
+        }
+        // ElMessage({
+        //     type: "warning",
+        //     message: "暂无服务器，无法注册，请使用游客登陆！"
+        // })
+        const params = {
+            username: userName.value,
+            password: password.value
+        }
+        loginApi(params).then((res: any) => {
+            if (res.status === 200) {
+                ElMessage({
+                    type: "success",
+                    message: res.message
+                })
+                const userInfo: UserInfo = {
+                    userName: userName.value,
+                    type: "user"
+                }
+                store.commit("SET_USER_INFO", userInfo)
+                goIndex()
+            } else {
+                ElMessage({
+                    type: "error",
+                    message: res.message
+                })
+            }
+        })
     }
     const register = () => {
         $emit("register")

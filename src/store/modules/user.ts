@@ -6,6 +6,10 @@ const user = {
         userInfo:
             getStore({
                 name: "userInfo"
+            }) || {},
+        token:
+            getStore({
+                name: "token"
             }) || {}
     },
     mutations: {
@@ -26,6 +30,19 @@ const user = {
             state.userInfo = {}
             removeStore({
                 name: "userInfo"
+            })
+        },
+        SET_TOKEN(state: any, token: string) {
+            state.token = token
+            setStore({
+                name: "token",
+                content: token
+            })
+        },
+        REMOVE_TOKEN(state: any) {
+            state.token = ""
+            removeStore({
+                name: "token"
             })
         }
     },
