@@ -4,6 +4,7 @@ import "nprogress/nprogress.css"
 import { serialize } from "@/utils/utils"
 import store from "@/store/index"
 import { ElMessage } from "element-plus"
+import router from "@/router"
 
 // 设置超时时间
 axios.defaults.timeout = 100000
@@ -45,6 +46,17 @@ axios.interceptors.request.use(
 axios.interceptors.response.use(
     (res: any) => {
         console.log(res)
+        const status = parseInt(res.data.status) || 200
+        // 如果是401则跳转到登录页面
+        if (status === 401) {
+            ElMessage({
+                type: "error",
+                message: res.data.message
+            })
+            store.dispatch("removeAll")
+            router.push("/login")
+            return
+        }
         if (res.config.url.includes("/auth/login")) {
             if (res.data.data === "") {
                 ElMessage({
@@ -57,12 +69,6 @@ axios.interceptors.response.use(
             }
         }
         NProgress.done()
-        const status = parseInt(res.data.status) || 200
-
-        // 如果是401则跳转到登录页面
-        if (status === 401) {
-            window.location.hash = "login"
-        }
         // // 如果请求为非200否者默认统一处理
         // const message = res.data || "未知错误"
         // if (status !== 200) {
@@ -71,6 +77,7 @@ axios.interceptors.response.use(
         return Promise.resolve(res.data)
     },
     (error) => {
+        console.log(123)
         NProgress.done()
         return Promise.reject(error)
     }
