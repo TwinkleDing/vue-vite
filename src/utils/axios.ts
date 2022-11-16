@@ -26,6 +26,7 @@ axios.interceptors.request.use(
         NProgress.start() // start progress bar
         const meta = config.meta || {}
         config.headers["Content-Type"] = "application/json;charset=utf-8"
+        config.headers["Access-Control-Allow-Origin"] = true
         const token: string = store.getters.token || ""
         config.headers.token = token
         // headers中配置serialize为true开启序列化
@@ -45,7 +46,6 @@ axios.interceptors.request.use(
 // HTTPresponse拦截
 axios.interceptors.response.use(
     (res: any) => {
-        console.log(res)
         const status = parseInt(res.data.status) || 200
         // 如果是401则跳转到登录页面
         if (status === 401) {
@@ -67,13 +67,10 @@ axios.interceptors.response.use(
             } else {
                 store.commit("SET_TOKEN", res.data.data)
             }
+        } else {
+            store.commit("SET_TOKEN", res.headers.token)
         }
         NProgress.done()
-        // // 如果请求为非200否者默认统一处理
-        // const message = res.data || "未知错误"
-        // if (status !== 200) {
-        //     return Promise.reject(message)
-        // }
         return Promise.resolve(res.data)
     },
     (error) => {
