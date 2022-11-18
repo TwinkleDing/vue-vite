@@ -48,5 +48,6 @@ export default {
     tabSimple: "简约",
     tabCard: "卡片",
     delete: "删除",
-    edit: "修改"
+    edit: "修改",
+    loading:"加载中..."
 }

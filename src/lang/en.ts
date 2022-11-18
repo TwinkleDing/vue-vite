@@ -48,5 +48,6 @@ export default {
     tabSimple: "Simple",
     tabCard: "Card",
     delete: "Delete",
-    edit: "Edit"
+    edit: "Edit",
+    loading:"Loading..."
 }

@@ -68,7 +68,7 @@
                     />
                 </el-col>
             </el-row>
-            <el-row>
+            <el-row class="row">
                 <el-col :span="16">{{ $t("language") }}</el-col>
                 <el-col :span="8" align="center">
                     <el-switch
@@ -298,10 +298,8 @@
             position: relative;
             text-align: center;
         }
-        .interface-set {
-            .row {
-                align-items: center;
-            }
+        .interface-set .row {
+            align-items: center;
         }
     }
 </style>

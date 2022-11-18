@@ -1,6 +1,5 @@
 import { createApp } from "vue"
 import App from "./App.vue"
-// import "element-plus/dist/index.css"
 import route from "./router"
 import store from "./store"
 import i18n from "./lang"

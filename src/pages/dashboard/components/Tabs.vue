@@ -1,5 +1,5 @@
 <template>
-    <div v-if="store.getters.tabsType === 1" class="router-history1 scrollbar">
+    <div v-if="store.getters.tabsType === 1" class="router-history router-history-simple scrollbar">
         <div
             :class="['item', route.path === item.path ? 'router-history-active' : '']"
             v-for="(item, index) in routeHistory"
@@ -17,7 +17,7 @@
             </span>
         </div>
     </div>
-    <div v-if="store.getters.tabsType === 2" class="router-history2 scrollbar">
+    <div v-if="store.getters.tabsType === 2" class="router-history router-history-card scrollbar">
         <div
             :class="['item', route.path === item.path ? 'router-history-active' : '']"
             v-for="(item, index) in routeHistory"
@@ -94,57 +94,13 @@
 
 <style lang="scss" scoped>
     @import "@/css/theme.scss";
-    .router-history1 {
+    .router-history {
         width: 100%;
         position: absolute;
         top: 0;
         box-shadow: 6px 10px 10px 0px rgb(38 38 38 / 8%);
         background: #fff;
         z-index: 100;
-        padding: 6px;
-        box-sizing: border-box;
-        overflow-x: auto;
-        overflow-y: hidden;
-        white-space: nowrap;
-        .item {
-            display: inline-block;
-            padding: 0 6px;
-            margin: 0 6px;
-            border: 1px solid #d8dce5;
-            color: #495060;
-            cursor: pointer;
-            height: 29px;
-            line-height: 21px;
-            span {
-                padding: 4px 4px;
-                display: inline-block;
-                vertical-align: middle;
-                i {
-                    display: inline-block;
-                    vertical-align: text-bottom;
-                }
-            }
-            .current-router {
-                padding: 0;
-                width: 8px;
-                height: 8px;
-                background-image: linear-gradient(to top right, $--color-primary, $--color-minor);
-                border-radius: 50%;
-            }
-        }
-        .router-history-active {
-            background-image: linear-gradient(to top right, $--color-minor, $--color-primary);
-            color: #fff !important;
-        }
-    }
-    .router-history2 {
-        width: 100%;
-        position: absolute;
-        top: 0;
-        box-shadow: 6px 10px 10px 0px rgb(38 38 38 / 8%);
-        background: #fff;
-        z-index: 100;
-        padding: 6px 6px 0;
         box-sizing: border-box;
         overflow-x: auto;
         overflow-y: hidden;
@@ -157,22 +113,12 @@
             line-height: 21px;
             cursor: pointer;
             &:hover {
-                // background-image: linear-gradient(to top right, $--color-minor, $--color-primary);
-                background-color: $--color-primary;
                 color: #fff !important;
-                border-radius: 6px 6px 0 0;
-                .router-history-name {
-                    transition: 0.3s;
-                    padding-left: 12px;
-                }
+                background-image: linear-gradient(to top right, $--color-primary, $--color-minor);
                 i {
-                    transition: 0.3s;
+                    color: #fff !important;
                     width: 16px;
                 }
-            }
-            .router-history-name {
-                transition: 0.3s;
-                padding-left: 4px;
             }
             span {
                 padding: 4px 4px;
@@ -181,21 +127,52 @@
                 i {
                     display: inline-block;
                     vertical-align: text-bottom;
+                }
+            }
+        }
+
+        .router-history-active {
+            background-image: linear-gradient(to top right, $--color-minor, $--color-primary);
+            color: #fff !important;
+        }
+    }
+    .router-history-simple {
+        padding: 6px;
+        .item {
+            margin: 0 6px;
+            border: 1px solid #d8dce5;
+        }
+
+        .current-router {
+            padding: 0;
+            width: 8px;
+            height: 8px;
+            background-image: linear-gradient(to top right, $--color-primary, $--color-minor);
+            border-radius: 50%;
+        }
+    }
+    .router-history-card {
+        padding: 6px 6px 0;
+        .item {
+            &:hover {
+                border-radius: 6px 6px 0 0;
+                .router-history-name {
+                    transition: 0.3s;
+                    padding-left: 12px;
+                }
+            }
+            .router-history-name {
+                transition: 0.3s;
+                padding-left: 4px;
+            }
+            span {
+                i {
                     width: 0;
                     overflow: hidden;
                 }
             }
-            .current-router {
-                padding: 0;
-                width: 8px;
-                height: 8px;
-                background-image: linear-gradient(to top right, $--color-primary, $--color-minor);
-                border-radius: 50%;
-            }
         }
         .router-history-active {
-            background-image: linear-gradient(to top right, $--color-minor, $--color-primary);
-            color: #fff !important;
             border-radius: 6px 6px 0 0;
             .router-history-name {
                 transition: 0.3s;

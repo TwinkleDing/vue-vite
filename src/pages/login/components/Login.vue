@@ -31,7 +31,7 @@
 </template>
 
 <script lang="ts" setup>
-    import { Ref, ref } from "vue"
+    import { Ref, ref, getCurrentInstance } from "vue"
     import { User, UserFilled } from "@element-plus/icons-vue"
     import { ElLoading, ElMessage } from "element-plus"
     import { useRouter } from "vue-router"
@@ -39,6 +39,7 @@
     import { UserInfo } from "@/utils/interface"
     import { loginApi } from "@/api/loginApi"
 
+    const { proxy }: any = getCurrentInstance()
     const router = useRouter()
     const store = useStore()
     const $emit = defineEmits(["register"])
@@ -102,14 +103,12 @@
     }
     const goIndex = () => {
         // 页面跳转
-        const loading = ElLoading.service({
+        ElLoading.service({
             lock: true,
-            text: "Loading",
+            text: proxy.$t("loading"),
             background: "rgba(0, 0, 0, 0.7)"
         })
         setTimeout(() => {
-            loading.close()
-            // router.push("/")
             window.location.href = "/"
         }, 1000)
     }
