@@ -1,8 +1,14 @@
-// 自定义theme样式文件
+/* 自定义theme样式文件 */
 @import "./theme.scss";
-// 自定义element样式文件
+
+/* 自定义element样式文件 */
 @import "./element-custom.scss";
-// 字体图标文件
+
+/* 字体图标文件 */
 @import "./iconfont.css";
-// 公共样式文件
+
+/* 整体公共样式文件 */
 @import "./common.scss";
+
+/* 规定的标准尺寸 */
+@import "./rules.scss"

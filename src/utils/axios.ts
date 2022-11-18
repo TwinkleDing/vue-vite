@@ -74,7 +74,6 @@ axios.interceptors.response.use(
         return Promise.resolve(res.data)
     },
     (error) => {
-        console.log(123)
         NProgress.done()
         return Promise.reject(error)
     }

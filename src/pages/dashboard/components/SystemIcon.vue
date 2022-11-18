@@ -104,7 +104,7 @@
             const menuPosition: Ref<boolean> = ref(store.getters.menuPosition)
             const tabsType: Ref<number> = ref(store.getters.tabsType)
             const language: Ref<boolean> = ref(store.getters.language === "zh" ? true : false)
-            
+
             const systemThemeList = APP_PRESET_COLOR_LIST
             const headerThemeList = HEADER_PRESET_BG_COLOR_LIST
             const menuThemeList = SIDE_BAR_BG_COLOR_LIST
@@ -168,7 +168,6 @@
             }
 
             onMounted(() => {
-                languageChange(language.value)
                 const systemIcon = store.getters.systemIcon
                 if (store.getters.systemIcon) {
                     x.value = systemIcon.x
@@ -233,6 +232,7 @@
                 clearTimeout(this.timer)
                 if (!this.down) return
                 this.x = e.clientX - this.offsetX + "px"
+                console.log(this.x)
                 this.y = e.clientY - this.offsetY + "px"
                 resolve({ x: this.x, y: this.y })
             })

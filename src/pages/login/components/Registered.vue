@@ -18,7 +18,9 @@
             </el-form-item>
             <el-form-item>
                 <el-button type="primary" @click="goBack">{{ $t("login.back") }}</el-button>
-                <el-button type="primary" @click="register">{{ $t("login.sure") }}</el-button>
+                <el-button style="margin: 0 12px" type="primary" @click="register">
+                    {{ $t("login.sure") }}
+                </el-button>
             </el-form-item>
         </el-form>
     </div>

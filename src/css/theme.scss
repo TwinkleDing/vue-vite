@@ -1,8 +1,11 @@
 :root {
+    /* 系统色 */
     --systemThemeColor: #007dff;
     --systemThemeColorActive: #4dcaff;
+    /* 顶部色 */
     --headerThemeColor: #007dff;
     --headerThemeColorActive: #4dcaff;
+    /* 菜单栏色 */
     --menuThemeColor: #007dff;
     --menuThemeColorActive: #4dcaff;
     --el-color-primary: var(--systemThemeColor)!important;

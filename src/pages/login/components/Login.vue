@@ -17,7 +17,7 @@
                     @change="login"
                 />
             </el-form-item>
-            <el-form-item>
+            <el-form-item class="login-handle">
                 <el-button type="primary" @click="register">
                     {{ $t("login.register") }}
                 </el-button>
@@ -109,7 +109,8 @@
         })
         setTimeout(() => {
             loading.close()
-            router.push("/home")
+            // router.push("/")
+            window.location.href = "/"
         }, 1000)
     }
 </script>

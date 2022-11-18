@@ -72,15 +72,14 @@ const settings = {
          */
         SET_LANGUAGE: (state: any, language: string) => {
             state.language = language
-            var head = document.getElementsByTagName("head")[0]
-            for (let i in head.children) {
-                if (head.children[i].attributes) {
-                    if (head.children[i].attributes[0]) {
-                        if (head.children[i].attributes[0].name === "href") {
-                            if (head.children[i].attributes[0].value.includes("public.css")) {
-                                head.removeChild(head.children[i])
-                            }
-                        }
+            const head = document.getElementsByTagName("head")[0]
+            const linkTags = head.getElementsByTagName("link")
+            for (let i of linkTags) {
+                if (i.attributes) {
+                    for (let j of i.attributes) {
+                        "object" === typeof j &&
+                            j.value.includes("public.css") &&
+                            head.removeChild(i)
                     }
                 }
             }
@@ -92,9 +91,9 @@ const settings = {
 
             function loadStyles(url: string) {
                 var link = document.createElement("link")
+                link.href = url
                 link.rel = "stylesheet"
                 link.type = "text/css"
-                link.href = url
                 head.appendChild(link)
             }
             setStore({
@@ -305,7 +304,7 @@ const settings = {
                         context.commit("SET_ROUTE_LIST", context.state.routeList)
                         resolve(context.state.routeList)
                     } else {
-                        reject()
+                        reject([])
                     }
                 })
             })

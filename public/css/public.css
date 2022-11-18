@@ -2,3 +2,17 @@ body,
 div {
     direction: ltr !important;
 }
+
+.el-input__prefix-inner>:last-child {
+    margin-right: 8px !important;
+    margin-left: 0 !important;
+}
+
+.el-button+.el-button {
+    margin-left: 12px;
+    margin-right: 0 !important;
+}
+
+.menu-item .menu-icon {
+    margin-right: 20px;
+}
