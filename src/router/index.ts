@@ -43,7 +43,6 @@ router.beforeEach(async (to: any) => {
         routerList.map((item: RouterItem) => {
             router.addRoute("index", item)
         })
-
         return to.fullPath
     } else if (to.fullPath.includes("login")) {
         store.commit("REMOVE_USER_INFO")
