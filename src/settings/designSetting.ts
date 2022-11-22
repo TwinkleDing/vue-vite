@@ -1,7 +1,7 @@
 // app theme preset color
 export const APP_PRESET_COLOR_LIST: string[] = [
     "#0960bd",
-    "#1890ff",
+    "#409eff",
     "#009688",
     "#536dfe",
     "#ff5c93",

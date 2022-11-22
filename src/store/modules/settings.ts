@@ -1,6 +1,6 @@
 import { setStore, getStore, removeStore } from "@/utils/storage"
 import router from "@/router"
-import { lighten } from "@/utils/themeColor"
+import { lighten, addElementPlusColor } from "@/utils/themeColor"
 import routeList from "@/router/routeList"
 import { routerApi } from "@/api/commonApi"
 import {
@@ -272,6 +272,7 @@ const settings = {
             attribute += `--headerThemeColorActive: ${lighten(state.headerTheme, 30)};`
             attribute += `--menuThemeColor: ${state.menuTheme};`
             attribute += `--menuThemeColorActive: ${lighten(state.menuTheme, 30)};`
+            attribute += addElementPlusColor(state.systemTheme)
             const root: any = document.querySelector(":root")
             if (root) {
                 root.setAttribute("style", attribute)
