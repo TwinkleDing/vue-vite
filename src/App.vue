@@ -23,6 +23,12 @@ export default defineComponent({
                 ? getStore({ name: "menuTheme" })
                 : store.getters.menuTheme
         )
+        store.commit(
+            "SET_HEADER_THEME",
+            getStore({ name: "headerTheme" })
+                ? getStore({ name: "headerTheme" })
+                : store.getters.headerTheme
+        )
     }
 })
 </script>

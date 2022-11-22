@@ -232,7 +232,6 @@
                 clearTimeout(this.timer)
                 if (!this.down) return
                 this.x = e.clientX - this.offsetX + "px"
-                console.log(this.x)
                 this.y = e.clientY - this.offsetY + "px"
                 resolve({ x: this.x, y: this.y })
             })
