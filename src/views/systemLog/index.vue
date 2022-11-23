@@ -100,6 +100,10 @@
                 deleteLogApi(id).then((res: Res) => {
                     if (res.status === 200) {
                         page.number = 1
+                        ElMessage({
+                            type: "success",
+                            message: res.message
+                        })
                         getList()
                     }
                 })
@@ -108,11 +112,15 @@
                 deleteAllApi().then((res: Res) => {
                     if (res.status === 200) {
                         page.number = 1
+                        ElMessage({
+                            type: "success",
+                            message: res.message
+                        })
                         getList()
                     } else {
                         ElMessage({
                             type: "warning",
-                            message: res.data
+                            message: res.message
                         })
                     }
                 })
@@ -125,11 +133,15 @@
                 deleteSelectLogApi(params).then((res: Res) => {
                     if (res.status === 200) {
                         page.number = 1
+                        ElMessage({
+                            type: "success",
+                            message: res.message
+                        })
                         getList()
                     } else {
                         ElMessage({
                             type: "warning",
-                            message: res.data
+                            message: res.message
                         })
                     }
                 })

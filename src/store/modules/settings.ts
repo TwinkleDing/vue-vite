@@ -272,6 +272,7 @@ const settings = {
             attribute += `--headerThemeColorActive: ${lighten(state.headerTheme, 30)};`
             attribute += `--menuThemeColor: ${state.menuTheme};`
             attribute += `--menuThemeColorActive: ${lighten(state.menuTheme, 30)};`
+            // 添加elementui的主题颜色
             attribute += addElementPlusColor(state.systemTheme)
             const root: any = document.querySelector(":root")
             if (root) {

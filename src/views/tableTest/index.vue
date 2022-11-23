@@ -245,12 +245,16 @@
                         tableAddApi(params).then((res: Res) => {
                             if (res.status === 200) {
                                 closeDialog()
-                                params.id && (page.number = 1)
+                                // params.id && (page.number = 1)
+                                ElMessage({
+                                    type: "success",
+                                    message: res.message
+                                })
                                 getList()
                             } else {
                                 ElMessage({
                                     type: "warning",
-                                    message: res.data
+                                    message: res.message
                                 })
                             }
                         })
@@ -280,10 +284,23 @@
                     item.name = parseInt(a).toString()
                     list.push(item)
                 }
-                tableVolumeApi(list).then(() => init())
+                tableVolumeApi(list).then((res: Res) => {
+                    ElMessage({
+                        type: "success",
+                        message: res.message
+                    })
+                    init()
+                })
             }
             // 删除
-            const deleteRow = (id: string) => tableDeleteApi([id]).then(() => init())
+            const deleteRow = (id: string) =>
+                tableDeleteApi([id]).then((res: Res) => {
+                    ElMessage({
+                        type: "success",
+                        message: res.message
+                    })
+                    init()
+                })
             // 批量删除
             const deleteMessage = () => {
                 if (!selectList.list.length) {
@@ -301,7 +318,13 @@
                     const list: String[] = selectList.list.map((item: TableTestItem) => {
                         return item.id
                     })
-                    tableDeleteApi(list).then(() => init())
+                    tableDeleteApi(list).then((res: Res) => {
+                        ElMessage({
+                            type: "success",
+                            message: res.message
+                        })
+                        init()
+                    })
                 })
             }
             // 更换排序
