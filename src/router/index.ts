@@ -39,7 +39,7 @@ router.beforeEach(async (to: any) => {
     if (firstGetRoute && store.getters.userInfo.userName) {
         firstGetRoute = false
         const list = [...(await store.dispatch("getRouteList"))]
-        const routerList = filterAsyncRouter(list)
+        const routerList = [...filterAsyncRouter(list)]
         routerList.map((item: RouterItem) => {
             router.addRoute("index", item)
         })

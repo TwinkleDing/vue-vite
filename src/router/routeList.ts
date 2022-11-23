@@ -35,7 +35,7 @@ const routeList: RouterItem[] = [
                         path: "/tableTest",
                         name: "tableTest",
                         meta: {
-                            label: "嵌套路由1-1",
+                            label: "表格测试",
                             icon: "coordinate",
                             permission: true
                         },
@@ -45,7 +45,7 @@ const routeList: RouterItem[] = [
                         path: "/systemLog",
                         name: "systemLog",
                         meta: {
-                            label: "嵌套路由1-2",
+                            label: "系统日志",
                             icon: "coordinate",
                             permission: true
                         },
