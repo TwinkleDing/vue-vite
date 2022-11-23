@@ -300,27 +300,24 @@ const settings = {
          */
         getRouteList(context: any) {
             return new Promise((resolve: any, reject: any) => {
-                routerApi().then((res) => {
-                    if (Array.isArray(res.data)) {
-                        context.state.routeList = res.data
-                        context.commit("SET_ROUTE_LIST", context.state.routeList)
-                        resolve(context.state.routeList)
-                    } else {
-                        reject([])
-                    }
-                })
+                if (context.getters.userInfo.type === "tourist") {
+                    const list = getStore({ name: "routeList" })
+                        ? getStore({ name: "routeList" })
+                        : routeList
+                    context.commit("SET_ROUTE_LIST", list)
+                    resolve(list)
+                } else {
+                    routerApi().then((res) => {
+                        if (Array.isArray(res.data)) {
+                            context.state.routeList = res.data
+                            context.commit("SET_ROUTE_LIST", context.state.routeList)
+                            resolve(context.state.routeList)
+                        } else {
+                            reject([])
+                        }
+                    })
+                }
             })
-
-            // /*
-            // 本体获取路由
-            return new Promise((resolve: any) => {
-                const list = getStore({ name: "routeList" })
-                    ? getStore({ name: "routeList" })
-                    : routeList
-                context.commit("SET_ROUTE_LIST", list)
-                resolve(list)
-            })
-            // */
         },
         /**
          * 移除所有非必要信息

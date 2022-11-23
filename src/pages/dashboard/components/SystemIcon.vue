@@ -10,7 +10,7 @@
         </div>
         <cpu class="icon" />
     </div>
-    <el-drawer v-model="drawer" size="350px" custom-class="system-drawer">
+    <el-drawer v-model="drawer" size="350px" custom-class="system-drawer" :direction="direction">
         <template #title>
             <h3>{{ $t("system") }}</h3>
         </template>
@@ -116,6 +116,7 @@
             const x: Ref<string> = ref(systemMouse.x)
             const y: Ref<string> = ref(systemMouse.y)
             const drawer: Ref<Boolean> = ref(false)
+            const direction: Ref<String> = ref(language.value ? "rtl" : "ltr")
             const mouseDown = (e: any) => {
                 systemMouse.mouseDown(e)
             }
@@ -164,6 +165,11 @@
                 const lang = e ? "zh" : "en"
                 proxy.$i18n.locale = lang
                 language.value = e
+                if (e) {
+                    direction.value = "rtl"
+                } else {
+                    direction.value = "ltr"
+                }
                 store.commit("SET_LANGUAGE", lang)
             }
 
@@ -187,6 +193,7 @@
                 tabsType,
                 menuPosition,
                 language,
+                direction,
                 tabsTypeChange,
                 mouseDown,
                 mouseMove,

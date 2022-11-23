@@ -5,7 +5,7 @@
             v-for="(item, index) in routeHistory"
             :key="index"
         >
-            <span v-if="route.path === item.path" class="current-router"></span>
+            <b v-if="route.path === item.path" class="current-router" />
             <span @click="routeGo(item.path)">{{ $t(item.label) }}</span>
             <span v-if="!item.path.includes('home')">
                 <el-icon
@@ -26,15 +26,13 @@
             <span class="router-history-name" @click="routeGo(item.path)">{{
                 $t(item.label)
             }}</span>
-            <span>
-                <el-icon
-                    v-if="!item.path.includes('home')"
-                    :size="16"
-                    color="#fff"
-                    @click="closeCurrentRoute(index)"
-                    ><close
-                /></el-icon>
-            </span>
+            <el-icon
+                v-if="!item.path.includes('home')"
+                :size="16"
+                color="#fff"
+                @click="closeCurrentRoute(index)"
+                ><close
+            /></el-icon>
         </div>
     </div>
 </template>
@@ -121,12 +119,12 @@
                 }
             }
             span {
-                padding: 4px 4px;
+                padding: 4px;
                 display: inline-block;
                 vertical-align: middle;
                 i {
                     display: inline-block;
-                    vertical-align: text-bottom;
+                    vertical-align: text-top;
                 }
             }
         }
@@ -144,9 +142,10 @@
         }
 
         .current-router {
-            padding: 0;
-            width: 8px;
-            height: 8px;
+            display: inline-block;
+            vertical-align: middle;
+            width: 12px;
+            height: 12px;
             background-image: linear-gradient(to top right, $--color-primary, $--color-minor);
             border-radius: 50%;
         }
@@ -159,17 +158,18 @@
                 .router-history-name {
                     transition: 0.3s;
                     padding-left: 12px;
+                    padding-right: 12px;
                 }
             }
             .router-history-name {
                 transition: 0.3s;
                 padding-left: 4px;
             }
-            span {
-                i {
-                    width: 0;
-                    overflow: hidden;
-                }
+            i {
+                width: 0;
+                overflow: hidden;
+                padding: 4px;
+                vertical-align: middle;
             }
         }
         .router-history-active {
@@ -177,6 +177,7 @@
             .router-history-name {
                 transition: 0.3s;
                 padding-left: 12px;
+                padding-right: 12px;
             }
             i {
                 transition: 0.3s;

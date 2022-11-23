@@ -53,6 +53,20 @@
                     <div v-if="item.prop === 'state'">
                         {{ scope.row.state === 1 ? true : false }}
                     </div>
+                    <div v-else class="text-overflow">
+                        <template v-if="item.prop === 'content'">
+                            <el-tooltip
+                                effect="dark"
+                                :content="scope.row[item.prop]"
+                                placement="top-start"
+                            >
+                                {{ scope.row[item.prop] }}
+                            </el-tooltip>
+                        </template>
+                        <template v-else>
+                            {{ scope.row[item.prop] }}
+                        </template>
+                    </div>
                 </template>
             </el-table-column>
             <el-table-column label="操作" width="200">

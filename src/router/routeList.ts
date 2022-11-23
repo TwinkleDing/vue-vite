@@ -24,7 +24,7 @@ const routeList: RouterItem[] = [
             {
                 path: "/nested1",
                 name: "nested1",
-                redirect: "/nested11",
+                redirect: "/tableTest",
                 meta: {
                     label: "嵌套路由1",
                     icon: "icon-menu",
@@ -32,24 +32,24 @@ const routeList: RouterItem[] = [
                 },
                 children: [
                     {
-                        path: "/nested11",
-                        name: "nested11",
+                        path: "/tableTest",
+                        name: "tableTest",
                         meta: {
                             label: "嵌套路由1-1",
                             icon: "coordinate",
                             permission: true
                         },
-                        component: "nested11"
+                        component: "tableTest"
                     },
                     {
-                        path: "/nested12",
-                        name: "nested12",
+                        path: "/systemLog",
+                        name: "systemLog",
                         meta: {
                             label: "嵌套路由1-2",
                             icon: "coordinate",
                             permission: true
                         },
-                        component: "nested12"
+                        component: "systemLog"
                     }
                 ]
             },

@@ -14,5 +14,11 @@ div {
 }
 
 .menu-item .menu-icon {
-    margin-right: 20px;
+    margin-right: 20px !important;
+}
+
+.el-divider__text.is-center {
+    right: 0 !important;
+    left: 50% !important;
+    transform: translateX(-50%) translateY(-50%) !important;
 }

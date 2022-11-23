@@ -10,9 +10,15 @@ div {
 
 .el-button+.el-button {
     margin-right: 12px;
-    margin-left: 0!important;
+    margin-left: 0 !important;
 }
 
 .menu-item .menu-icon {
-    margin-left: 20px;
+    margin-left: 20px !important;
+}
+
+.el-divider__text.is-center {
+    left: 0px !important;
+    right: 50% !important;
+    transform: translateX(50%) translateY(-50%) !important;
 }

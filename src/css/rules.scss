@@ -9,3 +9,10 @@
 .flex {
     display: flex;
 }
+
+.text-overflow {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    word-break: break-all;
+    white-space: nowrap;
+}
