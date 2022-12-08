@@ -194,6 +194,8 @@
                 menuPosition,
                 language,
                 direction,
+                headerThemeList,
+                headerTheme,
                 tabsTypeChange,
                 mouseDown,
                 mouseMove,
@@ -201,8 +203,6 @@
                 mouseOut,
                 systemThemeChange,
                 menuThemeChange,
-                headerThemeList,
-                headerTheme,
                 headerThemeChange,
                 tabsChange,
                 menuPositionChange,
@@ -225,8 +225,8 @@
             this.down = false
             this.offsetX = 0
             this.offsetY = 0
-            this.x = "0"
-            this.y = "40%"
+            this.x = "200px"
+            this.y = "60px"
         }
         mouseDown = (e: any) => {
             this.downTime = new Date().getTime()
@@ -269,8 +269,6 @@
         height: 50px;
         width: 50px;
         position: fixed;
-        right: 0;
-        top: 40%;
         color: #fff;
         font-size: 30px;
         background-image: linear-gradient(to bottom right, $--color-primary, $--color-minor);

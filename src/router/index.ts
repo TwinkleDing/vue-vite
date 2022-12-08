@@ -36,7 +36,9 @@ const router: any = new (createRouter as any)({
 })
 
 router.beforeEach(async (to: any) => {
-    if (firstGetRoute && store.getters.userInfo.userName) {
+    if (to.fullPath.includes("login")) {
+        store.commit("REMOVE_USER_INFO")
+    } else if (firstGetRoute && store.getters.userInfo.userName) {
         firstGetRoute = false
         const list = [...(await store.dispatch("getRouteList"))]
         const routerList = [...filterAsyncRouter(list)]
@@ -44,8 +46,6 @@ router.beforeEach(async (to: any) => {
             router.addRoute("index", item)
         })
         return to.fullPath
-    } else if (to.fullPath.includes("login")) {
-        store.commit("REMOVE_USER_INFO")
     } else if (!store.getters.userInfo.userName) {
         store.dispatch("removeAll")
         return "/login"
