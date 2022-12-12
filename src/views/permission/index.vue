@@ -59,7 +59,7 @@
                 children: "children",
                 label: "name"
             })
-            const tree: any = reactive([])
+            const tree: any = reactive({})
             const tableData: DataItem[] = reactive([
                 {
                     userId: "TwinkleDing",

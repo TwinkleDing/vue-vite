@@ -22,3 +22,7 @@ div {
     right: 50% !important;
     transform: translateX(50%) translateY(-50%) !important;
 }
+
+.text-right {
+    text-align: left;
+}

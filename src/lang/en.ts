@@ -30,6 +30,7 @@ export default {
     canvas: "Canvas Draw",
     media: "Media",
     reset: "Reset",
+    submit: "Submit",
     cancel: "Cancel",
     confirm: "OK",
     language: "Language",

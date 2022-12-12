@@ -30,6 +30,7 @@ export default {
     canvas: "canvas 画布",
     media: "多媒体",
     reset: "重置",
+    submit: "提交",
     cancel: "取消",
     confirm: "确认",
     language: "选择语言",
