@@ -50,6 +50,7 @@ declare module 'vue' {
     LineChart: typeof import('./src/components/Chart/LineChart.vue')['default']
     PieChart: typeof import('./src/components/Chart/PieChart.vue')['default']
     ThemeColorPicker: typeof import('./src/components/ThemeColorPicker.vue')['default']
+    Undone: typeof import('./src/components/Undone/index.vue')['default']
     Waves: typeof import('./src/components/Waves.vue')['default']
   }
 }
