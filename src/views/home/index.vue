@@ -94,20 +94,20 @@
             const bar1 = ref()
             const bar2 = ref()
             const line = ref()
+            const chooseDate: Ref<string> = ref("")
+            const chooseTime: Ref<number> = ref(0)
+            const currentTime: Ref<number> = ref(0)
             const dialogVisible: Ref<boolean> = ref(false)
+            const ruleFormRef = ref<FormInstance>()
+            const scheduleList: any = reactive([])
             const form = reactive({
                 title: "",
                 time: ""
             })
-            const ruleFormRef = ref<FormInstance>()
             const rules = reactive<FormRules>({
                 title: [{ required: true, message: "请输入事件名称！", trigger: "blur" }],
                 time: [{ required: true, message: "请选择事件时间！", trigger: "blur" }]
             })
-            const chooseDate: Ref<string> = ref("")
-            const chooseTime: Ref<number> = ref(0)
-            const currentTime: Ref<number> = ref(0)
-            const scheduleList: any = reactive([])
 
             const calendarClick = (data: any) => {
                 chooseTime.value = new Date(data.day).getTime()
