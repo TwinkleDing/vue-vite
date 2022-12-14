@@ -3,6 +3,11 @@ export interface UserInfo {
     type?: string
 }
 
+interface Meta {
+    icon: string;
+    label: string;
+    permission: boolean;
+  }
 /**
  * 路由格式
  */
@@ -12,7 +17,7 @@ export type RouterItem = {
     redirect?: string
     component?: any
     children?: any
-    meta?: any
+    meta?: Meta
 }
 
 export interface Res {

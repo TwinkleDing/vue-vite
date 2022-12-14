@@ -58,8 +58,6 @@
                 </el-row>
             </div>
         </div>
-        <div>
-        </div>
     </div>
     <el-dialog v-model="dialogVisible" title="日程" width="600px">
         <el-form
@@ -104,7 +102,7 @@
         </div>
     </el-dialog>
 </template>
-<script lang="ts">
+<script setup lang="ts">
     import { defineComponent, onMounted, ref, Ref, reactive, getCurrentInstance } from "vue"
     import type { FormInstance, FormRules } from "element-plus"
     import { ElMessage } from "element-plus"
@@ -121,118 +119,93 @@
         img: any
     }
 
-    export default defineComponent({
-        name: "Home",
-        components: { BarChart, LineChart, PieChart, Undone },
-        setup() {
-            const { proxy }: any = getCurrentInstance()
-            const calendar = ref()
-            const pie = ref()
-            const bar1 = ref()
-            const bar2 = ref()
-            const line = ref()
-            const chooseDate: Ref<string> = ref("")
-            const chooseTime: Ref<number> = ref(0)
-            const currentTime: Ref<number> = ref(0)
-            const dialogVisible: Ref<boolean> = ref(false)
-            const ruleFormRef = ref<FormInstance>()
-            const scheduleList: any = reactive([])
-            const form = reactive({
-                title: "",
-                time: ""
-            })
-            const rules = reactive<FormRules>({
-                title: [{ required: true, message: "请输入事件名称！", trigger: "blur" }],
-                time: [{ required: true, message: "请选择事件时间！", trigger: "blur" }]
-            })
-            const gameList: Array<GameList> = reactive([
-                {
-                    name: "星之卡比-探索发现",
-                    price: 325,
-                    platform: "switch",
-                    time: "2022-03-25",
-                    img: "/src/assets/Kirby.jpg"
-                },
-                {
-                    name: "塞尔达-旷野之息2",
-                    price: 375,
-                    platform: "switch",
-                    time: "2023-5-12",
-                    img: "/src/assets/Zelda.webp"
-                },
-                {
-                    name: "宝可梦朱紫",
-                    price: 335,
-                    platform: "switch",
-                    time: "2022-11-18",
-                    img: "/src/assets/Pokemon.webp"
-                }
-            ])
-
-            const calendarClick = (data: any) => {
-                chooseTime.value = new Date(data.day).getTime()
-                currentTime.value = new Date().getTime()
-                if (data.isSelected) {
-                    dialogVisible.value = true
-                    proxy.$nextTick(() => {
-                        if (chooseDate.value !== data.day) {
-                            chooseDate.value = data.day
-                            ruleFormRef.value?.resetFields()
-                        }
-                    })
-                }
-            }
-            const submitForm = async (formEl: FormInstance | undefined) => {
-                if (!formEl) return
-                await formEl.validate((valid, fields) => {
-                    if (valid) {
-                        scheduleList.push({
-                            title: form.title,
-                            time: form.time
-                        })
-                        ElMessage({
-                            type: "success",
-                            message: "添加成功！"
-                        })
-                    } else {
-                        console.log("error submit!", fields)
-                    }
-                })
-            }
-
-            const resetForm = (formEl: FormInstance | undefined) => {
-                if (!formEl) return
-                formEl.resetFields()
-            }
-
-            onMounted(() => {
-                window.addEventListener("resize", function (e) {
-                    pie.value.resize()
-                    bar1.value.resize()
-                    bar2.value.resize()
-                    line.value.resize()
-                })
-            })
-
-            return {
-                calendar,
-                pie,
-                bar1,
-                bar2,
-                line,
-                dialogVisible,
-                form,
-                rules,
-                ruleFormRef,
-                chooseTime,
-                currentTime,
-                scheduleList,
-                gameList,
-                calendarClick,
-                resetForm,
-                submitForm
-            }
+    const { proxy }: any = getCurrentInstance()
+    const calendar = ref()
+    const pie = ref()
+    const bar1 = ref()
+    const bar2 = ref()
+    const line = ref()
+    const chooseDate: Ref<string> = ref("")
+    const chooseTime: Ref<number> = ref(0)
+    const currentTime: Ref<number> = ref(0)
+    const dialogVisible: Ref<boolean> = ref(false)
+    const ruleFormRef = ref<FormInstance>()
+    const scheduleList: any = reactive([])
+    const form = reactive({
+        title: "",
+        time: ""
+    })
+    const rules = reactive<FormRules>({
+        title: [{ required: true, message: "请输入事件名称！", trigger: "blur" }],
+        time: [{ required: true, message: "请选择事件时间！", trigger: "blur" }]
+    })
+    const gameList: Array<GameList> = reactive([
+        {
+            name: "星之卡比-探索发现",
+            price: 325,
+            platform: "switch",
+            time: "2022-03-25",
+            img: "/src/assets/Kirby.jpg"
+        },
+        {
+            name: "塞尔达-旷野之息2",
+            price: 375,
+            platform: "switch",
+            time: "2023-5-12",
+            img: "/src/assets/Zelda.webp"
+        },
+        {
+            name: "宝可梦朱紫",
+            price: 335,
+            platform: "switch",
+            time: "2022-11-18",
+            img: "/src/assets/Pokemon.webp"
         }
+    ])
+
+    const calendarClick = (data: any) => {
+        chooseTime.value = new Date(data.day).getTime()
+        currentTime.value = new Date().getTime()
+        if (data.isSelected) {
+            dialogVisible.value = true
+            proxy.$nextTick(() => {
+                if (chooseDate.value !== data.day) {
+                    chooseDate.value = data.day
+                    ruleFormRef.value?.resetFields()
+                }
+            })
+        }
+    }
+    const submitForm = async (formEl: FormInstance | undefined) => {
+        if (!formEl) return
+        await formEl.validate((valid, fields) => {
+            if (valid) {
+                scheduleList.push({
+                    title: form.title,
+                    time: form.time
+                })
+                ElMessage({
+                    type: "success",
+                    message: "添加成功！"
+                })
+            } else {
+                console.log("error submit!", fields)
+            }
+        })
+    }
+
+    const resetForm = (formEl: FormInstance | undefined) => {
+        if (!formEl) return
+        formEl.resetFields()
+    }
+
+    onMounted(() => {
+        window.addEventListener("resize", function (e) {
+            pie.value.resize()
+            bar1.value.resize()
+            bar2.value.resize()
+            line.value.resize()
+        })
     })
 </script>
 

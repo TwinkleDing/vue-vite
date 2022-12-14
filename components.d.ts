@@ -5,10 +5,9 @@
 declare module 'vue' {
   export interface GlobalComponents {
     BarChart: typeof import('./src/components/Chart/BarChart.vue')['default']
-    Earth: typeof import('./src/components/Earth.vue')['default']
+    Earth: typeof import('./src/components/Earth/index.vue')['default']
     ElAvatar: typeof import('element-plus/es')['ElAvatar']
     ElButton: typeof import('element-plus/es')['ElButton']
-    ElButtonGroup: typeof import('element-plus/es')['ElButtonGroup']
     ElCalendar: typeof import('element-plus/es')['ElCalendar']
     ElCarousel: typeof import('element-plus/es')['ElCarousel']
     ElCarouselItem: typeof import('element-plus/es')['ElCarouselItem']
@@ -17,7 +16,6 @@ declare module 'vue' {
     ElCol: typeof import('element-plus/es')['ElCol']
     ElConfigProvider: typeof import('element-plus/es')['ElConfigProvider']
     ElDatePicker: typeof import('element-plus/es')['ElDatePicker']
-    ElDateTime: typeof import('element-plus/es')['ElDateTime']
     ElDialog: typeof import('element-plus/es')['ElDialog']
     ElDivider: typeof import('element-plus/es')['ElDivider']
     ElDrawer: typeof import('element-plus/es')['ElDrawer']
@@ -49,9 +47,9 @@ declare module 'vue' {
     ElTree: typeof import('element-plus/es')['ElTree']
     LineChart: typeof import('./src/components/Chart/LineChart.vue')['default']
     PieChart: typeof import('./src/components/Chart/PieChart.vue')['default']
-    ThemeColorPicker: typeof import('./src/components/ThemeColorPicker.vue')['default']
+    ThemeColorPicker: typeof import('./src/components/ThemeColorPicker/index.vue')['default']
     Undone: typeof import('./src/components/Undone/index.vue')['default']
-    Waves: typeof import('./src/components/Waves.vue')['default']
+    Waves: typeof import('./src/components/Waves/index.vue')['default']
   }
 }
 

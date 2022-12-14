@@ -27,7 +27,7 @@
     import robot from "./components/robot.vue"
     import soldier from "./components/soldier.vue"
     import three7 from "./components/three7.vue"
-    import earth from "@/components/Earth.vue"
+    import earth from "@/components/Earth/index.vue"
     import waves from "./components/waves.vue"
     import bee from "./components/bee.vue"
     import { useRoute } from "vue-router"
