@@ -12,7 +12,7 @@
         <el-input v-model="ruleForm.name" />
       </el-form-item>
       <el-form-item label="Activity zone" prop="region">
-        <el-select v-model="ruleForm.region" placeholder="Activity zone">
+        <el-select v-model="ruleForm.region">
           <el-option label="Zone one" value="shanghai" />
           <el-option label="Zone two" value="beijing" />
         </el-select>
@@ -20,12 +20,7 @@
       <el-form-item label="Activity time" required>
         <el-col :span="11">
           <el-form-item prop="date1">
-            <el-date-picker
-              v-model="ruleForm.date1"
-              type="date"
-              placeholder="Pick a date"
-              style="width: 100%"
-            />
+            <el-date-picker v-model="ruleForm.date1" type="date" style="width: 100%" />
           </el-form-item>
         </el-col>
         <el-col class="text-center" :span="2">
@@ -33,11 +28,7 @@
         </el-col>
         <el-col :span="11">
           <el-form-item prop="date2">
-            <el-time-picker
-              v-model="ruleForm.date2"
-              placeholder="Pick a time"
-              style="width: 100%"
-            />
+            <el-time-picker v-model="ruleForm.date2" style="width: 100%" />
           </el-form-item>
         </el-col>
       </el-form-item>

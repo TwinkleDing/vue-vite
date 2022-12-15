@@ -8,9 +8,12 @@ import { defineComponent } from "vue";
 import { getStore } from "@/utils/storage";
 import { useStore } from "vuex";
 import { ElConfigProvider } from "element-plus";
+import zhCn from "element-plus/dist/locale/zh-cn.mjs";
 
 const store = useStore();
+const locale:any = zhCn
 
+console.log(locale)
 store.commit(
   "SET_SYSTEM_THEME",
   getStore({ name: "systemTheme" })
