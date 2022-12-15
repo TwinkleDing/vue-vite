@@ -4,16 +4,26 @@
   </el-config-provider>
 </template>
 <script setup lang="ts">
-import { defineComponent } from "vue";
+import { defineComponent, watch, ref } from "vue";
 import { getStore } from "@/utils/storage";
 import { useStore } from "vuex";
 import { ElConfigProvider } from "element-plus";
-import zhCn from "element-plus/dist/locale/zh-cn.mjs";
+import zh from "element-plus/dist/locale/zh-cn.mjs";
+import en from "element-plus/dist/locale/en.mjs";
 
 const store = useStore();
-const locale:any = zhCn
+let locale: any = ref(zh);
 
-console.log(locale)
+watch(
+  () => store.getters.language,
+  (newVal, oldVal) => {
+    locale = newVal === "zh" ? zh : en;
+  },
+  {
+    immediate: true, // 立即执行
+    deep: true, // 深度监听
+  }
+);
 store.commit(
   "SET_SYSTEM_THEME",
   getStore({ name: "systemTheme" })

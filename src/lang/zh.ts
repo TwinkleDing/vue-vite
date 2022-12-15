@@ -1,7 +1,4 @@
-import elementZhLocale from "element-plus/es/locale/lang/zh-cn"
-
 export default {
-    ...elementZhLocale,
     login: {
         title: "Vue 模板",
         login: "登录",
@@ -50,5 +47,5 @@ export default {
     tabCard: "卡片",
     delete: "删除",
     edit: "修改",
-    loading:"加载中..."
+    loading: "加载中..."
 }
