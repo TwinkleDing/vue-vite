@@ -2,7 +2,7 @@
   <div id="model" class="model-ca"></div>
 </template>
 <script setup>
-import { onMounted, onUnmounted, defineProps } from "vue";
+import { onMounted, onUnmounted } from "vue";
 import * as THREE from "three";
 import { FlyControls } from "three/examples/jsm/controls/FlyControls.js";
 import { EffectComposer } from "three/examples/jsm/postprocessing/EffectComposer.js";

@@ -19,7 +19,7 @@
 </template>
 
 <script setup lang="ts">
-import { defineComponent, reactive, defineProps } from "vue";
+import { defineComponent, reactive } from "vue";
 import { useRoute } from "vue-router";
 import { useStore } from "vuex";
 import MenuItem from "./MenuItem.vue";

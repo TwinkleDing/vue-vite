@@ -17,15 +17,7 @@
   </div>
 </template>
 <script setup lang="ts">
-import {
-  ref,
-  Ref,
-  PropType,
-  onMounted,
-  defineProps,
-  defineComponent,
-  getCurrentInstance,
-} from "vue";
+import { ref, Ref, PropType, onMounted, defineComponent, getCurrentInstance } from "vue";
 import { useStore } from "vuex";
 import { Check } from "@element-plus/icons-vue";
 const props = defineProps({

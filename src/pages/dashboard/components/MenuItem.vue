@@ -42,7 +42,7 @@
 </template>
 
 <script setup lang="ts">
-import { defineComponent, reactive, defineProps } from "vue";
+import { defineComponent, reactive } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { useStore } from "vuex";
 import { lighten } from "@/utils/themeColor";
