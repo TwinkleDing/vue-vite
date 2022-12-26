@@ -34,26 +34,14 @@
         </el-calendar>
         <el-row>
           <el-col :span="12">
-            <undone />
+            <undone>
+              <template #item="{ item }">
+                <div>{{ item.title }}</div>
+              </template>
+            </undone>
           </el-col>
           <el-col :span="12">
-            <div>
-              <div class="game" v-for="item in gameList" :key="item.name">
-                <img :src="item.img" width="80" height="80" alt="" />
-                <div>
-                  <div class="game-name">{{ item.name }}</div>
-                  <div>
-                    发行价格：<b>{{ item.price }}</b>
-                  </div>
-                  <div>
-                    发行平台：<b>{{ item.platform }}</b>
-                  </div>
-                  <div>
-                    发行时间：<b>{{ item.time }}</b>
-                  </div>
-                </div>
-              </div>
-            </div>
+              <game :list="gameList" />
           </el-col>
         </el-row>
       </div>
@@ -110,14 +98,8 @@ import BarChart from "@/components/Chart/BarChart.vue";
 import LineChart from "@/components/Chart/LineChart.vue";
 import PieChart from "@/components/Chart/PieChart.vue";
 import Undone from "@/components/Undone/index.vue";
-
-interface GameList {
-  name: string;
-  price: number;
-  platform: string;
-  time: string;
-  img: any;
-}
+import Game from "@/components/Game/index.vue";
+import { GameList } from "@/utils/interface.ts";
 
 const { proxy }: any = getCurrentInstance();
 const calendar = ref();
@@ -228,23 +210,6 @@ onMounted(() => {
     display: inline-block;
     width: 49%;
     min-width: 600px;
-    .game {
-      display: flex;
-      padding: 12px 0;
-      cursor: pointer;
-      > div {
-        margin-right: 10px;
-        font-size: 14px;
-      }
-      &-name {
-        font-size: 14px;
-        font-weight: 700;
-      }
-      img {
-        border-radius: 10px;
-        margin-right: 24px;
-      }
-    }
   }
   .chart {
     display: inline-block;

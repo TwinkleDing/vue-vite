@@ -6,7 +6,8 @@
       :key="index"
       @click="checkboxClick(item)"
     >
-      <span>{{ item.title }}</span>
+      <slot name="item" :item="item"></slot>
+      <!-- <span>{{ item.title }}</span> -->
       <el-checkbox v-model="item.status" size="large"> </el-checkbox>
     </div>
   </div>

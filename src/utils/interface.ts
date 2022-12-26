@@ -4,10 +4,10 @@ export interface UserInfo {
 }
 
 interface Meta {
-    icon: string;
-    label: string;
-    permission: boolean;
-  }
+    icon: string
+    label: string
+    permission: boolean
+}
 /**
  * 路由格式
  */
@@ -34,4 +34,12 @@ export interface Page {
     size: number
     total: number
     sizes: number[]
+}
+
+interface GameList {
+    name: string
+    price: number
+    platform: string
+    time: string
+    img: any
 }

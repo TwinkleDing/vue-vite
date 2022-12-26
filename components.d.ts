@@ -44,6 +44,8 @@ declare module 'vue' {
     ElTimeSelect: typeof import('element-plus/es')['ElTimeSelect']
     ElTooltip: typeof import('element-plus/es')['ElTooltip']
     ElTree: typeof import('element-plus/es')['ElTree']
+    Game: typeof import('./src/components/Game/index.vue')['default']
+    Item: typeof import('./src/components/Game/item.vue')['default']
     LineChart: typeof import('./src/components/Chart/LineChart.vue')['default']
     PieChart: typeof import('./src/components/Chart/PieChart.vue')['default']
     ThemeColorPicker: typeof import('./src/components/ThemeColorPicker/index.vue')['default']
