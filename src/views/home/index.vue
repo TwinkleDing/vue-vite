@@ -160,7 +160,6 @@ const gameList: Array<GameList> = reactive([
     price: 335,
     platform: "switch",
     time: "2022-11-18",
-    img: "/src/assets/Pokemon.webp",
     img: getImage("Pokemon.webp"),
   },
 ]);
