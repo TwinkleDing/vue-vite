@@ -2,7 +2,7 @@
   <div class="pages-header">
     <div class="header-background"></div>
     <div class="logo">
-      <img src="@/assets/logo.png" alt="" srcset="" />
+      <img :src="logo" alt="" srcset="" />
       <i>{{ title }}</i>
     </div>
     <div v-if="!store.getters.menuPosition" class="menu-top">
@@ -36,6 +36,7 @@ const imgUrl: Ref<string> = ref(
   "https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"
 );
 const title: Ref<string> = ref(Config.title);
+const logo: Ref<string> = ref(Config.logo);
 
 const drClick = (type: number) => {
   if (type === 1) {

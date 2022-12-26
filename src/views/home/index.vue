@@ -139,20 +139,21 @@ const rules = reactive<FormRules>({
   title: [{ required: true, message: "请输入事件名称！", trigger: "blur" }],
   time: [{ required: true, message: "请选择事件时间！", trigger: "blur" }],
 });
+
 const gameList: Array<GameList> = reactive([
   {
     name: "星之卡比-探索发现",
     price: 325,
     platform: "switch",
     time: "2022-03-25",
-    img: "/src/assets/Kirby.jpg",
+    img: getImage("Kirby.jpg"),
   },
   {
     name: "塞尔达-旷野之息2",
     price: 375,
     platform: "switch",
     time: "2023-5-12",
-    img: "/src/assets/Zelda.webp",
+    img: getImage("Zelda.webp"),
   },
   {
     name: "宝可梦朱紫",
@@ -160,8 +161,14 @@ const gameList: Array<GameList> = reactive([
     platform: "switch",
     time: "2022-11-18",
     img: "/src/assets/Pokemon.webp",
+    img: getImage("Pokemon.webp"),
   },
 ]);
+
+// 动态获取图片
+function getImage(name: string): string {
+  return new URL(`/src/assets/${name}`, import.meta.url).href;
+}
 
 const calendarClick = (data: any) => {
   chooseTime.value = new Date(data.day).getTime();

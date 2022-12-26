@@ -1,3 +1,4 @@
 export default {
-    title: "VUE3+TS"
+    title: "VUE3+TS",
+    logo: 'static/logo.png'
 }
