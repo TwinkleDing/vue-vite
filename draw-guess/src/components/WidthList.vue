@@ -1,18 +1,21 @@
 <template>
   <div class="flex">
     <div v-for="item in WidthList" class="width-item" @click="setWidth(item)">
-      <div class="width-item-box" :style="{ height: item, width: item }"></div>
+      <div
+        class="width-item-box"
+        :style="{ height: item + 'px', width: item + 'px' }"
+      ></div>
     </div>
   </div>
 </template>
 <script setup>
 import { defineEmits } from "vue";
 const emit = defineEmits(["set-width"]);
-const WidthList = ["3px", "5px", "7px", "10px", "15px"];
+const WidthList = ["3", "5", "7", "10", "15"];
 let width = WidthList[0];
 const setWidth = (e) => {
   width = e;
-  emit("set-width", width);
+  emit("set-line-width", width);
 };
 </script>
 

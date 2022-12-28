@@ -32,15 +32,15 @@ const wss = new WebSocketServer({
 });
 wss.on("connection", function (ws) {
 	ws.on("message", function (message) {
-		const mess = JSON.parse(message.toString());
-		console.log(mess.status);
-		if (mess.status === "StartGame") {
+		const msg = JSON.parse(message.toString());
+		console.log(msg.status);
+		if (msg.status === "StartGame") {
             let arr = fs.readFileSync("question.txt").toString().split("\n");
             let question = arr[Math.floor(Math.random() * arr.length)]
             console.log(question)
-            mess.question = question;
+            msg.question = question;
         }
-        message = JSON.stringify(mess);
+        message = JSON.stringify(msg);
 		wss.clients.forEach(function each(client) {
 			client.send(`${message}`);
 		});

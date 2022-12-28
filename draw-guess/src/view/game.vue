@@ -18,9 +18,9 @@
         width="1000"
       />
       <div v-if="drawer">
-        <div class="flex">
-          <color-list @set-color="setColor" />
-          <width-list @set-width="setWidth" />
+        <div v-if="status === 'Started'" class="flex">
+          <color-list @set-line-color="setLineColor" />
+          <width-list @set-line-width="setLineWidth" />
           <el-button @click="emptyAll">一键清空</el-button>
         </div>
         <div class="flex">
@@ -56,7 +56,7 @@
 <script>
 import ColorList from "../components/ColorList.vue";
 import WidthList from "../components/WidthList.vue";
-
+const StatusList = ["NoStart", "Started", "End"];
 export default {
   name: "game",
   components: {
@@ -80,17 +80,18 @@ export default {
       user: "",
       drawer: localStorage.getItem("user") === "twinkleding",
       question: "",
-      color: "",
-      width: "",
+      lineColor: "#000",
+      lineWidth: "1",
+      status: StatusList[0],
     };
   },
   mounted() {
     this.init();
     this.socket.onmessage = (msg) => {
-      let canvasAnswer = document.getElementById("canvasAnswer");
-      let ctx = canvasAnswer.getContext("2d");
-      ctx.strokeStyle = "#000";
-      let client = JSON.parse(msg.data);
+      const canvasAnswer = document.getElementById("canvasAnswer");
+      const ctx = canvasAnswer.getContext("2d");
+      const client = JSON.parse(msg.data);
+      // 玩家加入游戏
       if (client.status === "user") {
         this.answerList.push({
           user: "系统",
@@ -98,41 +99,41 @@ export default {
         });
         return;
       }
+
       if (client.status === "qusetionUser") {
         this.drawer = client.user === this.user;
       }
+      // 提交答案
       if (client.status === "answer") {
         this.answerList.push({
           user: client.user,
           answer: client.answer,
         });
       }
+      // 开始游戏，获取问题
       if (client.status === "StartGame") {
-        console.log(client);
+        this.status = StatusList[1];
         this.question = client.question.split("，")[0];
-        console.log(this.question);
       }
+      // 清空画板
       if (client.status === "Empty") {
         ctx.beginPath();
         ctx.clearRect(0, 0, 1200, 800);
         return;
       }
+      // 绘制途中
       if (["start", "drawing"].includes(client.status)) {
         if (client.status === "drawing") {
           ctx.moveTo(this.mouseLastX, this.mouseLastY);
         } else if (client.status === "start") {
           ctx.moveTo(client.x, client.y);
         }
-        ctx.strokeStyle = client.color;
-        ctx.lineTo(client.x, client.y);
-        this.mouseLastX = client.x;
-        this.mouseLastY = client.y;
-        ctx.stroke();
-        ctx.beginPath();
+        drawAnswerCanvas(ctx, client);
       }
     };
   },
   methods: {
+    // 初始化连接websocket，设置玩家名称
     init() {
       this.socket = new WebSocket("ws://localhost:3001/test");
       this.canvas = document.getElementById("canvas");
@@ -140,55 +141,58 @@ export default {
       this.user = localStorage.getItem("user");
       this.socket.onopen = () => {
         if (!this.user) {
-          this.$prompt("请输入玩家姓名", "提示", {
+          this.$prompt("请输入玩家名称", "提示", {
             cancelButtonText: "取消",
             confirmButtonText: "确定",
           }).then(({ value }) => {
             localStorage.setItem("user", value);
-            let client = {
+            const client = {
               status: "user",
               user: value,
             };
             this.user = value;
-            this.socket.send(JSON.stringify(client));
+            this.sendClient(client);
           });
         } else {
-          let client = {
+          const client = {
             status: "user",
             user: this.user,
           };
-          this.socket.send(JSON.stringify(client));
+          this.sendClient(client);
         }
       };
     },
-    setColor(e) {
-      this.color = e;
+    // 设置画笔颜色
+    setLineColor(e) {
+      this.lineColor = e;
     },
-    setWidth(e) {
-      this.width = e;
+    // 设置画笔粗细
+    setLineWidth(e) {
+      this.lineWidth = e - 2;
     },
+    // 开始游戏
     startGame() {
-      let client = {
+      const client = {
         status: "StartGame",
       };
-      this.socket.send(JSON.stringify(client));
+      this.sendClient(client);
     },
-    nextUser() {
-      //下一个玩家进行游戏
-    },
+    //下一个玩家进行游戏
+    nextUser() {},
+    // 提交答案
     submit() {
       if (this.answerInput === "") {
         return;
       }
-
-      let client = {
+      const client = {
         status: "answer",
         user: this.user,
         answer: this.answerInput,
       };
       this.answerInput = "";
-      this.socket.send(JSON.stringify(client));
+      this.sendClient(client);
     },
+    // 清空画板
     emptyAll() {
       this.mouseBeginX = null;
       this.mouseBeginY = null;
@@ -196,12 +200,12 @@ export default {
       this.mouseLastY = null;
       this.context.beginPath();
       this.context.clearRect(0, 0, 1200, 800);
-      this.socket.send(
-        JSON.stringify({
-          status: "Empty",
-        })
-      );
+      const client = {
+        status: "Empty",
+      };
+      this.sendClient(client);
     },
+    // 开始绘制
     drawStart(e) {
       this.mouseBeginX = e.clientX - this.canvas.offsetLeft;
       this.mouseBeginY = e.clientY - this.canvas.offsetTop;
@@ -209,29 +213,46 @@ export default {
       this.openDraw(e, "start");
       this.start = true;
     },
+    // 绘制中
     drawing(e) {
       if (this.start) {
         this.openDraw(e, "drawing");
       }
     },
+    // 绘制结束
     drawEnd(e) {
       this.context.beginPath();
       this.start = false;
     },
     openDraw(e, status) {
-      let ctx = this.context;
-      ctx.strokeStyle = this.color;
+      const ctx = this.context;
+      ctx.strokeStyle = this.lineColor;
+      ctx.lineWidth = this.lineWidth;
       this.mouseX = e.clientX - this.canvas.offsetLeft;
       this.mouseY = e.clientY - this.canvas.offsetTop;
       ctx.lineTo(this.mouseX, this.mouseY);
       ctx.stroke();
-      let client = {
+      const client = {
         status,
         x: this.mouseX,
         y: this.mouseY,
-        color: this.color,
+        lineColor: this.lineColor,
+        lineWidth: this.lineWidth,
       };
-      this.socket.send(JSON.stringify(client));
+      this.sendClient(client);
+    },
+    // 画板展示绘制
+    drawAnswerCanvas(ctx, client) {
+      ctx.strokeStyle = client.lineColor;
+      ctx.lineWidth = client.lineWidth;
+      ctx.lineTo(client.x, client.y);
+      this.mouseLastX = client.x;
+      this.mouseLastY = client.y;
+      ctx.stroke();
+      ctx.beginPath();
+    },
+    sendClient(msg) {
+      this.socket.send(JSON.stringify(msg));
     },
   },
 };

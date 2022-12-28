@@ -15,7 +15,7 @@ const ColorList = ["#000", "#00f", "#0f0", "#0ff", "#f00", "#f0f", "#ff0"];
 let color = ColorList[0];
 const setColor = (e) => {
   color = e;
-  emit("set-color", color);
+  emit("set-line-color", color);
 };
 </script>
 
