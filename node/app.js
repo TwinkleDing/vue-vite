@@ -1,17 +1,15 @@
 const Koa = require("koa");
-
 const bodyParser = require("koa-bodyparser");
-
 const controller = require("./controller");
-
 const cors = require("koa2-cors");
+const fs = require("fs");
 const app = new Koa();
 app.use(cors());
 
 // log request URL:
 app.use(async (ctx, next) => {
-    console.log(`Process ${ctx.request.method} ${ctx.request.url}...`);
-    await next();
+	console.log(`Process ${ctx.request.method} ${ctx.request.url}...`);
+	await next();
 });
 
 // parse request body:
@@ -30,14 +28,21 @@ const WebSocketServer = WebSocket.Server;
 
 // 实例化:
 const wss = new WebSocketServer({
-    port: 3001,
+	port: 3001,
 });
 wss.on("connection", function (ws) {
-    console.log(`[SERVER] connection()`);
-    ws.on("message", function (message) {
-        console.log(message.toString());
-        wss.clients.forEach(function each(client) {
-            client.send(`${message}`);
-        });
-    });
+	ws.on("message", function (message) {
+		const mess = JSON.parse(message.toString());
+		console.log(mess.status);
+		if (mess.status === "StartGame") {
+            let arr = fs.readFileSync("question.txt").toString().split("\n");
+            let question = arr[Math.floor(Math.random() * arr.length)]
+            console.log(question)
+            mess.question = question;
+        }
+        message = JSON.stringify(mess);
+		wss.clients.forEach(function each(client) {
+			client.send(`${message}`);
+		});
+	});
 });
