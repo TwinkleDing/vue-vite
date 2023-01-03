@@ -5,8 +5,8 @@
         v-show="isDrawer"
         id="canvas"
         class="canvas"
-        height="800"
-        width="1000"
+        height="80"
+        width="100"
         @mousedown="drawStart"
         @mousemove="drawing"
       />
@@ -14,8 +14,8 @@
         v-show="!isDrawer"
         id="canvasAnswer"
         class="canvas"
-        height="800"
-        width="1000"
+        height="80"
+        width="100"
       />
       <div v-if="isDrawer">
         <div v-if="status === 'Started'" class="flex">
@@ -122,6 +122,7 @@ export default {
           this.drawer = client.user;
           this.isDrawer = client.user === this.user;
         }
+        return;
       }
       // 提交答案
       if (client.status === "Answer") {
@@ -138,10 +139,11 @@ export default {
             answer: client.answer,
           });
         }
+        return;
       }
       // 开始游戏，获取问题
       if (client.status === "StartGame") {
-        this.countdown === CountdownTime;
+        this.countdown = CountdownTime;
         this.drawer = client.user;
         this.status = StatusList[1];
         this.question = client.question.split("，")[0];
@@ -157,6 +159,7 @@ export default {
           }, 20000);
         }, 20000);
         this.countdownFnc(this.countdown);
+        return;
       }
       // 清空画板
       if (client.status === "Empty") {
@@ -172,6 +175,7 @@ export default {
           ctx.moveTo(client.x, client.y);
         }
         this.drawAnswerCanvas(ctx, client);
+        return;
       }
     };
     window.onbeforeunload = () => {
@@ -222,7 +226,7 @@ export default {
     },
     // 开始游戏
     startGame() {
-      this.countdown === CountdownTime;
+      this.countdown = CountdownTime;
       const client = {
         status: "StartGame",
         user: this.user,
@@ -313,7 +317,6 @@ export default {
       this.socket.send(JSON.stringify(msg));
     },
     countdownFnc(time) {
-      console.log(this.countdown);
       this.answerTimer = setInterval(() => {
         this.countdown--;
         if (this.countdown <= 0) {
@@ -349,7 +352,9 @@ export default {
             user: "系统",
             answer: "等待时间结束，游戏开始",
           });
-          this.nextUser();
+          if (this.isDrawer) {
+            this.nextUser();
+          }
         } else {
           this.answerList.push({
             user: "系统",

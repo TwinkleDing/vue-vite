@@ -61,15 +61,18 @@ wss.on("connection", function (ws) {
 			let index = Math.floor(Math.random() * userList.length);
 			msg.user = userList[index];
 		}
-		message = wss.clients.forEach(function each(client) {
-			if (msg.status) {
+		wss.clients.forEach(function each(client) {
+			if (msg.status === "User") {
 				let userMsg = JSON.parse(JSON.stringify(msg));
-				userList.forEach(item => {
+				userList.forEach((item) => {
 					userMsg.user = item;
 					client.send(`${JSON.stringify(userMsg)}`);
 				});
 			} else {
-				client.send(`${message}`);
+				if (msg.status === "NextUser") {
+					console.log(123123);
+				}
+				client.send(`${JSON.stringify(msg)}`);
 			}
 		});
 	});
