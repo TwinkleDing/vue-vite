@@ -23,9 +23,9 @@
           <width-list @set-line-width="setLineWidth" />
           <el-button @click="emptyAll">一键清空</el-button>
         </div>
-        <div class="flex">
-          <el-button @click="startGame">开始游戏</el-button>
-          <el-button @click="nextUser">更换玩家</el-button>
+        <div v-if="status === 'NoStart'" class="flex">
+          <el-button @click="startGame">我画</el-button>
+          <el-button @click="nextUser">你画</el-button>
         </div>
       </div>
       <div v-if="status === 'Started' && !isDrawer">当前玩家：{{ drawer }}</div>
@@ -38,15 +38,16 @@
           <span>{{ item.answer }}</span>
         </div>
       </div>
-      <div v-if="status === 'Started'">
+      <div>
         <div>
-          <div v-if="isDrawer">题目：{{ question }}</div>
-          <div>
+          <div v-if="isDrawer && status === 'Started'">题目：{{ question }}</div>
+          <div v-if="status !== 'NoStart'">倒计时：{{ countdown }}s</div>
+          <div v-if="!isDrawer && status === 'Started'" class="prompt">
             提示：
             <el-tag v-for="(item, index) in prompt" :key="index">{{ item }}</el-tag>
           </div>
         </div>
-        <div v-if="!isDrawer" class="flex">
+        <div v-if="!isDrawer || status !== 'Started'" class="flex">
           <el-input
             @keyup.enter="submit"
             v-model="answerInput"
@@ -64,6 +65,9 @@
 import ColorList from "../components/ColorList.vue";
 import WidthList from "../components/WidthList.vue";
 const StatusList = ["NoStart", "Started", "End"];
+const CountdownTime = 10;
+const AnswerCountdownTime = 30;
+const WaitCountdownTime = 10;
 export default {
   name: "game",
   components: {
@@ -93,6 +97,9 @@ export default {
       status: StatusList[0],
       prompt: [],
       questionTimer: null,
+      answerTimer: null,
+      waitTimer: null,
+      countdown: CountdownTime,
     };
   },
   mounted() {
@@ -111,22 +118,30 @@ export default {
       }
       if (client.status === "NextUser") {
         if (client.user === this.user) {
-          this.nextUser();
-          return;
+          this.startGame();
+          this.drawer = client.user;
+          this.isDrawer = client.user === this.user;
         }
-        this.startGame();
-        this.drawer = client.user;
-        this.isDrawer = client.user === this.user;
       }
       // 提交答案
       if (client.status === "Answer") {
-        this.answerList.push({
-          user: client.user,
-          answer: client.answer,
-        });
+        // 回答正确
+        if (client.answer.trim() === this.question) {
+          this.answerList.push({
+            user: client.user,
+            answer: "回答正确！",
+          });
+          this.countdownFnc(AnswerCountdownTime);
+        } else {
+          this.answerList.push({
+            user: client.user,
+            answer: client.answer,
+          });
+        }
       }
       // 开始游戏，获取问题
       if (client.status === "StartGame") {
+        this.countdown === CountdownTime;
         this.drawer = client.user;
         this.status = StatusList[1];
         this.question = client.question.split("，")[0];
@@ -141,6 +156,7 @@ export default {
             this.prompt.push(client.question.split("，")[2]);
           }, 20000);
         }, 20000);
+        this.countdownFnc(this.countdown);
       }
       // 清空画板
       if (client.status === "Empty") {
@@ -206,6 +222,7 @@ export default {
     },
     // 开始游戏
     startGame() {
+      this.countdown === CountdownTime;
       const client = {
         status: "StartGame",
         user: this.user,
@@ -286,14 +303,60 @@ export default {
     drawAnswerCanvas(ctx, client) {
       ctx.strokeStyle = client.lineColor;
       ctx.lineWidth = client.lineWidth;
-      ctx.lineTo(client.x, client.y);
       this.mouseLastX = client.x;
       this.mouseLastY = client.y;
+      ctx.lineTo(client.x, client.y);
       ctx.stroke();
       ctx.beginPath();
     },
     sendClient(msg) {
       this.socket.send(JSON.stringify(msg));
+    },
+    countdownFnc(time) {
+      console.log(this.countdown);
+      this.answerTimer = setInterval(() => {
+        this.countdown--;
+        if (this.countdown <= 0) {
+          clearInterval(this.answerTimer);
+          this.answerList.push({
+            user: "系统",
+            answer: "时间结束",
+          });
+          this.waitGame();
+        }
+      }, 1000);
+    },
+    waitGame() {
+      this.status = "End";
+      let count = 2;
+      this.answerList.push({
+        user: "系统",
+        answer: `等待下场开始，还剩${count * 5}s`,
+      });
+      this.countdown = WaitCountdownTime;
+      this.answerTimer = setInterval(() => {
+        this.countdown--;
+        if (this.countdown <= 0) {
+          clearInterval(this.answerTimer);
+        }
+      }, 1000);
+      this.waitTimer = setInterval(() => {
+        count--;
+        if (count <= 0) {
+          clearInterval(this.waitTimer);
+          clearInterval(this.answerTimer);
+          this.answerList.push({
+            user: "系统",
+            answer: "等待时间结束，游戏开始",
+          });
+          this.nextUser();
+        } else {
+          this.answerList.push({
+            user: "系统",
+            answer: `等待下场开始，还剩${count * 5}s`,
+          });
+        }
+      }, 5000);
     },
   },
 };
@@ -317,6 +380,12 @@ export default {
     height: 100%;
     .answer {
       height: 40px;
+    }
+  }
+  .prompt {
+    margin: 3px 0;
+    .el-tag {
+      margin-right: 5px;
     }
   }
 }

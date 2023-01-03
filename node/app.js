@@ -35,7 +35,9 @@ let userList = [];
 wss.on("connection", function (ws) {
 	ws.on("message", function (message) {
 		const msg = JSON.parse(message.toString());
-		console.log(msg.status);
+		if (msg.status === "User") {
+			console.log(msg.user);
+		}
 		if (msg.status === "StartGame") {
 			let arr = fs.readFileSync("question.txt").toString().split("\n");
 			let question = arr[Math.floor(Math.random() * arr.length)];
@@ -59,9 +61,16 @@ wss.on("connection", function (ws) {
 			let index = Math.floor(Math.random() * userList.length);
 			msg.user = userList[index];
 		}
-		message = JSON.stringify(msg);
-		wss.clients.forEach(function each(client) {
-			client.send(`${message}`);
+		message = wss.clients.forEach(function each(client) {
+			if (msg.status) {
+				let userMsg = JSON.parse(JSON.stringify(msg));
+				userList.forEach(item => {
+					userMsg.user = item;
+					client.send(`${JSON.stringify(userMsg)}`);
+				});
+			} else {
+				client.send(`${message}`);
+			}
 		});
 	});
 });
