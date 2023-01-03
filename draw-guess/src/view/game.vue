@@ -5,8 +5,8 @@
         v-show="isDrawer"
         id="canvas"
         class="canvas"
-        height="80"
-        width="100"
+        height="800"
+        width="1000"
         @mousedown="drawStart"
         @mousemove="drawing"
       />
@@ -14,8 +14,8 @@
         v-show="!isDrawer"
         id="canvasAnswer"
         class="canvas"
-        height="80"
-        width="100"
+        height="800"
+        width="1000"
       />
       <div v-if="isDrawer">
         <div v-if="status === 'Started'" class="flex">
@@ -61,310 +61,334 @@
   </div>
 </template>
 
-<script>
+<script setup>
+import { onMounted, reactive, ref } from "vue";
+import { ElMessageBox } from "element-plus";
 import ColorList from "../components/ColorList.vue";
 import WidthList from "../components/WidthList.vue";
-const StatusList = ["NoStart", "Started", "End"];
-const CountdownTime = 10;
-const AnswerCountdownTime = 30;
-const WaitCountdownTime = 10;
-export default {
-  name: "game",
-  components: {
-    ColorList,
-    WidthList,
-  },
-  data() {
-    return {
-      canvas: null,
-      context: null,
-      start: false,
-      mouseX: null,
-      mouseY: null,
-      mouseBeginX: null,
-      mouseBeginY: null,
-      mouseLastX: null,
-      mouseLastY: null,
-      socket: null,
-      answerInput: "",
-      answerList: [],
-      user: "",
-      drawer: "",
-      isDrawer: localStorage.getItem("user") === "twinkleding",
-      question: "",
-      lineColor: "#000",
-      lineWidth: "1",
-      status: StatusList[0],
-      prompt: [],
-      questionTimer: null,
-      answerTimer: null,
-      waitTimer: null,
-      countdown: CountdownTime,
-    };
-  },
-  mounted() {
-    this.init();
-    this.socket.onmessage = (msg) => {
-      const canvasAnswer = document.getElementById("canvasAnswer");
-      const ctx = canvasAnswer.getContext("2d");
-      const client = JSON.parse(msg.data);
-      // 玩家加入游戏
-      if (client.status === "User") {
-        this.answerList.push({
-          user: "系统",
-          answer: `欢迎${client.user}加入游戏`,
-        });
-        return;
-      }
-      if (client.status === "NextUser") {
-        if (client.user === this.user) {
-          this.startGame();
-          this.drawer = client.user;
-          this.isDrawer = client.user === this.user;
-        }
-        return;
-      }
-      // 提交答案
-      if (client.status === "Answer") {
-        // 回答正确
-        if (client.answer.trim() === this.question) {
-          this.answerList.push({
-            user: client.user,
-            answer: "回答正确！",
-          });
-          this.countdownFnc(AnswerCountdownTime);
-        } else {
-          this.answerList.push({
-            user: client.user,
-            answer: client.answer,
-          });
-        }
-        return;
-      }
-      // 开始游戏，获取问题
-      if (client.status === "StartGame") {
-        this.countdown = CountdownTime;
-        this.drawer = client.user;
-        this.status = StatusList[1];
-        this.question = client.question.split("，")[0];
-        // 清空之前遗留的
-        clearTimeout(this.questionTimer);
-        this.prompt = [];
-        // 开始计时给提示
-        this.questionTimer = setTimeout(() => {
-          this.prompt.push(client.question.split("，")[1]);
-          clearTimeout(this.questionTimer);
-          this.questionTimer = setTimeout(() => {
-            this.prompt.push(client.question.split("，")[2]);
-          }, 20000);
-        }, 20000);
-        this.countdownFnc(this.countdown);
-        return;
-      }
-      // 清空画板
-      if (client.status === "Empty") {
-        ctx.beginPath();
-        ctx.clearRect(0, 0, 1200, 800);
-        return;
-      }
-      // 绘制途中
-      if (["Start", "Drawing"].includes(client.status)) {
-        if (client.status === "Drawing") {
-          ctx.moveTo(this.mouseLastX, this.mouseLastY);
-        } else if (client.status === "Start") {
-          ctx.moveTo(client.x, client.y);
-        }
-        this.drawAnswerCanvas(ctx, client);
-        return;
-      }
-    };
-    window.onbeforeunload = () => {
+import { ColorMap } from "../config.js";
+import { WidthMap } from "../config.js";
+const WebSocketUrl = "ws://localhost:678/test";
+const DefaultUser = "twinkleding";
+const CountdownTime = 120; // 绘制时间的倒计时
+const AnswerCountdownTime = 30; // 猜到答案之后从30s开始倒计时
+const WaitCountdownTime = 10; // 猜题结束到下一人的等待时间
+const PromptTime = 20; // 给出提示的间隔
+const StatusList = ["NoStart", "Started", "End"]; // 绘制的状态列表
+let isDrawer = ref(localStorage.getItem("user") === DefaultUser);
+let countdown = ref(CountdownTime);
+let lineColor = ref(ColorMap[0]);
+let lineWidth = ref(WidthMap[0]);
+let status = ref(StatusList[0]);
+let answerInput = ref("");
+let question = ref("");
+let drawer = ref("");
+let user = ref("");
+let answerList = reactive([]);
+let prompt = reactive([]);
+let start = false;
+let mouseX = null;
+let mouseY = null;
+let mouseBeginX = null;
+let mouseBeginY = null;
+let mouseLastX = null;
+let mouseLastY = null;
+let questionTimer = null;
+let answerTimer = null;
+let waitTimer = null;
+let canvas = null;
+let context = null;
+let socket = null;
+
+// 初始化连接websocket，设置玩家名称
+const init = () => {
+  socket = new WebSocket(WebSocketUrl);
+  canvas = document.getElementById("canvas");
+  context = canvas.getContext("2d");
+  user.value = localStorage.getItem("user");
+  socket.onopen = () => {
+    if (!user) {
+      ElMessageBox.confirm("请输入玩家名称", "提示", {
+        cancelButtonText: "取消",
+        confirmButtonText: "确定",
+      }).then(({ value }) => {
+        localStorage.setItem("user", value);
+        const client = {
+          status: "User",
+          user: value,
+        };
+        user.value = value;
+        sendClient(client);
+      });
+    } else {
       const client = {
-        status: "Onunload",
-        user: this.user,
+        status: "User",
+        user: user.value,
       };
-      this.sendClient(client);
-    };
-  },
-  methods: {
-    // 初始化连接websocket，设置玩家名称
-    init() {
-      this.socket = new WebSocket("ws://localhost:3001/test");
-      this.canvas = document.getElementById("canvas");
-      this.context = this.canvas.getContext("2d");
-      this.user = localStorage.getItem("user");
-      this.socket.onopen = () => {
-        if (!this.user) {
-          this.$prompt("请输入玩家名称", "提示", {
-            cancelButtonText: "取消",
-            confirmButtonText: "确定",
-          }).then(({ value }) => {
-            localStorage.setItem("user", value);
-            const client = {
-              status: "User",
-              user: value,
-            };
-            this.user = value;
-            this.sendClient(client);
-          });
-        } else {
-          const client = {
-            status: "User",
-            user: this.user,
-          };
-          this.sendClient(client);
-        }
-      };
-    },
-    // 设置画笔颜色
-    setLineColor(e) {
-      this.lineColor = e;
-    },
-    // 设置画笔粗细
-    setLineWidth(e) {
-      this.lineWidth = e - 2;
-    },
-    // 开始游戏
-    startGame() {
-      this.countdown = CountdownTime;
-      const client = {
-        status: "StartGame",
-        user: this.user,
-      };
-      this.sendClient(client);
-    },
-    //下一个玩家进行游戏
-    nextUser() {
-      clearTimeout(this.questionTimer);
-      const client = {
-        status: "NextUser",
-      };
-      this.sendClient(client);
-    },
-    // 提交答案
-    submit() {
-      if (this.answerInput === "") {
-        return;
+      sendClient(client);
+    }
+  };
+};
+// 设置画笔颜色
+const setLineColor = (e) => {
+  lineColor.value = e;
+};
+// 设置画笔粗细
+const setLineWidth = (e) => {
+  lineWidth.value = e - 2;
+};
+// 开始游戏
+const startGame = () => {
+  countdown.value = CountdownTime;
+  const client = {
+    status: "StartGame",
+    user: user,
+  };
+  sendClient(client);
+};
+//下一个玩家进行游戏
+const nextUser = () => {
+  clearTimeout(questionTimer);
+  const client = {
+    status: "NextUser",
+  };
+  sendClient(client);
+};
+// 提交答案
+const submit = () => {
+  if ("" === answerInput.value) {
+    return;
+  }
+  const client = {
+    status: "Answer",
+    user: user,
+    answer: answerInput.value,
+  };
+  answerInput.value = "";
+  sendClient(client);
+};
+// 清空画板
+const emptyAll = () => {
+  mouseBeginX = null;
+  mouseBeginY = null;
+  mouseLastX = null;
+  mouseLastY = null;
+  context.beginPath();
+  context.clearRect(0, 0, 1200, 800);
+  const client = {
+    status: "Empty",
+  };
+  sendClient(client);
+};
+// 开始绘制
+const drawStart = (e) => {
+  if (StatusList[1] === status.value) {
+    mouseBeginX = e.clientX - canvas.offsetLeft;
+    mouseBeginY = e.clientY - canvas.offsetTop;
+    context.moveTo(mouseBeginX, mouseBeginY);
+    openDraw(e, "Start");
+    start = true;
+  }
+};
+// 绘制中
+const drawing = (e) => {
+  if (start && StatusList[1] === status.value) {
+    openDraw(e, "Drawing");
+  }
+};
+// 绘制结束
+const drawEnd = (e) => {
+  context.beginPath();
+  start = false;
+};
+const openDraw = (e, status) => {
+  const ctx = context;
+  ctx.strokeStyle = lineColor;
+  ctx.lineWidth = lineWidth;
+  mouseX = e.clientX - canvas.offsetLeft;
+  mouseY = e.clientY - canvas.offsetTop;
+  ctx.lineTo(mouseX, mouseY);
+  ctx.stroke();
+  const client = {
+    status,
+    x: mouseX,
+    y: mouseY,
+    lineColor: lineColor,
+    lineWidth: lineWidth,
+  };
+  sendClient(client);
+};
+// 画板展示绘制
+const drawAnswerCanvas = (ctx, client) => {
+  ctx.strokeStyle = client.lineColor;
+  ctx.lineWidth = client.lineWidth;
+  mouseLastX = client.x;
+  mouseLastY = client.y;
+  ctx.lineTo(client.x, client.y);
+  ctx.stroke();
+  ctx.beginPath();
+};
+const sendClient = (msg) => {
+  socket.send(JSON.stringify(msg));
+};
+// 倒计时方法
+const countdownFnc = (time) => {
+  answerTimer = setInterval(() => {
+    countdown.value--;
+    if (0 === countdown.value) {
+      clearInterval(answerTimer);
+      answerList.push({
+        user: "系统",
+        answer: "时间结束",
+      });
+      waitGame();
+    }
+  }, 1000);
+};
+// 等待时间
+const waitGame = () => {
+  status.value = StatusList[2];
+  let count = 2;
+  answerList.push({
+    user: "系统",
+    answer: `等待下场开始，还剩${count * 5}s`,
+  });
+  countdown.value = WaitCountdownTime;
+  answerTimer = setInterval(() => {
+    countdown.value--;
+    if (0 === countdown.value) {
+      clearInterval(answerTimer);
+    }
+  }, 1000);
+  waitTimer = setInterval(() => {
+    count--;
+    if (0 === count) {
+      clearInterval(waitTimer);
+      clearInterval(answerTimer);
+      answerList.push({
+        user: "系统",
+        answer: "等待时间结束，游戏开始",
+      });
+      if (isDrawer) {
+        nextUser();
       }
-      const client = {
-        status: "Answer",
-        user: this.user,
-        answer: this.answerInput,
-      };
-      this.answerInput = "";
-      this.sendClient(client);
-    },
-    // 清空画板
-    emptyAll() {
-      this.mouseBeginX = null;
-      this.mouseBeginY = null;
-      this.mouseLastX = null;
-      this.mouseLastY = null;
-      this.context.beginPath();
-      this.context.clearRect(0, 0, 1200, 800);
-      const client = {
-        status: "Empty",
-      };
-      this.sendClient(client);
-    },
-    // 开始绘制
-    drawStart(e) {
-      this.mouseBeginX = e.clientX - this.canvas.offsetLeft;
-      this.mouseBeginY = e.clientY - this.canvas.offsetTop;
-      this.context.moveTo(this.mouseBeginX, this.mouseBeginY);
-      this.openDraw(e, "Start");
-      this.start = true;
-    },
-    // 绘制中
-    drawing(e) {
-      if (this.start) {
-        this.openDraw(e, "Drawing");
-      }
-    },
-    // 绘制结束
-    drawEnd(e) {
-      this.context.beginPath();
-      this.start = false;
-    },
-    openDraw(e, status) {
-      const ctx = this.context;
-      ctx.strokeStyle = this.lineColor;
-      ctx.lineWidth = this.lineWidth;
-      this.mouseX = e.clientX - this.canvas.offsetLeft;
-      this.mouseY = e.clientY - this.canvas.offsetTop;
-      ctx.lineTo(this.mouseX, this.mouseY);
-      ctx.stroke();
-      const client = {
-        status,
-        x: this.mouseX,
-        y: this.mouseY,
-        lineColor: this.lineColor,
-        lineWidth: this.lineWidth,
-      };
-      this.sendClient(client);
-    },
-    // 画板展示绘制
-    drawAnswerCanvas(ctx, client) {
-      ctx.strokeStyle = client.lineColor;
-      ctx.lineWidth = client.lineWidth;
-      this.mouseLastX = client.x;
-      this.mouseLastY = client.y;
-      ctx.lineTo(client.x, client.y);
-      ctx.stroke();
-      ctx.beginPath();
-    },
-    sendClient(msg) {
-      this.socket.send(JSON.stringify(msg));
-    },
-    countdownFnc(time) {
-      this.answerTimer = setInterval(() => {
-        this.countdown--;
-        if (this.countdown <= 0) {
-          clearInterval(this.answerTimer);
-          this.answerList.push({
-            user: "系统",
-            answer: "时间结束",
-          });
-          this.waitGame();
-        }
-      }, 1000);
-    },
-    waitGame() {
-      this.status = "End";
-      let count = 2;
-      this.answerList.push({
+    } else {
+      answerList.push({
         user: "系统",
         answer: `等待下场开始，还剩${count * 5}s`,
       });
-      this.countdown = WaitCountdownTime;
-      this.answerTimer = setInterval(() => {
-        this.countdown--;
-        if (this.countdown <= 0) {
-          clearInterval(this.answerTimer);
-        }
-      }, 1000);
-      this.waitTimer = setInterval(() => {
-        count--;
-        if (count <= 0) {
-          clearInterval(this.waitTimer);
-          clearInterval(this.answerTimer);
-          this.answerList.push({
-            user: "系统",
-            answer: "等待时间结束，游戏开始",
-          });
-          if (this.isDrawer) {
-            this.nextUser();
-          }
-        } else {
-          this.answerList.push({
-            user: "系统",
-            answer: `等待下场开始，还剩${count * 5}s`,
-          });
-        }
-      }, 5000);
-    },
-  },
+    }
+  }, 5000);
 };
+const submitAnswer = (client) => {
+  if (client.answer === question) {
+    answerList.push({
+      user: client.user,
+      answer: "回答正确！",
+    });
+    countdownFnc(AnswerCountdownTime);
+  } else {
+    answerList.push({
+      user: client.user,
+      answer: client.answer,
+    });
+  }
+};
+const startGameFnc = (client) => {
+  countdown.value = CountdownTime;
+  drawer = client.user;
+  status.value = StatusList[1];
+  question.value = client.question.split("，")[0];
+  // 清空之前遗留的
+  clearTimeout(questionTimer);
+  prompt = [];
+  // 开始计时给提示
+  questionTimer = setTimeout(() => {
+    prompt.push(client.question.split("，")[1]);
+    clearTimeout(questionTimer);
+    questionTimer = setTimeout(() => {
+      prompt.push(client.question.split("，")[2]);
+    }, PromptTime);
+  }, PromptTime);
+  countdownFnc(countdown);
+};
+const socketMsg = () => {
+  socket.onmessage = (msg) => {
+    const canvasAnswer = document.getElementById("canvasAnswer");
+    const ctx = canvasAnswer.getContext("2d");
+    const client = JSON.parse(msg.data);
+    // 玩家加入游戏
+    if ("User" === client.status) {
+      let hasSelf = false;
+      answerList.forEach((answer) => {
+        if (answer.user === client.user) {
+          hasSelf = true;
+        }
+      });
+      !hasSelf &&
+        answerList.push({
+          user: "系统",
+          answer: `欢迎${client.user}加入游戏`,
+        });
+      return;
+    }
+    if ("NextUser" === client.status) {
+      if (client.user === user) {
+        startGame();
+        drawer = client.user;
+        isDrawer.value = client.user === user;
+      }
+      return;
+    }
+    // 提交答案
+    if ("Answer" === client.status) {
+      // 回答正确
+      submitAnswer(client);
+      return;
+    }
+    // 开始游戏，获取问题
+    if ("StartGame" === client.status) {
+      startGameFnc(client);
+      return;
+    }
+    // 清空画板
+    if ("Empty" === client.status) {
+      ctx.beginPath();
+      ctx.clearRect(0, 0, 1200, 800);
+      return;
+    }
+    // 绘制途中
+    if (["Start", "Drawing"].includes(client.status)) {
+      if ("Drawing" === client.status) {
+        ctx.moveTo(mouseLastX, mouseLastY);
+      } else if ("Start" === client.status) {
+        ctx.moveTo(client.x, client.y);
+      }
+      drawAnswerCanvas(ctx, client);
+      return;
+    }
+    if ("Onunload" === client.status) {
+      answerList.push({
+        user: "系统",
+        answer: `玩家${client.user}退出游戏`,
+      });
+    }
+  };
+};
+
+onMounted(() => {
+  init();
+  // 处理websocket返回的信息
+  socketMsg();
+  // 关闭窗口时发送
+  window.onbeforeunload = () => {
+    const client = {
+      status: "Onunload",
+      user: user,
+    };
+    sendClient(client);
+  };
+});
 </script>
 
 <style lang="less" scoped>

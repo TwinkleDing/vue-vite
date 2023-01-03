@@ -1,7 +1,7 @@
 <template>
   <div class="flex">
     <div
-      v-for="item in ColorList"
+      v-for="item in ColorMap"
       :style="{ background: item }"
       class="color-item"
       @click="setColor(item)"
@@ -10,9 +10,9 @@
 </template>
 <script setup>
 import { defineEmits } from "vue";
+import { ColorMap } from "../config.js";
 const emit = defineEmits(["set-color"]);
-const ColorList = ["#000", "#00f", "#0f0", "#0ff", "#f00", "#f0f", "#ff0"];
-let color = ColorList[0];
+let color = ColorMap[0];
 const setColor = (e) => {
   color = e;
   emit("set-line-color", color);

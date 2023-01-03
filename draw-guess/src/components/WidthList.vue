@@ -1,6 +1,6 @@
 <template>
   <div class="flex">
-    <div v-for="item in WidthList" class="width-item" @click="setWidth(item)">
+    <div v-for="item in WidthMap" class="width-item" @click="setWidth(item)">
       <div
         class="width-item-box"
         :style="{ height: item + 'px', width: item + 'px' }"
@@ -10,9 +10,9 @@
 </template>
 <script setup>
 import { defineEmits } from "vue";
+import { WidthMap } from "../config.js";
 const emit = defineEmits(["set-width"]);
-const WidthList = ["3", "5", "7", "10", "15"];
-let width = WidthList[0];
+let width = WidthMap[0];
 const setWidth = (e) => {
   width = e;
   emit("set-line-width", width);
