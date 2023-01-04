@@ -43,7 +43,7 @@ export default defineConfig({
     open: true
   },
   build: {
-    outDir: "../dist/micro",
+    outDir: "../dist/Micro-App",
     rollupOptions: {
       output: {
         manualChunks(id) {

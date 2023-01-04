@@ -1,0 +1,34 @@
+{
+	"name": "qiankun",
+	"version": "1.1.0",
+	"description": "qiankun打包的微应用",
+	"main": "index.js",
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1",
+		"dev": "node app.js --mode=dev",
+		"build": "node app.js --mode=build"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/TwinkleDing/vue-vite.git"
+	},
+	"keywords": [
+		"vue",
+		"vue3",
+		"vue-router",
+		"vuex",
+		"vite",
+		"qiankun",
+		"microapplication"
+	],
+	"author": "TwinkleDing",
+	"license": "ISC",
+	"bugs": {
+		"url": "https://github.com/TwinkleDing/vue-vite/issues"
+	},
+	"homepage": "https://github.com/TwinkleDing/vue-vite#readme",
+	"dependencies": {
+		"minimist": "^1.2.7",
+		"path": "^0.12.7"
+	}
+}
