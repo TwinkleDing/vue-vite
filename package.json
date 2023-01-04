@@ -28,6 +28,7 @@
 	},
 	"homepage": "https://github.com/TwinkleDing/vue-vite#readme",
 	"dependencies": {
+		"chalk": "^4.1.0",
 		"minimist": "^1.2.7",
 		"path": "^0.12.7"
 	}

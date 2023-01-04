@@ -1,4 +1,5 @@
 const cp = require("child_process");
+const chalk = require("chalk");
 const { resolve } = require("path");
 const args = require("minimist")(process.argv.slice(2));
 
@@ -8,12 +9,12 @@ const script = `"${resolve(__dirname, args.mode === "dev" ? "./pack-dev.sh" : ".
 // 执行脚本获取输出流
 const pro = cp.exec(script, (error) => {
 	if (error) {
-		console.error("----------compress err----------", error);
+		console.error(chalk.red("----------compress err----------"), error);
 		return;
 	}
 });
 
 pro.stdout.pipe(process.stdout);
 pro.on("exit", () => {
-	console.log("----------compress exit----------");
+	console.log(chalk.bgGreen("----------compress exit----------"));
 });
