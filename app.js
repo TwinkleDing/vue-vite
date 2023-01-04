@@ -9,12 +9,13 @@ const script = `"${resolve(__dirname, args.mode === "dev" ? "./pack-dev.sh" : ".
 // 执行脚本获取输出流
 const pro = cp.exec(script, (error) => {
 	if (error) {
-		console.error(chalk.red("----------compress err----------"), error);
+		console.error(chalk.red("---------- Compress Err ----------"), error);
 		return;
 	}
 });
 
 pro.stdout.pipe(process.stdout);
 pro.on("exit", () => {
-	console.log(chalk.bgGreen("----------compress exit----------"));
+	console.log(chalk.blue.bgGreen("---------- Compress Exit ----------"));
+	console.log(chalk.bgYellow("---------- Compress fail --- Please compress by yourself ----------"));
 });
