@@ -5,9 +5,12 @@
 declare module 'vue' {
   export interface GlobalComponents {
     BarChart: typeof import('./src/components/Chart/BarChart.vue')['default']
-    Earth: typeof import('./src/components/Earth.vue')['default']
+    Earth: typeof import('./src/components/Earth/index.vue')['default']
     ElAvatar: typeof import('element-plus/es')['ElAvatar']
     ElButton: typeof import('element-plus/es')['ElButton']
+    ElCalendar: typeof import('element-plus/es')['ElCalendar']
+    ElCarousel: typeof import('element-plus/es')['ElCarousel']
+    ElCarouselItem: typeof import('element-plus/es')['ElCarouselItem']
     ElCheckbox: typeof import('element-plus/es')['ElCheckbox']
     ElCheckboxGroup: typeof import('element-plus/es')['ElCheckboxGroup']
     ElCol: typeof import('element-plus/es')['ElCol']
@@ -25,6 +28,8 @@ declare module 'vue' {
     ElMenu: typeof import('element-plus/es')['ElMenu']
     ElMenuItem: typeof import('element-plus/es')['ElMenuItem']
     ElOption: typeof import('element-plus/es')['ElOption']
+    ElPagination: typeof import('element-plus/es')['ElPagination']
+    ElPopconfirm: typeof import('element-plus/es')['ElPopconfirm']
     ElRadio: typeof import('element-plus/es')['ElRadio']
     ElRadioGroup: typeof import('element-plus/es')['ElRadioGroup']
     ElRow: typeof import('element-plus/es')['ElRow']
@@ -36,11 +41,16 @@ declare module 'vue' {
     ElTabPane: typeof import('element-plus/es')['ElTabPane']
     ElTabs: typeof import('element-plus/es')['ElTabs']
     ElTimePicker: typeof import('element-plus/es')['ElTimePicker']
+    ElTimeSelect: typeof import('element-plus/es')['ElTimeSelect']
+    ElTooltip: typeof import('element-plus/es')['ElTooltip']
     ElTree: typeof import('element-plus/es')['ElTree']
+    Game: typeof import('./src/components/Game/index.vue')['default']
+    Item: typeof import('./src/components/Game/item.vue')['default']
     LineChart: typeof import('./src/components/Chart/LineChart.vue')['default']
     PieChart: typeof import('./src/components/Chart/PieChart.vue')['default']
-    ThemeColorPicker: typeof import('./src/components/ThemeColorPicker.vue')['default']
-    Waves: typeof import('./src/components/Waves.vue')['default']
+    ThemeColorPicker: typeof import('./src/components/ThemeColorPicker/index.vue')['default']
+    Undone: typeof import('./src/components/Undone/index.vue')['default']
+    Waves: typeof import('./src/components/Waves/index.vue')['default']
   }
 }
 

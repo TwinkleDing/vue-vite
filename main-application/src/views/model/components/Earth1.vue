@@ -30,7 +30,6 @@ export default {
         const rotationSpeed = 0.02
         const cloudsScale = 1.005
         const moonScale = 0.23
-        const MARGIN = 0
         const stats = new Stats()
         const textureLoader = new THREE.TextureLoader()
         const dMoonVec = new THREE.Vector3()

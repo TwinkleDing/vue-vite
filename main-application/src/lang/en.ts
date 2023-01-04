@@ -1,7 +1,4 @@
-import elementEnLocale from "element-plus/es/locale/lang/en"
-
 export default {
-    ...elementEnLocale,
     login: {
         title: "Vue Template",
         login: "Login",
@@ -18,8 +15,8 @@ export default {
     home: "Home",
     nested: "Nested",
     nested1: "Nested1",
-    nested11: "Nested1-1",
-    nested12: "Nested1-2",
+    tableTest: "TableTest",
+    systemLog: "SystemLog",
     nested2: "Nested2",
     charts: "Charts",
     model: "Models",
@@ -29,6 +26,8 @@ export default {
     d3: "d3",
     canvas: "Canvas Draw",
     media: "Media",
+    reset: "Reset",
+    submit: "Submit",
     cancel: "Cancel",
     confirm: "OK",
     language: "Language",
@@ -45,5 +44,8 @@ export default {
     leftPosition: "👈",
     topPosition: "👆",
     tabSimple: "Simple",
-    tabCard: "Card"
+    tabCard: "Card",
+    delete: "Delete",
+    edit: "Edit",
+    loading:"Loading..."
 }

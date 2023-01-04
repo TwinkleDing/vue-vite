@@ -6,7 +6,7 @@ const routeList: RouterItem[] = [
         name: "home",
         meta: {
             label: "首页",
-            icon: "help",
+            icon: "Help",
             permission: true
         },
         component: "home"
@@ -17,39 +17,39 @@ const routeList: RouterItem[] = [
         redirect: "/nested1",
         meta: {
             label: "嵌套路由",
-            icon: "icon-menu",
+            icon: "Menu",
             permission: true
         },
         children: [
             {
                 path: "/nested1",
                 name: "nested1",
-                redirect: "/nested11",
+                redirect: "/tableTest",
                 meta: {
                     label: "嵌套路由1",
-                    icon: "icon-menu",
+                    icon: "Menu",
                     permission: true
                 },
                 children: [
                     {
-                        path: "/nested11",
-                        name: "nested11",
+                        path: "/tableTest",
+                        name: "tableTest",
                         meta: {
-                            label: "嵌套路由1-1",
-                            icon: "coordinate",
+                            label: "表格测试",
+                            icon: "Coordinate",
                             permission: true
                         },
-                        component: "nested11"
+                        component: "tableTest"
                     },
                     {
-                        path: "/nested12",
-                        name: "nested12",
+                        path: "/systemLog",
+                        name: "systemLog",
                         meta: {
-                            label: "嵌套路由1-2",
-                            icon: "coordinate",
+                            label: "系统日志",
+                            icon: "Coordinate",
                             permission: true
                         },
-                        component: "nested12"
+                        component: "systemLog"
                     }
                 ]
             },
@@ -58,7 +58,7 @@ const routeList: RouterItem[] = [
                 name: "nested2",
                 meta: {
                     label: "嵌套路由2",
-                    icon: "coordinate",
+                    icon: "Coordinate",
                     permission: true
                 },
                 component: "nested2"
@@ -70,7 +70,7 @@ const routeList: RouterItem[] = [
         name: "charts",
         meta: {
             label: "图表展示",
-            icon: "histogram",
+            icon: "Histogram",
             permission: true
         },
         component: "charts"
@@ -80,7 +80,7 @@ const routeList: RouterItem[] = [
         name: "model",
         meta: {
             label: "模型预览",
-            icon: "school",
+            icon: "School",
             permission: true
         },
         component: "model"
@@ -90,7 +90,7 @@ const routeList: RouterItem[] = [
         name: "permission",
         meta: {
             label: "角色权限",
-            icon: "setting",
+            icon: "Setting",
             permission: true
         },
         component: "permission"
@@ -100,7 +100,7 @@ const routeList: RouterItem[] = [
         name: "my",
         meta: {
             label: "我的信息",
-            icon: "postcard",
+            icon: "Postcard",
             permission: true
         },
         component: "my"
@@ -110,7 +110,7 @@ const routeList: RouterItem[] = [
         name: "d3",
         meta: {
             label: "d3",
-            icon: "pie-chart",
+            icon: "PieChart",
             permission: true
         },
         component: "d3"
@@ -120,7 +120,7 @@ const routeList: RouterItem[] = [
         name: "canvas",
         meta: {
             label: "canvas",
-            icon: "opportunity",
+            icon: "Opportunity",
             permission: true
         },
         component: "canvas"
@@ -130,7 +130,7 @@ const routeList: RouterItem[] = [
         name: "media",
         meta: {
             label: "media",
-            icon: "video-camera-filled",
+            icon: "VideoCameraFilled",
             permission: true
         },
         component: "media"

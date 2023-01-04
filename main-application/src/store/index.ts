@@ -1,10 +1,12 @@
 import { createStore } from "vuex"
 import getters from "./getters"
-import common from "./modules/common"
+import settings from "./modules/settings"
+import user from "./modules/user"
 
 const store: any = new (createStore as any)({
     modules: {
-        common
+        settings,
+        user
     },
     getters
 })

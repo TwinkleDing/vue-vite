@@ -4,7 +4,7 @@ import path from "path"
 import AutoImport from "unplugin-auto-import/vite"
 import Components from "unplugin-vue-components/vite"
 import { ElementPlusResolver } from "unplugin-vue-components/resolvers"
-import { visualizer } from 'rollup-plugin-visualizer';
+import { visualizer } from "rollup-plugin-visualizer"
 
 export default defineConfig({
     plugins: [
@@ -15,7 +15,7 @@ export default defineConfig({
         Components({
             resolvers: [ElementPlusResolver()]
         }),
-        visualizer(),
+        visualizer()
     ],
     base: "/",
     mode: "development",
@@ -29,23 +29,22 @@ export default defineConfig({
     server: {
         host: "0.0.0.0",
         port: 667,
-        open: true
+        open: true,
+        hmr: true
     },
     build: {
-        outDir:"../dist",
         rollupOptions: {
             output: {
                 manualChunks(id) {
-                    if (id.includes('node_modules')) {
-                        return id.toString().split('node_modules/')[1].split('/')[0].toString();
+                    if (id.includes("node_modules")) {
+                        return id.toString().split("node_modules/")[1].split("/")[0].toString()
                     }
                 },
-                assetFileNames: 'static/[ext]/[name]-[hash].[ext]'
-            }
-        },
-        brotliSize: false,
-        target: 'esnext',
-        minify: 'esbuild'
+                assetFileNames: "static/[ext]/[name]-[hash].[ext]"
+            },
+            brotliSize: false,
+            target: "esnext",
+            minify: "esbuild"
+        }
     }
 })
-

@@ -1,22 +1,20 @@
-:root {
-    --systemThemeColor: #007dff;
-    --systemThemeColorActive: #4dcaff;
-    --headerThemeColor: #007dff;
-    --headerThemeColorActive: #4dcaff;
-    --menuThemeColor: #007dff;
-    --menuThemeColorActive: #4dcaff;
-    --el-color-primary: var(--systemThemeColor)!important;
-    --el-color-primary-light-3: var(--systemThemeColorActive)!important;
-    --el-color-primary-dark-2: var(--systemThemeColor)!important;
-}
-
+/* 系统色 */
 $--color-primary: var(--systemThemeColor);
 $--color-minor: var(--systemThemeColorActive);
+/* 顶部色 */
 $--header-primary: var(--headerThemeColor);
 $--header-minor: var(--headerThemeColorActive);
+/* 菜单栏色 */
 $--menu-primary: var(--menuThemeColor);
 $--menu-minor: var(--menuThemeColorActive);
 
-:export {
-    primaryColor: $--color-primary;
+/* 修改主题色，覆盖掉element的各种颜色 */
+:root {
+    --el-color-primary: var(--element-light-1) !important;
+    --el-color-primary-light-3: var(--element-light-3) !important;
+    --el-color-primary-light-5: var(--element-light-5) !important;
+    --el-color-primary-light-7: var(--element-light-7) !important;
+    --el-color-primary-light-8: var(--element-light-8) !important;
+    --el-color-primary-light-9: var(--element-light-9) !important;
+    --el-color-primary-dark-2: var(--element-dark-2) !important;
 }

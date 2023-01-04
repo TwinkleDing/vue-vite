@@ -1,65 +1,87 @@
 <template>
-    <div id="lineChart" class="line-chart" :style="{ width, height }"></div>
+    <div ref="lineChart" class="line-chart" :style="{ width, height }"></div>
 </template>
 <script lang="ts">
-import { onMounted } from "vue"
-import * as echarts from "echarts/core"
-import { GridComponent, GridComponentOption } from "echarts/components"
-import { LineChart, LineSeriesOption } from "echarts/charts"
-import { UniversalTransition } from "echarts/features"
-import { CanvasRenderer } from "echarts/renderers"
+    import { onMounted, getCurrentInstance, reactive } from "vue"
+    import * as echarts from "echarts/core"
+    import { GridComponent, GridComponentOption } from "echarts/components"
+    import { LineChart, LineSeriesOption } from "echarts/charts"
+    import { UniversalTransition } from "echarts/features"
+    import { CanvasRenderer } from "echarts/renderers"
 
-echarts.use([GridComponent, LineChart, CanvasRenderer, UniversalTransition])
+    echarts.use([GridComponent, LineChart, CanvasRenderer, UniversalTransition])
 
-type EChartsOption = echarts.ComposeOption<GridComponentOption | LineSeriesOption>
+    type EChartsOption = echarts.ComposeOption<GridComponentOption | LineSeriesOption>
 
-export default {
-    name: "LineChart",
-    props: {
-        option: {
-            type: Object,
-            default: () => {
-                return {
-                    xAxis: {
-                        type: "category",
-                        data: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
-                    },
-                    yAxis: {
-                        type: "value"
-                    },
-                    series: [
-                        {
-                            data: [150, 230, 224, 218, 135, 147, 260],
-                            type: "round"
-                        }
-                    ]
+    export default {
+        name: "LineChart",
+        props: {
+            option: {
+                type: Object,
+                default: () => {
+                    return {
+                        title: {
+                            text: "Referer of a Website",
+                            subtext: "Fake Data",
+                            left: "center"
+                        },
+                        tooltip: {
+                            trigger: "item"
+                        },
+                        xAxis: {
+                            type: "category",
+                            data: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
+                        },
+                        yAxis: {
+                            type: "value"
+                        },
+                        series: [
+                            {
+                                data: [150, 230, 224, 218, 135, 147, 260],
+                                type: "line",
+                                areaStyle: {}
+                            }
+                        ]
+                    }
                 }
+            },
+            width: {
+                type: String,
+                default: "100%"
+            },
+            height: {
+                type: String,
+                default: "100%"
             }
         },
-        width: {
-            type: String,
-            default: "100%"
-        },
-        height: {
-            type: String,
-            default: "100%"
-        }
-    },
-    setup(props: any) {
-        const option: EChartsOption = props.option
+        setup(props: any) {
+            const { proxy }: any = getCurrentInstance()
+            const option: EChartsOption = props.option
+            let myChart: any = reactive({})
 
-        onMounted(() => {
-            const chartDom = document.getElementById("lineChart")!
-            const myChart = echarts.init(chartDom)
-            option && myChart.setOption(option)
-        })
+            const init = () => {
+                const chartDom = proxy.$refs.lineChart!
+                myChart = echarts.init(chartDom, null, { renderer: "svg" })
+                option && myChart.setOption(option)
+                resize()
+            }
+            const resize = () => {
+                myChart.resize()
+            }
+            onMounted(() => {
+                init()
+            })
+            return {
+                init,
+                resize
+            }
+        }
     }
-}
 </script>
 
 <style scoped>
-.line-chart {
-    height: 100%;
-    width: 100%;
-}
+    .line-chart {
+        height: 100%;
+        width: 100%;
+    }
 </style>

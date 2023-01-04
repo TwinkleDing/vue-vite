@@ -1,7 +1,4 @@
-import elementZhLocale from "element-plus/es/locale/lang/zh-cn"
-
 export default {
-    ...elementZhLocale,
     login: {
         title: "Vue 模板",
         login: "登录",
@@ -18,8 +15,8 @@ export default {
     home: "首页",
     nested: "嵌套路由",
     nested1: "嵌套路由1",
-    nested11: "嵌套路由1-1",
-    nested12: "嵌套路由1-2",
+    tableTest: "表格测试",
+    systemLog: "系统日志",
     nested2: "嵌套路由2",
     charts: "图表展示",
     model: "模型预览",
@@ -29,6 +26,8 @@ export default {
     d3: "d3",
     canvas: "canvas 画布",
     media: "多媒体",
+    reset: "重置",
+    submit: "提交",
     cancel: "取消",
     confirm: "确认",
     language: "选择语言",
@@ -45,5 +44,8 @@ export default {
     leftPosition: "👈",
     topPosition: "👆",
     tabSimple: "简约",
-    tabCard: "卡片"
+    tabCard: "卡片",
+    delete: "删除",
+    edit: "修改",
+    loading: "加载中..."
 }
