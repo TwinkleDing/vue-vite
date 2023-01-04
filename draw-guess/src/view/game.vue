@@ -142,7 +142,7 @@ const startGame = () => {
   countdown.value = CountdownTime;
   const client = {
     status: "StartGame",
-    user: user,
+    user: user.value,
   };
   sendClient(client);
 };
@@ -296,7 +296,7 @@ const submitAnswer = (client) => {
 };
 const startGameFnc = (client) => {
   countdown.value = CountdownTime;
-  drawer = client.user;
+  drawer.value = client.user;
   status.value = StatusList[1];
   question.value = client.question.split("，")[0];
   // 清空之前遗留的
@@ -312,6 +312,21 @@ const startGameFnc = (client) => {
   }, PromptTime);
   countdownFnc(countdown);
 };
+const userIn = (client) => {
+  let hasSelf = false;
+  answerList.forEach((item) => {
+    if (item.answer.includes(client.user)) {
+      hasSelf = true;
+    }
+  });
+  if (user.value === client.user && hasSelf) {
+    return;
+  }
+  answerList.push({
+    user: "系统",
+    answer: `欢迎${client.user}加入游戏`,
+  });
+};
 const socketMsg = () => {
   socket.onmessage = (msg) => {
     const canvasAnswer = document.getElementById("canvasAnswer");
@@ -319,24 +334,14 @@ const socketMsg = () => {
     const client = JSON.parse(msg.data);
     // 玩家加入游戏
     if ("User" === client.status) {
-      let hasSelf = false;
-      answerList.forEach((answer) => {
-        if (answer.user === client.user) {
-          hasSelf = true;
-        }
-      });
-      !hasSelf &&
-        answerList.push({
-          user: "系统",
-          answer: `欢迎${client.user}加入游戏`,
-        });
+      userIn(client);
       return;
     }
     if ("NextUser" === client.status) {
-      if (client.user === user) {
+      if (client.user === user.value) {
         startGame();
-        drawer = client.user;
-        isDrawer.value = client.user === user;
+        drawer.value = client.user;
+        isDrawer.value = client.user === user.value;
       }
       return;
     }
@@ -384,7 +389,7 @@ onMounted(() => {
   window.onbeforeunload = () => {
     const client = {
       status: "Onunload",
-      user: user,
+      user: user.value,
     };
     sendClient(client);
   };

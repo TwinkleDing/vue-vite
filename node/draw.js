@@ -41,6 +41,7 @@ wss.on("connection", function (ws) {
 		wss.clients.forEach(function each(client) {
 			if (msg.status === "User") {
 				let userMsg = JSON.parse(JSON.stringify(msg));
+				console.log(userList)
 				userList.forEach((item) => {
 					userMsg.user = item;
 					client.send(`${JSON.stringify(userMsg)}`);
