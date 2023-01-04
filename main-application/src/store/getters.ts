@@ -12,6 +12,7 @@ const getters = {
     systemIcon: (state: any) => state.settings.systemIcon,
     tabsShow: (state: any) => state.settings.tabsShow,
     menuPosition: (state: any) => state.settings.menuPosition,
-    tabsType: (state: any) => state.settings.tabsType
+    tabsType: (state: any) => state.settings.tabsType,
+    isMicro: (state: any) => state.settings.isMicro
 }
 export default getters

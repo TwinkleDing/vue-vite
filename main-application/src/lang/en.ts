@@ -26,6 +26,7 @@ export default {
     d3: "d3",
     canvas: "Canvas Draw",
     media: "Media",
+    micro: "Micro App",
     reset: "Reset",
     submit: "Submit",
     cancel: "Cancel",

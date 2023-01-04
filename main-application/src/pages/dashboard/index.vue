@@ -14,7 +14,10 @@
         <div
           :class="['right-content', !store.getters.tabsShow || 'mg-t-40', 'scrollbar']"
         >
-          <router-view></router-view>
+          <div v-show="isMicro" id="frame"></div>
+          <div v-show="!isMicro" id="main">
+            <router-view></router-view>
+          </div>
         </div>
       </div>
     </div>
@@ -22,18 +25,39 @@
   </div>
 </template>
 <script setup lang="ts">
-import { defineComponent } from "vue";
-import { useStore } from "vuex";
+import { defineComponent, Ref, ref, watch } from "vue";
 import { useRoute } from "vue-router";
+import { useStore } from "vuex";
 import LeftMenu from "./components/LeftMenu.vue";
 import { RouterItem } from "@/utils/interface";
 import SystemIcon from "./components/SystemIcon.vue";
 import HeaderTop from "./components/HeaderTop.vue";
 import Tabs from "./components/Tabs.vue";
+import initMicro from "@/micro";
+import Apps from "@/micro/apps.ts";
 
 const store = useStore();
 const route = useRoute();
+const isMicro: Ref<boolean> = ref(store.getters.isMicro);
 const menuList: RouterItem[] = [...store.getters.routeList];
+
+watch(
+  () => route,
+  () => {
+    if (route.path.includes("Micro")) {
+      isMicro.value = true;
+      store.commit("SET_MICRO", true);
+      initMicro(Apps);
+    } else {
+      isMicro.value = false;
+      store.commit("SET_MICRO", false);
+    }
+  },
+  {
+    immediate: true, // 立即执行
+    deep: true, // 深度监听
+  }
+);
 </script>
 
 <style lang="scss" scoped>

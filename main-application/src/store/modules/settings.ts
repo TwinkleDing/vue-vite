@@ -64,7 +64,8 @@ const settings = {
         currentRoute:
             getStore({
                 name: "currentRoute"
-            }) || null
+            }) || null,
+        isMicro: false
     },
     mutations: {
         /**
@@ -284,6 +285,9 @@ const settings = {
          */
         SET_CURRENT_ROUTE(state: any, route: any) {
             state.currentRoute = route
+        },
+        SET_MICRO(state: any, isMicro: boolean) {
+            state.isMicro = isMicro
         }
     },
     actions: {

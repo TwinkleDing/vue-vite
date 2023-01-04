@@ -3,7 +3,6 @@ import "nprogress/nprogress.css"
 import { registerMicroApps, addGlobalUncaughtErrorHandler, start } from "qiankun"
 
 window.__POWERED_BY_QIANKUN__ = true
-
 const initMicroApp = (apps: any) => {
     /**
      * 注册子应用

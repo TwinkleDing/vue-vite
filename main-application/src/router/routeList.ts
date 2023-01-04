@@ -134,6 +134,15 @@ const routeList: RouterItem[] = [
             permission: true
         },
         component: "media"
+    },
+    {
+        path: "/Micro",
+        name: "micro",
+        meta: {
+            label: "micro",
+            icon: "Help",
+            permission: true
+        },
     }
 ]
 

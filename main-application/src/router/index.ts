@@ -1,5 +1,5 @@
 import { shallowRef } from "vue"
-import { createRouter, createWebHashHistory } from "vue-router"
+import { createRouter, createWebHistory } from "vue-router"
 import store from "@/store"
 import Empty from "@/pages/Empty.vue"
 import { RouterItem } from "@/utils/interface"
@@ -8,7 +8,7 @@ let firstGetRoute = true
 const _importComponent = (file: string) => () => import(`../views/${file}/index.vue`)
 
 const router: any = new (createRouter as any)({
-    history: createWebHashHistory(),
+    history: createWebHistory(),
     routes: [
         {
             path: "/",
@@ -23,15 +23,27 @@ const router: any = new (createRouter as any)({
                 import(/* webpackChunkName: 'dashboard' */ "@/pages/dashboard/index.vue")
         },
         {
+            path: "/home",
+            name: "home",
+            component: () =>
+                import(/* webpackChunkName: 'dashboard' */ "@/pages/dashboard/index.vue")
+        },
+        {
             path: "/login",
             name: "login",
             component: () => import(/* webpackChunkName: 'login' */ "@/pages/login/index.vue")
         },
         {
-            path: "/:cathchAll(.*)",
-            name: "404",
-            component: () => import("@/pages/notFound.vue")
-        }
+            path: "/Micro/:catchAll(.*)",
+            name: "micro",
+            component: () =>
+                import(/* webpackChunkName: 'dashboard' */ "@/pages/dashboard/index.vue")
+        },
+        // {
+        //     path: "/:cathchAll(.*)",
+        //     name: "404",
+        //     component: () => import("@/pages/notFound.vue")
+        // }
     ]
 })
 
