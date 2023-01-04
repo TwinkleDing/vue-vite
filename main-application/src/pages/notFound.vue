@@ -26,7 +26,7 @@
           Please check that the URL you entered is correct, or click the button below to
           return to the homepage.
         </div>
-        <a href="" class="bullshit__return-home">Back to home</a>
+        <div @click="backHome" class="bullshit__return-home">Back to home</div>
       </div>
     </div>
   </div>
@@ -34,9 +34,15 @@
 
 <script lang="ts" setup>
 import { onMounted, ref, Ref } from "vue";
+import { useRouter } from "vue-router";
+
+const router = useRouter();
 const message: Ref<string> = ref(
   "The webmaster said that you can not enter this page..."
 );
+const backHome = () => {
+  router.push("/home");
+};
 </script>
 
 <style lang="scss" scoped>

@@ -141,7 +141,8 @@ const routeList: RouterItem[] = [
         meta: {
             label: "micro",
             icon: "Help",
-            permission: true
+            permission: true,
+            isMicro: true
         },
     }
 ]

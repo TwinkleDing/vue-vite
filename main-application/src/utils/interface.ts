@@ -7,6 +7,7 @@ interface Meta {
     icon: string
     label: string
     permission: boolean
+    isMicro?: boolean
 }
 /**
  * 路由格式

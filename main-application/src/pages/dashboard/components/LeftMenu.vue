@@ -9,11 +9,11 @@
     }"
     :mode="store.getters.menuPosition ? 'vertical' : 'horizontal'"
     active-text-color="#ffffff"
-    :default-active="store.getters.currentRoute.name"
     :collapse-transition="false"
     :ellipsis="false"
     :collapse="false"
   >
+    <!-- :default-active="store.getters.currentRoute.name" -->
     <menu-item :menu="menu" />
   </el-menu>
 </template>

@@ -14,8 +14,8 @@
         <div
           :class="['right-content', !store.getters.tabsShow || 'mg-t-40', 'scrollbar']"
         >
-          <div v-show="isMicro" id="frame"></div>
-          <div v-show="!isMicro" id="main">
+          <section v-if="isMicro" id="frame"></section>
+          <div v-if="!isMicro" id="main">
             <router-view></router-view>
           </div>
         </div>
@@ -89,6 +89,11 @@ watch(
       width: 100%;
       height: calc(100% - 40px);
       overflow: auto;
+      #frame,
+      #main {
+        height: 100%;
+        width: 100%;
+      }
     }
   }
 }
