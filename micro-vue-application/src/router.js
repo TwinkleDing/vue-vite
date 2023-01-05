@@ -21,7 +21,7 @@ const router = createRouter({
 			component: () => import("@/view/second.vue"),
 		},
 	],
-	history: createWebHistory(window.__POWERED_BY_QIANKUN__ ? "/Micro" : "/"),
+	history: createWebHistory(window.__POWERED_BY_QIANKUN__ ? "/MicroVue" : "/"),
 	scrollBehavior(to, from, savedPosition) {
 		const scrollBehavior = {
 			el: "#layout-main",

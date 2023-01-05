@@ -7,14 +7,14 @@
         :index="item.name"
         :style="{
           background: store.getters.menuPosition
-            ? item.path.includes(route.path.split('/')[1])
+            ? route.path.split('/')[1] && item.path.includes(route.path.split('/')[1])
               ? store.getters.systemTheme
               : ''
-            : item.path.includes(route.path.split('/')[1])
+            : route.path.split('/')[1] && item.path.includes(route.path.split('/')[1])
             ? lighten(store.getters.headerTheme, 30)
             : '',
           color: store.getters.menuPosition
-            ? item.path.includes(route.path.split('/')[1])
+            ? route.path.split('/')[1] && item.path.includes(route.path.split('/')[1])
               ? '#fff'
               : ''
             : '',

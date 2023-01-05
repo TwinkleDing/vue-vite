@@ -26,7 +26,7 @@ export default {
     d3: "d3",
     canvas: "Canvas Draw",
     media: "Media",
-    micro: "Micro App",
+    microVue: "Micro Vue App",
     reset: "Reset",
     submit: "Submit",
     cancel: "Cancel",

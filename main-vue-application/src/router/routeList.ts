@@ -136,10 +136,10 @@ const routeList: RouterItem[] = [
         component: "media"
     },
     {
-        path: "/Micro",
-        name: "micro",
+        path: "/MicroVue",
+        name: "microVue",
         meta: {
-            label: "micro",
+            label: "microVue",
             icon: "Help",
             permission: true,
             isMicro: true

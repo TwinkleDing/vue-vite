@@ -23,7 +23,7 @@ export default defineConfig({
       resolvers: [ElementPlusResolver()]
     }),
     visualizer(),
-    qiankun('micro', {
+    qiankun('MicroVue', {
       useDevMode: true
     })
   ],
@@ -43,7 +43,7 @@ export default defineConfig({
     open: true
   },
   build: {
-    outDir: "../dist/Micro-App",
+    outDir: "../dist/Micro-Vue-App",
     rollupOptions: {
       output: {
         manualChunks(id) {
@@ -53,11 +53,11 @@ export default defineConfig({
         },
         assetFileNames: 'static/[ext]/[name]-[hash].[ext]',
         // 微应用的包名，这里与主应用中注册的微应用名称一致
-        library: 'MicroApp',
+        library: 'MicroVueApp',
         // 将你的 library 暴露为所有的模块定义下都可运行的方式
         libraryTarget: 'umd',
         // 按需加载相关，设置为 webpackJsonp_VueMicroApp 即可
-        jsonpFunction: 'webpackJsonp_MicroApp'
+        jsonpFunction: 'webpackJsonp_MicroVueApp'
       }
     },
     brotliSize: false,

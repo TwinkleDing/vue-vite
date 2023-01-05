@@ -1,9 +1,9 @@
 const apps = [
     {
-        name: "MicroApp",
+        name: "MicroVueApp",
         entry: "//localhost:668",
         container: "#frame",
-        activeRule: "/Micro"
+        activeRule: "/MicroVue"
     }
 ]
 

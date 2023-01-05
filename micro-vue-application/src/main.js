@@ -32,7 +32,7 @@ function render() {
 		mounted() {},
 		render: () => h(App),
 	});
-	app.use(router).use(store).mount("#MicroApp");
+	app.use(router).use(store).mount("#MicroVueApp");
 	instance = app;
 }
 

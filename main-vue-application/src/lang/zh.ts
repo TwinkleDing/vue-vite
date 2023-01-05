@@ -26,7 +26,7 @@ export default {
     d3: "d3",
     canvas: "canvas 画布",
     media: "多媒体",
-    micro: "微应用",
+    microVue: "vue微应用",
     reset: "重置",
     submit: "提交",
     cancel: "取消",

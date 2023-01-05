@@ -5,4 +5,4 @@ import store from "./store"
 import i18n from "./lang"
 import "./css/index.scss"
 
-createApp(App).use(i18n).use(store).use(route).mount("#MainApp")
+createApp(App).use(i18n).use(store).use(route).mount("#MainVueApp")
