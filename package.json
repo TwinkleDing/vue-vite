@@ -6,7 +6,8 @@
 	"scripts": {
 		"test": "echo \"Error: no test specified\" && exit 1",
 		"dev": "node app.js --mode=dev",
-		"build": "node app.js --mode=build"
+		"build": "node app.js --mode=build && node zip.js",
+		"zip": "node zip.js"
 	},
 	"repository": {
 		"type": "git",
@@ -28,7 +29,9 @@
 	},
 	"homepage": "https://github.com/TwinkleDing/vue-vite#readme",
 	"dependencies": {
+		"archiver": "^5.3.1",
 		"chalk": "^4.1.0",
+		"fs": "^0.0.1-security",
 		"minimist": "^1.2.7",
 		"path": "^0.12.7"
 	}
