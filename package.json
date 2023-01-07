@@ -5,7 +5,6 @@
 	"main": "index.js",
 	"scripts": {
 		"test": "echo \"Error: no test specified\" && exit 1",
-		"dev": "node app.js --mode=dev",
 		"build": "node app.js --mode=build && node zip.js",
 		"zip": "node zip.js"
 	},

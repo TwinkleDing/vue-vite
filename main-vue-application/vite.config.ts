@@ -33,7 +33,7 @@ export default defineConfig({
         hmr: true
     },
     build: {
-        outDir: "../dist/Main-App",
+        outDir: "../dist/Main--Vue-App",
         rollupOptions: {
             output: {
                 manualChunks(id) {
