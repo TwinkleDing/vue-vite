@@ -27,6 +27,7 @@ export default {
     canvas: "Canvas Draw",
     media: "Media",
     microVue: "Micro Vue App",
+    microReact: "Micro React App",
     reset: "Reset",
     submit: "Submit",
     cancel: "Cancel",
@@ -48,5 +49,5 @@ export default {
     tabCard: "Card",
     delete: "Delete",
     edit: "Edit",
-    loading:"Loading..."
+    loading: "Loading..."
 }

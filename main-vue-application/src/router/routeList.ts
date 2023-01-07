@@ -144,6 +144,16 @@ const routeList: RouterItem[] = [
             permission: true,
             isMicro: true
         },
+    },
+    {
+        path: "/MicroReact",
+        name: "microReact",
+        meta: {
+            label: "microReact",
+            icon: "Help",
+            permission: true,
+            isMicro: true
+        },
     }
 ]
 
