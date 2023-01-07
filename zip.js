@@ -6,8 +6,8 @@ const chalk = require("chalk");
 console.log(chalk.blue.bgGreen("---------- Compress Start ----------"));
 
 // 打包文件
-zipApp("Main-Vue-App", "MainVueApp"); // 打包主应用
-zipApp("Micro-Vue-App", "MicroVueApp"); // 打包微应用
+zipApp("Main-Vue-App", "MainVueApp"); // 打包vue主应用
+zipApp("Micro-Vue-App", "MicroVueApp"); // 打包vue微应用
 
 function zipApp(inName, outName) {
 	const archive = archiver("zip", {
