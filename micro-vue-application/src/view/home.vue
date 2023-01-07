@@ -1,12 +1,12 @@
 <template>
-  <div>micro vue home</div>
+  <div>micro vue app home</div>
   <router-link name="first" to="/first">first</router-link> | 
   <router-link name="second" to="/second">second</router-link>
 </template>
 <script>
 export default {
   mounted() {
-    console.log(123);
+    console.log('micro vue app home');
   },
 };
 </script>

@@ -2,7 +2,7 @@ module.exports = {
   webpack: (config) => {
     config.output.library = "MicroReactApp";
     config.output.libraryTarget = "umd";
-    config.output.jsonpFunction = `webpackJsonp_MicroRectApp`;
+    config.output.chunkLoadingGlobal = `webpackJsonp_MicroRectApp`;
     config.output.globalObject = "window";
 
     return config;
@@ -15,9 +15,8 @@ module.exports = {
       "Access-Control-Allow-Origin": "*",
     };
     config.historyApiFallback = true;
-    config.hot = false;
-    config.watchContentBase = false;
-    config.liveReload = false;
+    config.hot = true;
+    config.liveReload = true;
 
     return config;
   },

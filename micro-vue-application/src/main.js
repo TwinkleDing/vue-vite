@@ -10,14 +10,14 @@ import { renderWithQiankun } from "vite-plugin-qiankun/dist/helper";
 
 renderWithQiankun({
 	mount() {
-		console.log("qiankun-mount");
+		console.log("MicroVueApp Mount");
 		render();
 	},
 	bootstrap() {
-		console.log("VueMicroApp bootstraped");
+		console.log("MicroVueApp Bootstrap");
 	},
 	unmount() {
-		console.log("qiankun-unmount");
+		console.log("MicroVueApp Unmount");
 		instance.unmount();
 		instance = null;
 	},

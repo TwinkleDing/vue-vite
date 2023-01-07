@@ -4,12 +4,15 @@ import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 
-const root = ReactDOM.createRoot(document.getElementById("MicroReactApp"));
 function render(props) {
+  console.log(props);
   const { container } = props;
-  container
-    ? container.querySelector("#MicroReactApp")
-    : document.querySelector("#MicroReactApp");
+  const root = ReactDOM.createRoot(
+    container
+      ? container.querySelector("#MicroReactApp")
+      : document.querySelector("#MicroReactApp")
+  );
+
   root.render(
     <React.StrictMode>
       <App />
@@ -20,21 +23,23 @@ if (!window.__POWERED_BY_QIANKUN__) {
   render({});
 }
 export async function bootstrap() {
-  console.log("[react16] react app bootstraped");
+  console.log("MicroReactApp Bootstrap");
 }
 
 export async function mount(props) {
-  console.log("[react16] props from main framework", props);
+  console.log("MicroVueApp Mount", props);
   render(props);
 }
 
 export async function unmount(props) {
   const { container } = props;
-  root.unmount(
-    container
-      ? container.querySelector("#MicroReactApp")
-      : document.querySelector("#MicroReactApp")
-  );
+  console.log("MicroReactApp Unmount", container);
+  // const root = ReactDOM.createRoot(
+  //   container
+  //     ? container.querySelector("#MicroReactApp")
+  //     : document.querySelector("#MicroReactApp")
+  // );
+  // root.render(<div></div>);
 }
 
 // If you want to start measuring performance in your app, pass a function
