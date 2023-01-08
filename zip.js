@@ -10,7 +10,8 @@ console.log(chalk.blue.bgGreen("---------- Compress Start ----------"));
 const hasDir = fs.existsSync(distPath);
 hasDir &&
   fs.readdirSync(distPath).map((fileName) => {
-    const isMicroApp = isDir(fileName);
+    console.log(fileName);
+    const isMicroApp = isDir(path.join(distPath, fileName));
     if (isMicroApp) {
       zipApp(fileName); // 打包应用
     }

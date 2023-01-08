@@ -33,7 +33,7 @@ export default defineConfig({
         hmr: true
     },
     build: {
-        outDir: "../dist/Main--Vue-App",
+        outDir: process.env.BUILD_PATH || 'dist',
         rollupOptions: {
             output: {
                 manualChunks(id) {

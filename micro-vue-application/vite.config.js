@@ -43,7 +43,7 @@ export default defineConfig({
     open: true
   },
   build: {
-    outDir: "../dist/Micro-Vue-App",
+    outDir: process.env.BUILD_PATH || 'dist',
     rollupOptions: {
       output: {
         manualChunks(id) {
