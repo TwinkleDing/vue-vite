@@ -1,4 +1,4 @@
-export default {
+window.config = {
     title: "VUE3+TS",
-    logo: '/static/logo.png'
+    logo: "/static/logo.png"
 }

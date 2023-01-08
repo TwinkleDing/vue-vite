@@ -1,19 +1,20 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import "./index.css";
+import "./style/index.scss";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 
+let instance = null;
+
 function render(props) {
-  console.log(props);
   const { container } = props;
-  const root = ReactDOM.createRoot(
+  instance = ReactDOM.createRoot(
     container
       ? container.querySelector("#MicroReactApp")
       : document.querySelector("#MicroReactApp")
   );
 
-  root.render(
+  instance.render(
     <React.StrictMode>
       <App />
     </React.StrictMode>
@@ -33,13 +34,8 @@ export async function mount(props) {
 
 export async function unmount(props) {
   const { container } = props;
+  instance = null;
   console.log("MicroReactApp Unmount", container);
-  // const root = ReactDOM.createRoot(
-  //   container
-  //     ? container.querySelector("#MicroReactApp")
-  //     : document.querySelector("#MicroReactApp")
-  // );
-  // root.render(<div></div>);
 }
 
 // If you want to start measuring performance in your app, pass a function

@@ -23,11 +23,10 @@
   </div>
 </template>
 <script setup lang="ts">
-import { defineComponent, reactive, ref, Ref } from "vue";
+import { reactive, ref, Ref } from "vue";
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
 import { ElMessageBox, ElMessage } from "element-plus";
-import Config from "../../../../public/config/index.js";
 const store = useStore();
 const router = useRouter();
 const userInfo: any = reactive(store.getters.userInfo);
@@ -35,8 +34,8 @@ const size: Ref<string> = ref("default");
 const imgUrl: Ref<string> = ref(
   "https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"
 );
-const title: Ref<string> = ref(Config.title);
-const logo: Ref<string> = ref(Config.logo);
+const title: Ref<string> = ref(window.config.title);
+const logo: Ref<string> = ref(window.config.logo);
 
 const drClick = (type: number) => {
   if (type === 1) {
