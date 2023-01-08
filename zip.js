@@ -2,16 +2,16 @@ const fs = require("fs");
 const path = require("path");
 const archiver = require("archiver");
 const chalk = require("chalk");
-const distPath = "./dist";
+const outPath = "./dist";
 
 // 开始进入打包
 console.log(chalk.blue.bgGreen("---------- Compress Start ----------"));
 
-const hasDir = fs.existsSync(distPath);
+const hasDir = fs.existsSync(outPath);
 hasDir &&
-  fs.readdirSync(distPath).map((fileName) => {
+  fs.readdirSync(outPath).map((fileName) => {
     console.log(fileName);
-    const isMicroApp = isDir(path.join(distPath, fileName));
+    const isMicroApp = isDir(path.join(outPath, fileName));
     if (isMicroApp) {
       zipApp(fileName); // 打包应用
     }
@@ -33,7 +33,7 @@ function zipApp(fileName) {
   output.on("close", function () {
     console.log(
       chalk.yellow(
-        `${fileName} total szie ${archive
+        `${fileName} total size ${archive
           .pointer()
           .toString()
           .replace(/\B(?=(\d{3})+\b)/g, ",")} bytes`
@@ -51,7 +51,7 @@ function zipApp(fileName) {
   archive.pipe(output);
 
   // 打包dist里面的所有文件和目录
-  archive.directory(`${distPath}/${fileName}`, false);
+  archive.directory(`${outPath}/${fileName}`, false);
 
   // 打包警告
   archive.on("warning", function (err) {

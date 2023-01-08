@@ -19,7 +19,11 @@
 		"vuex",
 		"vite",
 		"qiankun",
-		"microapplication"
+		"microapplication",
+		"micro-application",
+		"react",
+		"typescript",
+		"ts"
 	],
 	"author": "TwinkleDing",
 	"license": "ISC",
