@@ -28,12 +28,13 @@ export async function bootstrap() {
 }
 
 export async function mount(props) {
-  console.log("MicroVueApp Mount", props);
+  console.log("MicroReactApp Mount", props);
   render(props);
 }
 
 export async function unmount(props) {
   const { container } = props;
+  instance.unmount();
   instance = null;
   console.log("MicroReactApp Unmount", container);
 }
