@@ -1,3 +1,10 @@
+***
+分支介绍
+-   main: Vue 3 + Typescript + Vite 前端项目
+-   qiankun: 使用 qiankun 的包含 vue 和 react 的微前端项目
+-   draw: 使用了 websocket 在 vue 和 node 间进行接收和分发信息的你画我猜项目
+***
+
 # qiankun 微前端项目模板
 
 - 使用 qiankun 进行微应用项目开发
