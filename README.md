@@ -1,11 +1,33 @@
+***
+分支介绍
+-   main: Vue 3 + Typescript + Vite 前端项目
+-   qiankun: 使用 qiankun 的包含 vue 和 react 的微前端项目
+-   draw: 使用了 websocket 在 vue 和 node 间进行接收和分发信息的你画我猜项目
+***
 # Vue 3 + Typescript + Vite
 
-This template should help get you started developing with Vue 3 and Typescript in Vite. The template uses Vue 3 `<script setup>` SFCs, check out the [script setup docs](https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup) to learn more.
+## 简介
 
-## Recommended IDE Setup
+-   此项目为 vue + java 的前后端可联调项目
+-   可以进行游客预览，也可以进行与后端联调的登录功能，其中只有嵌套路由中的需要配套 java 项目，其余皆可游客浏览
+-   前端采用了 vue3 + ts 开发，主要用了 setup 语法，使用 vite 进行构建
+-   后端部分采用了 springboot 和 mysql，项目地址[springboot](https://github.com/TwinkleDing/springboot)
 
-- [VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=johnsoncodehk.volar)
+## 功能
 
-## Type Support For `.vue` Imports in TS
-
-Since TypeScript cannot handle type information for `.vue` imports, they are shimmed to be a generic Vue component type by default. In most cases this is fine if you don't really care about component prop types outside of templates. However, if you wish to get actual prop types in `.vue` imports (for example to get props validation when using manual `h(...)` calls), you can enable Volar's `.vue` type support plugin by running `Volar: Switch TS Plugin on/off` from VSCode command palette.
+-   与配套 java 项目的登录或者游客登录
+-   全局系统设置按钮
+    -   主题色
+        -   系统主题色
+        -   顶栏主题
+        -   菜单主题
+    -   标签栏: 历史路由列表，可开关，可调整样式
+    -   菜单位置: 左边或者顶部
+    -   选择语言: 目前只做了中英文，但是英文下的布局时 rtl 反向语言样式
+-   动态路由
+-   支持多级路由嵌套
+-   错误页面 404
+-   Echarts 图表
+-   高德地图查看
+-   three 模型
+-   canvas 画布
