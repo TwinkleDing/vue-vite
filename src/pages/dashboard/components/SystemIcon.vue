@@ -12,10 +12,10 @@
   <el-drawer
     v-model="drawer"
     size="350px"
-    custom-class="system-drawer"
+    class="system-drawer"
     :direction="direction"
   >
-    <template #title>
+    <template #header>
       <h3>{{ $t("system") }}</h3>
     </template>
     <div>

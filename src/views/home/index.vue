@@ -24,7 +24,7 @@
       </div>
       <div class="right">
         <el-calendar ref="calendar" class="calendar">
-          <template #dateCell="{ data }">
+          <template #date-cell="{ data }">
             <div class="calendar-item" @click="calendarClick(data)">
               <!-- :class="data.isSelected ? 'is-selected' : ''" -->
               {{ data.day.split("-").slice(1).join("-") }}
@@ -41,32 +41,20 @@
             </undone>
           </el-col>
           <el-col :span="12">
-              <game :list="gameList" />
+            <game :list="gameList" />
           </el-col>
         </el-row>
       </div>
     </div>
   </div>
   <el-dialog v-model="dialogVisible" title="日程" width="600px">
-    <el-form
-      v-if="chooseTime > currentTime"
-      ref="ruleFormRef"
-      :model="form"
-      :rules="rules"
-      label-width="60px"
-      hide-required-asterisk
-    >
+    <el-form v-if="chooseTime > currentTime" ref="ruleFormRef" :model="form" :rules="rules" label-width="60px"
+      hide-required-asterisk>
       <el-form-item label="事件：" prop="title">
         <el-input v-model="form.title" placeholder="请输入事件名称" />
       </el-form-item>
       <el-form-item label="时间：" prop="time">
-        <el-time-select
-          v-model="form.time"
-          start="00:00"
-          step="00:30"
-          end="23:30"
-          placeholder="请选择时间"
-        />
+        <el-time-select v-model="form.time" start="00:00" step="00:30" end="23:30" placeholder="请选择时间" />
       </el-form-item>
       <div class="text-right">
         <el-button type="primary" @click="submitForm(ruleFormRef)">
@@ -205,19 +193,23 @@ onMounted(() => {
     height: 100%;
     overflow: hidden;
   }
+
   .left,
   .right {
     display: inline-block;
     width: 49%;
     min-width: 600px;
   }
+
   .chart {
     display: inline-block;
     height: 200px;
     width: 50%;
   }
+
   .calendar {
     height: 300px;
+
     &-item {
       display: flex;
       justify-content: start;
@@ -225,31 +217,30 @@ onMounted(() => {
       height: 20px;
       line-height: 20px;
     }
-    :deep {
-      .el-calendar-day {
-        padding: 8px 5px;
-      }
-    }
   }
-}
-:deep {
-  .el-calendar {
+
+  :deep(.el-calendar) {
     --el-calendar-cell-width: 36px;
-  }
-  .el-carousel__item h3 {
-    display: flex;
-    color: #475669;
-    opacity: 0.75;
-    line-height: 300px;
-    margin: 0;
-  }
 
-  .el-carousel__item:nth-child(2n) {
-    background-color: #99a9bf;
-  }
+    .el-calendar-day {
+      padding: 8px 5px;
+    }
 
-  .el-carousel__item:nth-child(2n + 1) {
-    background-color: #d3dce6;
+    .el-carousel__item h3 {
+      display: flex;
+      color: #475669;
+      opacity: 0.75;
+      line-height: 300px;
+      margin: 0;
+    }
+
+    .el-carousel__item:nth-child(2n) {
+      background-color: #99a9bf;
+    }
+
+    .el-carousel__item:nth-child(2n + 1) {
+      background-color: #d3dce6;
+    }
   }
 }
 </style>
