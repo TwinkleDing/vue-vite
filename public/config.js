@@ -1,5 +1,7 @@
-window.config = {
-    title: "VUE3+TS",
-    logo: "static/logo.png",
-    apiUrl: 'http://10.168.2.87:6677',
-}
+;(function () {
+    window.config = {
+        title: "VUE3+TS",
+        logo: "static/logo.png",
+        apiUrl: "http://192.168.1.0:6677"
+    }
+})()
