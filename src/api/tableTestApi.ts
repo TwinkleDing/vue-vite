@@ -1,9 +1,8 @@
 import axios from "@/utils/axios"
-import { BaseUrl } from "./baseApi"
 
 export const tableListApi = (params: any) => {
     return axios({
-        url: `${BaseUrl}/api/tableTest`,
+        url: `/api/tableTest`,
         method: "GET",
         params
     })
@@ -11,7 +10,7 @@ export const tableListApi = (params: any) => {
 
 export const tableAddApi = (data: any) => {
     return axios({
-        url: `${BaseUrl}/api/tableTest`,
+        url: `/api/tableTest`,
         method: "POST",
         data
     })
@@ -19,7 +18,7 @@ export const tableAddApi = (data: any) => {
 
 export const tableVolumeApi = (data: any) => {
     return axios({
-        url: `${BaseUrl}/api/tableVolume`,
+        url: `/api/tableVolume`,
         method: "POST",
         data
     })
@@ -27,7 +26,7 @@ export const tableVolumeApi = (data: any) => {
 
 export const tableDeleteApi = (data: any) => {
     return axios({
-        url: `${BaseUrl}/api/tableDelete`,
+        url: `/api/tableDelete`,
         method: "DELETE",
         data
     })

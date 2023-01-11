@@ -1,9 +1,8 @@
 import axios from "@/utils/axios"
-import { BaseUrl } from "./baseApi"
 
 export const loginApi = (data: any) => {
     return axios({
-        url: `${BaseUrl}/auth/login`,
+        url: `/auth/login`,
         method: "POST",
         data
     })
@@ -11,7 +10,7 @@ export const loginApi = (data: any) => {
 
 export const registerApi = (data: any) => {
     return axios({
-        url: `${BaseUrl}/auth/register`,
+        url: `/auth/register`,
         method: "POST",
         data
     })

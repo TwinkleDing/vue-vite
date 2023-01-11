@@ -5,9 +5,15 @@ import { serialize } from "@/utils/utils"
 import store from "@/store/index"
 import { ElMessage } from "element-plus"
 import router from "@/router"
+let baseUrl: string = window.config?.devApiUrl;
+
+if (process.env.NODE_ENV === "production") {
+    baseUrl = window.config?.proApiUrl
+}
 
 // 设置超时时间
 axios.defaults.timeout = 100000
+axios.defaults.baseURL = baseUrl;
 
 // 返回其他状态吗
 axios.defaults.validateStatus = (status: any) => {
