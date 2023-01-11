@@ -14,7 +14,6 @@
           v-model="password"
           :placeholder="$t('login.userPassword')"
           :prefix-icon="UserFilled"
-          @change="login"
         />
       </el-form-item>
       <el-form-item class="login-handle">
