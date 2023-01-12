@@ -16,7 +16,7 @@ const user = {
         /**
          * 设置用户信息
          */
-        SET_USER_INFO(state: any, userInfo: UserInfo) {
+        SET_USER_INFO(state: any, userInfo: UserInfo): void {
             state.userInfo = userInfo
             setStore({
                 name: "userInfo",
@@ -26,20 +26,20 @@ const user = {
         /**
          * 移除用户信息
          */
-        REMOVE_USER_INFO(state: any) {
+        REMOVE_USER_INFO(state: any): void {
             state.userInfo = {}
             removeStore({
                 name: "userInfo"
             })
         },
-        SET_TOKEN(state: any, token: string) {
+        SET_TOKEN(state: any, token: string): void {
             state.token = token
             setStore({
                 name: "token",
                 content: token
             })
         },
-        REMOVE_TOKEN(state: any) {
+        REMOVE_TOKEN(state: any): void {
             state.token = ""
             removeStore({
                 name: "token"

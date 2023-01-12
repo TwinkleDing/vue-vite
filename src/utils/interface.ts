@@ -43,3 +43,8 @@ interface GameList {
     time: string
     img: any
 }
+
+export interface SystemIcon {
+    x: number
+    y: number
+}

@@ -1,6 +1,7 @@
 import { setStore, getStore, removeStore } from "@/utils/storage"
 import router from "@/router"
 import { lighten, addElementPlusColor } from "@/utils/themeColor"
+import { RouterItem, SystemIcon } from "@/utils/interface"
 import routeList from "@/router/routeList"
 import { routerApi } from "@/api/commonApi"
 import {
@@ -70,7 +71,7 @@ const settings = {
         /**
          * 设置语言/正反向语言
          */
-        SET_LANGUAGE: (state: any, language: string) => {
+        SET_LANGUAGE: (state: any, language: string): void => {
             state.language = language
             const head = document.getElementsByTagName("head")[0]
             const linkTags = head.getElementsByTagName("link")
@@ -104,9 +105,9 @@ const settings = {
         /**
          * 设置系统颜色
          */
-        SET_SYSTEM_THEME(state: any, color: string) {
+        SET_SYSTEM_THEME(state: any, color: string): void {
             state.systemTheme = color
-            this.commit("SET_ALL_THEME_COLOR")
+            ;(this as any).commit("SET_ALL_THEME_COLOR")
             setStore({
                 name: "systemTheme",
                 content: color
@@ -115,9 +116,9 @@ const settings = {
         /**
          * 设置顶部颜色
          */
-        SET_HEADER_THEME(state: any, color: string) {
+        SET_HEADER_THEME(state: any, color: string): void {
             state.headerTheme = color
-            this.commit("SET_ALL_THEME_COLOR")
+            ;(this as any).commit("SET_ALL_THEME_COLOR")
             setStore({
                 name: "headerTheme",
                 content: color
@@ -126,9 +127,9 @@ const settings = {
         /**
          * 设置菜单颜色
          */
-        SET_MENU_THEME(state: any, color: string) {
+        SET_MENU_THEME(state: any, color: string): void {
             state.menuTheme = color
-            this.commit("SET_ALL_THEME_COLOR")
+            ;(this as any).commit("SET_ALL_THEME_COLOR")
             setStore({
                 name: "menuTheme",
                 content: color
@@ -137,7 +138,7 @@ const settings = {
         /**
          * 设置标签页是否想展示
          */
-        SET_TABS_SHOW(state: any, status: boolean) {
+        SET_TABS_SHOW(state: any, status: boolean): void {
             state.tabsShow = status
             setStore({
                 name: "tabsShow",
@@ -147,7 +148,7 @@ const settings = {
         /**
          * 设置标签页样式
          */
-        SET_TABS_TYPE(state: any, value: number) {
+        SET_TABS_TYPE(state: any, value: number): void {
             state.tabsType = value
             setStore({
                 name: "tabsType",
@@ -157,7 +158,7 @@ const settings = {
         /**
          * 设置菜单的位置
          */
-        SET_MENU_POSITION(state: any, status: boolean) {
+        SET_MENU_POSITION(state: any, status: boolean): void {
             state.menuPosition = status
             setStore({
                 name: "menuPosition",
@@ -167,7 +168,7 @@ const settings = {
         /**
          * 设置路由历史
          */
-        SET_ROUTE_HISTORY(state: any, to: any) {
+        SET_ROUTE_HISTORY(state: any, to: any): void {
             if (Array.isArray(to)) {
                 state.routeHistory = to
                 setStore({
@@ -200,7 +201,7 @@ const settings = {
         /**
          * 移除指定路由历史
          */
-        REMOVE_ROUTE_HISTORY_INDEX(state: any, index: number) {
+        REMOVE_ROUTE_HISTORY_INDEX(state: any, index: number): void {
             const history = state.routeHistory.splice(index, 1)
             if (!state.routeHistory.length) {
                 state.routeHistory = [
@@ -221,7 +222,7 @@ const settings = {
         /**
          * 移除全部路由历史
          */
-        REMOVE_ROUTER_HISTORY(state: any) {
+        REMOVE_ROUTER_HISTORY(state: any): void {
             state.routeHistory = [
                 {
                     label: "home",
@@ -235,7 +236,7 @@ const settings = {
         /**
          * 设置路由列表
          */
-        SET_ROUTE_LIST(state: any, list: any) {
+        SET_ROUTE_LIST(state: any, list: RouterItem[]): void {
             state.routeList = list
             setStore({
                 name: "routeList",
@@ -245,7 +246,7 @@ const settings = {
         /**
          * 移除路由列表
          */
-        REMOVE_ROUTER_LIST(state: any) {
+        REMOVE_ROUTER_LIST(state: any): void {
             state.routeList = []
             removeStore({
                 name: "routeList"
@@ -254,7 +255,7 @@ const settings = {
         /**
          * 设置系统设置icon位置
          */
-        SET_SYSTEM_ICON_POSITION(state: any, position: any) {
+        SET_SYSTEM_ICON_POSITION(state: any, position: SystemIcon): void {
             state.systemIcon = position
             setStore({
                 name: "systemIcon",
@@ -264,7 +265,7 @@ const settings = {
         /**
          * 颜色设置
          */
-        SET_ALL_THEME_COLOR(state: any) {
+        SET_ALL_THEME_COLOR(state: any): void {
             let attribute = ""
             attribute += `--systemThemeColor: ${state.systemTheme};`
             attribute += `--systemThemeColorActive: ${lighten(state.systemTheme, 30)};`
@@ -282,7 +283,7 @@ const settings = {
         /**
          * 设置当前路由
          */
-        SET_CURRENT_ROUTE(state: any, route: any) {
+        SET_CURRENT_ROUTE(state: any, route: any): void {
             state.currentRoute = route
         }
     },
@@ -291,7 +292,7 @@ const settings = {
          * 设置动态路由
          */
         router() {
-            return new Promise((resolve: any) => {
+            return new Promise((resolve: any): void => {
                 resolve(routeList)
             })
         },
@@ -305,7 +306,7 @@ const settings = {
                     context.commit("SET_ROUTE_LIST", context.state.routeList)
                     resolve(context.state.routeList)
                 } else {
-                    routerApi().then((res) => {
+                    routerApi().then((res: any) => {
                         if (Array.isArray(res.data)) {
                             context.state.routeList = [...res.data]
                             context.commit("SET_ROUTE_LIST", context.state.routeList)
@@ -320,7 +321,7 @@ const settings = {
         /**
          * 移除所有非必要信息
          */
-        removeAll(context: any) {
+        removeAll(context: any): void {
             context.commit("REMOVE_ROUTER_LIST")
             context.commit("REMOVE_USER_INFO")
         }
