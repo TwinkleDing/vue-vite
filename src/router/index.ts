@@ -57,7 +57,7 @@ router.beforeEach(async (to: any) => {
 })
 
 //遍历后台传来的路由字符串，转换为组件对象
-function filterAsyncRouter(asyncRouterMap: RouterItem[]) {
+function filterAsyncRouter(asyncRouterMap: RouterItem[]): RouterItem[] {
     const accessedRouters = asyncRouterMap.filter((route: RouterItem) => {
         if (route.component) {
             route.component = _importComponent(route.component)

@@ -34,7 +34,7 @@ const { proxy }: any = getCurrentInstance();
 const active: Ref<string> = ref(props.def || props.colorList[0]);
 const iconColor: Ref<string> = ref("#ffffff");
 
-const judgeColor = () => {
+const judgeColor = (): any => {
   if (active.value === "#ffffff") {
     iconColor.value = "#000000";
   } else {
@@ -42,7 +42,7 @@ const judgeColor = () => {
   }
 };
 
-const handleClick = (color: string) => {
+const handleClick = (color: string): any => {
   active.value = color;
   judgeColor();
   proxy.$emit("change", color);

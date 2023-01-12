@@ -17,15 +17,15 @@ const SCREEN_WIDTH: number = width;
 const SEPARATION: number = 100;
 const AMOUNT_X: number = 50;
 const AMOUNT_Y: number = 50;
+let count: number = 0;
 
 let container: any;
 let particles: any;
 let renderer: any;
 let camera: any;
 let scene: any;
-let count: number = 0;
 
-const init = () => {
+const init = (): void => {
   camera = new THREE.PerspectiveCamera(75, SCREEN_WIDTH / SCREEN_HEIGHT, 1, 10000);
   camera.position.z = 1000;
   scene = new THREE.Scene();
@@ -82,20 +82,20 @@ const init = () => {
   window.addEventListener("resize", onWindowResize);
 };
 
-const onWindowResize = () => {
+const onWindowResize = (): void => {
   camera.aspect = SCREEN_WIDTH / SCREEN_HEIGHT;
   camera.updateProjectionMatrix();
   renderer.setSize(SCREEN_WIDTH, SCREEN_HEIGHT);
 };
-const onPointerMove = (event: any) => {
+const onPointerMove = (event: any): void => {
   if (event.isPrimary === false) return;
 };
-const animate = () => {
+const animate = (): void => {
   requestAnimationFrame(animate);
   render();
 };
 
-const render = () => {
+const render = (): void => {
   camera.position.x += camera.position.x * 0.05;
   camera.position.y += (200 - camera.position.y) * 0.05;
   camera.lookAt(scene.position);

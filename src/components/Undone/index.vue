@@ -55,7 +55,7 @@ const listData: Array<ListData> = reactive([
   },
 ]);
 
-const checkboxClick = (item: ListData) => {
+const checkboxClick = (item: ListData): any => {
   item.status = !item.status;
 };
 </script>

@@ -1,7 +1,7 @@
 <template>
   <div id="model" class="model-ca"></div>
 </template>
-<script setup>
+<script setup lang="ts">
 import { onMounted, onUnmounted } from "vue";
 import * as THREE from "three";
 import { FlyControls } from "three/examples/jsm/controls/FlyControls.js";
@@ -18,23 +18,23 @@ const props = defineProps({
     default: 1360,
   },
 });
-const radius = 6371;
-const tilt = 0.41;
-const rotationSpeed = 0.02;
-const cloudsScale = 1.005;
-const textureLoader = new THREE.TextureLoader();
-const clock = new THREE.Clock();
-const renderer = new THREE.WebGLRenderer({ antialias: true }); // 抗锯齿
-const SCREEN_HEIGHT = props.height;
-const SCREEN_WIDTH = props.width;
-let container;
-let camera;
-let scene;
-let meshPlanet;
-let meshClouds;
-let composer;
+const SCREEN_HEIGHT: number = props.height;
+const SCREEN_WIDTH: number = props.width;
+const rotationSpeed: number = 0.02;
+const cloudsScale: number = 1.005;
+const radius: number = 6371;
+const tilt: number = 0.41;
+const renderer: any = new THREE.WebGLRenderer({ antialias: true }); // 抗锯齿
+const textureLoader: any = new THREE.TextureLoader();
+const clock: any = new THREE.Clock();
+let meshClouds: any;
+let meshPlanet: any;
+let container: any;
+let composer: any;
+let camera: any;
+let scene: any;
 
-const init = () => {
+const init = (): void => {
   // 场景
   scene = new THREE.Scene();
   scene.fog = new THREE.FogExp2(0x000000, 0.00000025);
@@ -44,11 +44,11 @@ const init = () => {
   camera.position.z = radius * 7;
 
   // 光源
-  const dirLight = new THREE.DirectionalLight(0xffffff);
+  const dirLight: any = new THREE.DirectionalLight(0xffffff);
   dirLight.position.set(1, 0, 1).normalize();
   scene.add(dirLight);
 
-  const materialNormalMap = new THREE.MeshPhongMaterial({
+  const materialNormalMap: any = new THREE.MeshPhongMaterial({
     specular: 0x333333,
     shininess: 15,
     map: textureLoader.load("./static/planets/earth_atmos_2048.jpg"),
@@ -58,14 +58,14 @@ const init = () => {
   });
 
   // 地球
-  const geometry = new THREE.SphereGeometry(radius, 100, 50);
+  const geometry: any = new THREE.SphereGeometry(radius, 100, 50);
   meshPlanet = new THREE.Mesh(geometry, materialNormalMap);
   meshPlanet.rotation.y = 2.5;
   meshPlanet.rotation.z = tilt;
   scene.add(meshPlanet);
 
   // 云
-  const materialClouds = new THREE.MeshLambertMaterial({
+  const materialClouds: any = new THREE.MeshLambertMaterial({
     map: textureLoader.load("./static/planets/earth_clouds_1024.png"),
     transparent: true,
   });
@@ -77,8 +77,8 @@ const init = () => {
 
   // 星星
   stars();
-  const renderModel = new RenderPass(scene, camera);
-  const effectFilm = new FilmPass(0.35, 0.75, 2048, false);
+  const renderModel: any = new RenderPass(scene, camera);
+  const effectFilm: any = new FilmPass(0.35, 0.75, 2048, false);
   composer = new EffectComposer(renderer);
   composer.addPass(renderModel);
   composer.addPass(effectFilm);
@@ -91,13 +91,13 @@ const init = () => {
   onWindowResize();
   animate();
 };
-const stars = () => {
+const stars = (): void => {
   const r = radius;
   const starsGeometry = [new THREE.BufferGeometry(), new THREE.BufferGeometry()];
-  const vertices1 = [];
-  const vertices2 = [];
+  const vertices1: number[] = [];
+  const vertices2: number[] = [];
   const vertex = new THREE.Vector3();
-  for (let i = 0; i < 250; i++) {
+  for (let i: number = 0; i < 250; i++) {
     vertex.x = Math.random() * 2 - 1;
     vertex.y = Math.random() * 2 - 1;
     vertex.z = Math.random() * 2 - 1;
@@ -105,7 +105,7 @@ const stars = () => {
 
     vertices1.push(vertex.x, vertex.y, vertex.z);
   }
-  for (let i = 0; i < 1500; i++) {
+  for (let i: number = 0; i < 1500; i++) {
     vertex.x = Math.random() * 2 - 1;
     vertex.y = Math.random() * 2 - 1;
     vertex.z = Math.random() * 2 - 1;
@@ -121,7 +121,7 @@ const stars = () => {
     "position",
     new THREE.Float32BufferAttribute(vertices2, 3)
   );
-  const starsMaterials = [
+  const starsMaterials: any[] = [
     new THREE.PointsMaterial({ color: 0x555555, size: 2, sizeAttenuation: false }),
     new THREE.PointsMaterial({ color: 0x555555, size: 1, sizeAttenuation: false }),
     new THREE.PointsMaterial({ color: 0x333333, size: 2, sizeAttenuation: false }),
@@ -129,7 +129,7 @@ const stars = () => {
     new THREE.PointsMaterial({ color: 0x1a1a1a, size: 2, sizeAttenuation: false }),
     new THREE.PointsMaterial({ color: 0x1a1a1a, size: 1, sizeAttenuation: false }),
   ];
-  for (let i = 10; i < 30; i++) {
+  for (let i: number = 10; i < 30; i++) {
     const stars = new THREE.Points(starsGeometry[i % 2], starsMaterials[i % 6]);
 
     stars.rotation.x = Math.random() * 6;
@@ -144,9 +144,9 @@ const stars = () => {
   }
 };
 
-const onWindowResize = () => {
-  let width = container.parentNode.clientWidth;
-  let height = container.parentNode.clientHeight;
+const onWindowResize = (): void => {
+  let width: number = container.parentNode.clientWidth;
+  let height: number = container.parentNode.clientHeight;
   if (width === 0 || height === 0) {
     width = SCREEN_WIDTH;
     height = SCREEN_HEIGHT;
@@ -157,10 +157,10 @@ const onWindowResize = () => {
   composer.setSize(width, height);
 };
 
-const animate = () => {
+const animate = (): void => {
   requestAnimationFrame(animate);
   // 旋转地球和云
-  const delta = clock.getDelta();
+  const delta: number = clock.getDelta();
   meshPlanet.rotation.y += rotationSpeed * delta;
   meshClouds.rotation.y += 1.25 * rotationSpeed * delta;
   composer.render(delta);
