@@ -47,8 +47,6 @@ router.beforeEach(async (to: any) => {
         })
         return to.fullPath
     } else if (!store.getters.userInfo.userName) {
-        console.log(store.getters.userInfo)
-        console.log(1)
         store.dispatch("removeAll")
         return "/login"
     } else {

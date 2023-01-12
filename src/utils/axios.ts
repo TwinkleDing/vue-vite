@@ -52,7 +52,6 @@ axios.interceptors.request.use(
 // HTTPresponse拦截
 axios.interceptors.response.use(
     (res: any) => {
-        console.log(123)
         const status = parseInt(res.data.status) || 200
         // 如果是401则跳转到登录页面
         if (status === 401) {
