@@ -1,9 +1,10 @@
 /**
  * 对象深拷贝
+ *
  * @param data 对象
  * @returns 深拷贝之后的对象
  */
-export const deepClone = (data: any) => {
+export const deepClone = (data: any): any => {
     const type: string = getObjType(data)
     let obj: any
     if (type === "array") {
@@ -28,10 +29,11 @@ export const deepClone = (data: any) => {
 
 /**
  * 判断值是不是null
+ *
  * @param val 值
  * @returns 是不是null
  */
-export const validateNull = (val: any) => {
+export const validateNull = (val: any): boolean => {
     if (typeof val === "boolean") {
         return false
     }
@@ -63,10 +65,11 @@ export const validateNull = (val: any) => {
 
 /**
  * 获取对象类型
+ *
  * @param obj
  * @returns 对象类型
  */
-export const getObjType = (obj: any) => {
+export const getObjType = (obj: any): any => {
     const toString: any = Object.prototype.toString
     const map: any = {
         "[object Boolean]": "boolean",
@@ -89,7 +92,7 @@ export const getObjType = (obj: any) => {
 /**
  * 打开小窗口
  */
-export const openWindow = (url: string, title: string, w: number, h: number) => {
+export const openWindow = (url: string, title: string, w: number, h: number): void => {
     // Fixes dual-screen position                            Most browsers       Firefox
     const width = window.innerWidth
         ? window.innerWidth
@@ -117,13 +120,11 @@ export const openWindow = (url: string, title: string, w: number, h: number) => 
     )
 
     // Puts focus on the newWindow
-    if (window.focus) {
-        newWindow.focus()
-    }
+    newWindow.focus()
 }
 
 //表单序列化
-export const serialize = (data: any) => {
+export const serialize = (data: any): string => {
     let list: any = []
 
     Object.keys(data).forEach((ele) => {

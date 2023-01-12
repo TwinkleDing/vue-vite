@@ -19,7 +19,7 @@ interface StorageData {
  *
  * @param params 存储的值
  */
-export const setStore = (params: StorageParams) => {
+export const setStore = (params: StorageParams): void => {
     let { name, content, type = LOCAL } = params
     if (!name) {
         return
@@ -38,7 +38,7 @@ export const setStore = (params: StorageParams) => {
  * @param params storage的name
  * @returns storage的内容
  */
-export const getStore = (params: StorageParams) => {
+export const getStore = (params: StorageParams): any => {
     let { name, type = LOCAL } = params
     if (!name) {
         return
@@ -72,7 +72,7 @@ export const getStore = (params: StorageParams) => {
 
  * @param params 要删除的storage的name
  */
-export const removeStore = (params: StorageParams) => {
+export const removeStore = (params: StorageParams): void => {
     let { name, type = LOCAL } = params
     if (!name) {
         return
@@ -86,7 +86,7 @@ export const removeStore = (params: StorageParams) => {
  * @param params 类型
  * @returns 全部的storage
  */
-export const getAllStore = (type: string = LOCAL) => {
+export const getAllStore = (type: string = LOCAL): StorageParams[] => {
     let list: StorageParams[] = []
     const storage = (window as any)[type]
     for (let i = 0; i <= storage.length; i++) {
@@ -107,6 +107,6 @@ export const getAllStore = (type: string = LOCAL) => {
  *
  * @param params 类型
  */
-export const clearStore = (type: string = LOCAL) => {
+export const clearStore = (type: string = LOCAL): void => {
     ;(window as any)[type].clear()
 }

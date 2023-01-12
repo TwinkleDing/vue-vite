@@ -11,7 +11,7 @@ interface Meta {
 /**
  * 路由格式
  */
-export type RouterItem = {
+export interface RouterItem {
     path: string
     name: string
     redirect?: string

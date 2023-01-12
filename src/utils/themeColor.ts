@@ -1,15 +1,15 @@
-export function isHexColor(color: string) {
+export const isHexColor = (color: string): boolean => {
     const reg = /^#([0-9a-fA-F]{3}|[0-9a-fA-f]{6})$/
     return reg.test(color)
 }
 
-export function rgbToHex(r: number, g: number, b: number) {
+export const rgbToHex = (r: number, g: number, b: number): string => {
     // tslint:disable-next-line:no-bitwise
     const hex = ((r << 16) | (g << 8) | b).toString(16)
     return "#" + new Array(Math.abs(hex.length - 7)).join("0") + hex
 }
 
-export function hexToRGB(hex: string) {
+export const hexToRGB = (hex: string): string => {
     let sHex = hex.toLowerCase()
     if (isHexColor(hex)) {
         if (sHex.length === 4) {
@@ -28,7 +28,13 @@ export function hexToRGB(hex: string) {
     return sHex
 }
 
-export function lighten(color: string, amount: number) {
+function addLight(color: string, amount: number): string {
+    const cc = parseInt(color, 16) + amount
+    const c = cc > 255 ? 255 : cc
+    return c.toString(16).length > 1 ? c.toString(16) : `0${c.toString(16)}`
+}
+
+export const lighten = (color: string, amount: number): string => {
     color = color.indexOf("#") >= 0 ? color.substring(1, color.length) : color
     amount = Math.trunc((255 * amount) / 100)
     return `#${addLight(color.substring(0, 2), amount)}${addLight(
@@ -36,15 +42,13 @@ export function lighten(color: string, amount: number) {
         amount
     )}${addLight(color.substring(4, 6), amount)}`
 }
-
-function addLight(color: string, amount: number) {
-    const cc = parseInt(color, 16) + amount
-    const c = cc > 255 ? 255 : cc
-    return c.toString(16).length > 1 ? c.toString(16) : `0${c.toString(16)}`
+interface Clusters {
+    light: string[]
+    dark: string
 }
 
-function getThemeCluster(theme: string) {
-    const tintColor = (color: string, tint: number) => {
+function getThemeCluster(theme: string): Clusters {
+    const tintColor = (color: string, tint: number): string => {
         let red = parseInt(color.slice(0, 2), 16)
         let green = parseInt(color.slice(2, 4), 16)
         let blue = parseInt(color.slice(4, 6), 16)
@@ -59,7 +63,7 @@ function getThemeCluster(theme: string) {
         const colorBlue = blue.toString(16)
         return `#${colorRed}${colorGreen}${colorBlue}`
     }
-    const shadeColor = (color: string, shade: number) => {
+    const shadeColor = (color: string, shade: number): string => {
         let red = parseInt(color.slice(0, 2), 16)
         let green = parseInt(color.slice(2, 4), 16)
         let blue = parseInt(color.slice(4, 6), 16)
@@ -87,7 +91,7 @@ function getThemeCluster(theme: string) {
     return clusters
 }
 
-export const addElementPlusColor = (color: string) => {
+export const addElementPlusColor = (color: string): string => {
     const themeCluster = getThemeCluster(color.replace("#", ""))
     const elementLight = themeCluster.light.map((c: string, i: number) => {
         return `--element-light-${i}: ${c}`
