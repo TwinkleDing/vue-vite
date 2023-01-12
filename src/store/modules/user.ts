@@ -18,6 +18,7 @@ const user = {
          */
         SET_USER_INFO(state: any, userInfo: UserInfo) {
             state.userInfo = userInfo
+            console.log('set')
             setStore({
                 name: "userInfo",
                 content: userInfo

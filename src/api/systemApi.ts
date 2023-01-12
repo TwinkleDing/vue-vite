@@ -2,7 +2,7 @@ import axios from "@/utils/axios"
 
 export const systemLogApi = (params: any) => {
     return axios({
-        url: `/api/systemLog`,
+        url: "/api/systemLog",
         method: "GET",
         params
     })
@@ -10,7 +10,7 @@ export const systemLogApi = (params: any) => {
 
 export const deleteLogApi = (data: any) => {
     return axios({
-        url: `/api/systemLog`,
+        url: "/api/systemLog",
         method: "DELETE",
         data
     })
@@ -18,14 +18,14 @@ export const deleteLogApi = (data: any) => {
 
 export const deleteSelectLogApi = (data: any) => {
     return axios({
-        url: `/api/systemLog/deleteSelect`,
+        url: "/api/systemLog/deleteSelect",
         method: "DELETE",
         data
     })
 }
 export const deleteAllApi = () => {
     return axios({
-        url: `/api/systemLog/deleteAll`,
+        url: "/api/systemLog/deleteAll",
         method: "DELETE"
     })
 }

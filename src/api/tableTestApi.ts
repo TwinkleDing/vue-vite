@@ -1,16 +1,16 @@
 import axios from "@/utils/axios"
-
+const GET = "GET"
 export const tableListApi = (params: any) => {
     return axios({
-        url: `/api/tableTest`,
-        method: "GET",
+        url: "/api/tableTest",
+        method: GET,
         params
     })
 }
 
 export const tableAddApi = (data: any) => {
     return axios({
-        url: `/api/tableTest`,
+        url: "/api/tableTest",
         method: "POST",
         data
     })
@@ -18,7 +18,7 @@ export const tableAddApi = (data: any) => {
 
 export const tableVolumeApi = (data: any) => {
     return axios({
-        url: `/api/tableVolume`,
+        url: "/api/tableVolume",
         method: "POST",
         data
     })
@@ -26,7 +26,7 @@ export const tableVolumeApi = (data: any) => {
 
 export const tableDeleteApi = (data: any) => {
     return axios({
-        url: `/api/tableDelete`,
+        url: "/api/tableDelete",
         method: "DELETE",
         data
     })

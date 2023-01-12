@@ -2,7 +2,7 @@ import axios from "@/utils/axios"
 
 export const loginApi = (data: any) => {
     return axios({
-        url: `/auth/login`,
+        url: "/auth/login",
         method: "POST",
         data
     })
@@ -10,7 +10,7 @@ export const loginApi = (data: any) => {
 
 export const registerApi = (data: any) => {
     return axios({
-        url: `/auth/register`,
+        url: "/auth/register",
         method: "POST",
         data
     })
