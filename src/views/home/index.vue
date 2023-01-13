@@ -73,6 +73,9 @@
           {{ $t("submit") }}
         </el-button>
         <el-button @click="resetForm(ruleFormRef)">{{ $t("reset") }}</el-button>
+        <el-button type="primary" @click="dialogVisible = false">
+          {{ $t("cancel") }}
+        </el-button>
       </div>
     </el-form>
     日程列表：

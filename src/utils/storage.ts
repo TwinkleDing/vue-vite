@@ -1,7 +1,5 @@
 import { validateNull } from "./utils"
-
-export const SESSION = "sessionStorage"
-export const LOCAL = "localStorage"
+import { LOCAL_STORAGE } from "@/settings/config"
 
 interface StorageParams {
     name: string | null
@@ -20,7 +18,7 @@ interface StorageData {
  * @param params 存储的值
  */
 export const setStore = (params: StorageParams): void => {
-    let { name, content, type = LOCAL } = params
+    let { name, content, type = LOCAL_STORAGE } = params
     if (!name) {
         return
     }
@@ -39,7 +37,7 @@ export const setStore = (params: StorageParams): void => {
  * @returns storage的内容
  */
 export const getStore = (params: StorageParams): any => {
-    let { name, type = LOCAL } = params
+    let { name, type = LOCAL_STORAGE } = params
     if (!name) {
         return
     }
@@ -73,7 +71,7 @@ export const getStore = (params: StorageParams): any => {
  * @param params 要删除的storage的name
  */
 export const removeStore = (params: StorageParams): void => {
-    let { name, type = LOCAL } = params
+    let { name, type = LOCAL_STORAGE } = params
     if (!name) {
         return
     }
@@ -86,7 +84,7 @@ export const removeStore = (params: StorageParams): void => {
  * @param params 类型
  * @returns 全部的storage
  */
-export const getAllStore = (type: string = LOCAL): StorageParams[] => {
+export const getAllStore = (type: string = LOCAL_STORAGE): StorageParams[] => {
     let list: StorageParams[] = []
     const storage = (window as any)[type]
     for (let i = 0; i <= storage.length; i++) {
@@ -107,6 +105,6 @@ export const getAllStore = (type: string = LOCAL): StorageParams[] => {
  *
  * @param params 类型
  */
-export const clearStore = (type: string = LOCAL): void => {
+export const clearStore = (type: string = LOCAL_STORAGE): void => {
     ;(window as any)[type].clear()
 }

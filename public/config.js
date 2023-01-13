@@ -4,5 +4,6 @@
         logo: "static/logo.png",
         devApiUrl: "http://localhost:6677",
         proApiUrl: "http://192.168.1.0:6677",
+        ArLanuage: []
     }
 })()

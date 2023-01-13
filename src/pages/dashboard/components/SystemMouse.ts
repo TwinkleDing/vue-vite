@@ -1,19 +1,21 @@
+import { SYSTEM_ICON_DEFAULT_X, SYSTEM_ICON_DEFAULT_Y } from "@/settings/config"
+
 export default class SystemMouse {
-    timer: any
     downTime: number
-    down: boolean
     offsetX: number
     offsetY: number
-    x: string
-    y: string
+    x: number
+    y: number
+    down: boolean
+    timer: any
     constructor() {
-        this.timer = null
         this.downTime = 0
-        this.down = false
         this.offsetX = 0
         this.offsetY = 0
-        this.x = "200px"
-        this.y = "60px"
+        this.x = SYSTEM_ICON_DEFAULT_X
+        this.y = SYSTEM_ICON_DEFAULT_Y
+        this.down = false
+        this.timer = null
     }
     mouseDown = (e: MouseEvent) => {
         this.downTime = new Date().getTime()
@@ -25,8 +27,8 @@ export default class SystemMouse {
         return new Promise((resolve) => {
             clearTimeout(this.timer)
             if (!this.down) return
-            this.x = e.clientX - this.offsetX + "px"
-            this.y = e.clientY - this.offsetY + "px"
+            this.x = e.clientX - this.offsetX
+            this.y = e.clientY - this.offsetY
             resolve({ x: this.x, y: this.y })
         })
     }

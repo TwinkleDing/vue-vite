@@ -1,5 +1,5 @@
 <template>
-  <div class="system-setting" :style="{ left: x, top: y }">
+  <div class="system-setting" :style="{ left: x + 'px', top: y + 'px' }">
     <div
       class="box"
       @mousedown="mouseDown"
@@ -79,6 +79,8 @@
             inline-prompt
             :active-text="$t('chinese')"
             :inactive-text="$t('english')"
+            active-value="zh"
+            inactive-value="en"
             :inactive-color="store.getters.systemTheme"
             v-model="language"
             @change="languageChange"
@@ -104,7 +106,7 @@ const store = useStore();
 const tabsShow: Ref<boolean> = ref(store.getters.tabsShow);
 const menuPosition: Ref<boolean> = ref(store.getters.menuPosition);
 const tabsType: Ref<number> = ref(store.getters.tabsType);
-const language: Ref<boolean> = ref(store.getters.language === "zh" ? true : false);
+const language: Ref<string> = ref(store.getters.language);
 
 const systemThemeList = APP_PRESET_COLOR_LIST;
 const headerThemeList = HEADER_PRESET_BG_COLOR_LIST;
@@ -114,10 +116,12 @@ const headerTheme = store.getters.headerTheme;
 const menuTheme = store.getters.menuTheme;
 
 const systemMouse = new SystemMouse();
-const x: Ref<string> = ref(systemMouse.x);
-const y: Ref<string> = ref(systemMouse.y);
+const x: Ref<number> = ref(systemMouse.x);
+const y: Ref<number> = ref(systemMouse.y);
 const drawer: Ref<Boolean> = ref(false);
-const direction: Ref<String> = ref(language.value ? "rtl" : "ltr");
+const direction: Ref<String> = ref(
+  (window as any).config.ArLanuage.includes(language.value) ? "ltr" : "rtl"
+);
 const mouseDown = (e: any) => {
   systemMouse.mouseDown(e);
 };
@@ -162,15 +166,10 @@ const menuPositionChange = (e: boolean) => {
     menuThemeChange(menuThemeList[0]);
   }
 };
-const languageChange = (e: boolean) => {
-  const lang = e ? "zh" : "en";
+const languageChange = (lang: string) => {
+  const ArLanuage: string[] = (window as any).config.ArLanuage || [];
   proxy.$i18n.locale = lang;
-  language.value = e;
-  if (e) {
-    direction.value = "rtl";
-  } else {
-    direction.value = "ltr";
-  }
+  direction.value = ArLanuage.includes(lang) ? "ltr" : "rtl";
   store.commit("SET_LANGUAGE", lang);
 };
 

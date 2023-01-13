@@ -9,6 +9,8 @@ import {
     HEADER_PRESET_BG_COLOR_LIST,
     SIDE_BAR_BG_COLOR_LIST
 } from "@/settings/designSetting"
+const ArLanuage: string[] = (window as any).config.ArLanuage || []
+let FirstInit: boolean = true
 
 const settings = {
     state: {
@@ -72,31 +74,45 @@ const settings = {
          * 设置语言/正反向语言
          */
         SET_LANGUAGE: (state: any, language: string): void => {
-            state.language = language
+            const lastIsArLanguage = ArLanuage.includes(state.language)
             const head = document.getElementsByTagName("head")[0]
             const linkTags = head.getElementsByTagName("link")
-            for (let i of linkTags) {
-                if (i.attributes) {
-                    for (let j of i.attributes) {
-                        "object" === typeof j &&
-                            j.value.includes("public.css") &&
-                            head.removeChild(i)
+            state.language = language
+
+            if (FirstInit) {
+                loadArCss(language)
+                FirstInit = false
+            } else {
+                if (lastIsArLanguage !== ArLanuage.includes(language)) {
+                    for (let i of linkTags) {
+                        if (i.attributes) {
+                            for (let j of i.attributes) {
+                                "object" === typeof j &&
+                                    j.value.includes("public.css") &&
+                                    head.removeChild(i)
+                            }
+                        }
                     }
+                    loadArCss(language)
                 }
             }
-            if (language === "en") {
-                loadStyles("../../css/ar_public.css")
-            } else {
-                loadStyles("../../css/public.css")
+
+            function loadArCss(language: string): void {
+                if (ArLanuage.includes(language)) {
+                    loadStyles("../../css/ar_public.css")
+                } else {
+                    loadStyles("../../css/public.css")
+                }
             }
 
-            function loadStyles(url: string) {
+            function loadStyles(url: string): void {
                 var link = document.createElement("link")
                 link.href = url
                 link.rel = "stylesheet"
                 link.type = "text/css"
                 head.appendChild(link)
             }
+
             setStore({
                 name: "language",
                 content: state.language
