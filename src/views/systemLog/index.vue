@@ -83,7 +83,7 @@ const selectList: any = reactive({
   list: <SystemLogItem[]>[],
 });
 
-const getList = () => {
+const getList = (): void => {
   const params = {
     number: page.number,
     size: page.size,
@@ -93,12 +93,12 @@ const getList = () => {
     tableData.list = res.data.list;
   });
 };
-const handleSizeChange = () => {
+const handleSizeChange = (): void => {
   page.number = 1;
   getList();
 };
-const handleCurrentChange = () => getList();
-const deleteRow = (id: string) => {
+const handleCurrentChange = (): void => getList();
+const deleteRow = (id: string): void => {
   deleteLogApi(id).then((res: Res) => {
     if (res.status === 200) {
       page.number = 1;
@@ -110,7 +110,7 @@ const deleteRow = (id: string) => {
     }
   });
 };
-const deleteAll = () => {
+const deleteAll = (): void => {
   deleteAllApi().then((res: Res) => {
     if (res.status === 200) {
       page.number = 1;
@@ -127,7 +127,7 @@ const deleteAll = () => {
     }
   });
 };
-const deleteSelect = () => {
+const deleteSelect = (): void => {
   const list: Array<String> = selectList.list.map((item: SystemLogItem) => {
     return item.id;
   });
@@ -148,7 +148,7 @@ const deleteSelect = () => {
     }
   });
 };
-const deleteMessage = (type: string) => {
+const deleteMessage = (type: string): void => {
   if (type === "selected" && selectList.list.length === 0) {
     ElMessage({
       type: "warning",
@@ -168,7 +168,7 @@ const deleteMessage = (type: string) => {
     }
   });
 };
-const handleSelectionChange = (val: SystemLogItem[]) => {
+const handleSelectionChange = (val: SystemLogItem[]): void => {
   selectList.list = val;
 };
 onBeforeMount(() => {

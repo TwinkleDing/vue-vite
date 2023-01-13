@@ -66,7 +66,7 @@ export const validateNull = (val: any): boolean => {
 /**
  * 获取对象类型
  *
- * @param obj
+ * @param obj 目标
  * @returns 对象类型
  */
 export const getObjType = (obj: any): any => {
@@ -90,7 +90,12 @@ export const getObjType = (obj: any): any => {
 }
 
 /**
- * 打开小窗口
+ * 小窗口打开
+ *
+ * @param url url路径
+ * @param title 标题
+ * @param w 宽
+ * @param h 高
  */
 export const openWindow = (url: string, title: string, w: number, h: number): void => {
     // Fixes dual-screen position                            Most browsers       Firefox
@@ -123,7 +128,12 @@ export const openWindow = (url: string, title: string, w: number, h: number): vo
     newWindow.focus()
 }
 
-//表单序列化
+/**
+ * 表单序列化
+ *
+ * @param data 对象
+ * @returns 序列化之后的字符串
+ */
 export const serialize = (data: any): string => {
     let list: any = []
 
@@ -131,4 +141,14 @@ export const serialize = (data: any): string => {
         list.push(`${ele}=${data[ele]}`)
     })
     return list.join("&")
+}
+
+/**
+ * 获取assets图片路径
+ *
+ * @param name 图片名称
+ * @returns 图片路径
+ */
+export const getAssetsImage = (name: string): string => {
+    return new URL(`/src/assets/${name}`, import.meta.url).href
 }

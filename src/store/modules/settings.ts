@@ -293,7 +293,7 @@ const settings = {
          */
         router() {
             return new Promise((resolve: any): void => {
-                resolve(routeList)
+                resolve([...routeList])
             })
         },
         /**

@@ -25,11 +25,11 @@
     <el-tree :data="tree.value" :props="defaultProps">
       <template #default="{ data }">
         <span class="custom-tree-node">
-          <span>{{ data.label }}</span>
+          <span>{{ data.meta.label }}</span>
           <span>
             <el-switch
               :disabled="data.name.includes('home')"
-              v-model="data.permission"
+              v-model="data.meta.permission"
               @change="switchPermission(data)"
             />
           </span>
@@ -45,9 +45,15 @@
   </el-dialog>
 </template>
 <script setup lang="ts">
-import { defineComponent, onMounted, ref, Ref, reactive } from "vue";
+import { onMounted, ref, Ref, reactive } from "vue";
 import { ElMessage, ElMessageBox } from "element-plus";
 import { useStore } from "vuex";
+import { RouterItem } from "@/utils/interface";
+
+interface DefaultProps {
+  children: string;
+  label: string;
+}
 
 interface DataItem {
   userId: string;
@@ -57,7 +63,7 @@ interface DataItem {
 
 const store = useStore();
 const dialogVisible: Ref<boolean> = ref(false);
-const defaultProps: any = reactive({
+const defaultProps: DefaultProps = reactive({
   children: "children",
   label: "name",
 });
@@ -70,34 +76,32 @@ const tableData: DataItem[] = reactive([
   },
 ]);
 
-const openPermission = () => {
+const openPermission = (): void => {
   dialogVisible.value = true;
-  store.dispatch("router").then((res: any) => {
+  store.dispatch("router").then((res: RouterItem[]) => {
     tree.value = digui(res);
   });
 };
-const digui = (list: any) => {
-  return list.map((element: any) => {
-    element.label = element.meta.label;
-    element.permission = element.meta.permission;
+const digui = (list: RouterItem[]): void => {
+  return list.map((element: RouterItem) => {
     if (element.children) {
       digui(element.children);
     }
     return element;
   });
 };
-const handleDelete = () => {
+const handleDelete = (): void => {
   ElMessage({
     type: "error",
     message: "仅此一个账号，无法删除",
   });
 };
 
-const switchPermission = (data: any) => {
-  console.log(data.permission);
+const switchPermission = (data: RouterItem): void => {
+  console.log(data.meta.permission);
 };
 
-const savePermission = () => {
+const savePermission = (): void => {
   dialogVisible.value = false;
   // setTimeout(() => {
   //     store.commit("SET_ROUTE_LIST", tree.value)
@@ -105,8 +109,8 @@ const savePermission = () => {
   // }, 1000)
 };
 
-const permissionRoute = async () => {
-  let list = [...(await store.dispatch("getRouteList"))];
+const permissionRoute = async (): void => {
+  let list: RouterItem[] = [...(await store.dispatch("getRouteList"))];
   if (list.length > 3) {
     list.splice(1, 1);
     ElMessage({
@@ -124,8 +128,8 @@ const permissionRoute = async () => {
     });
   }
 };
-const restoreRoute = async () => {
-  let list = [...(await store.dispatch("router"))];
+const restoreRoute = async (): void => {
+  let list: RouterItem[] = [...(await store.dispatch("router"))];
   ElMessage({
     type: "success",
     message: "路由恢复成功，将刷新页面",

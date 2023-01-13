@@ -100,6 +100,7 @@ import PieChart from "@/components/Chart/PieChart.vue";
 import Undone from "@/components/Undone/index.vue";
 import Game from "@/components/Game/index.vue";
 import { GameList } from "@/utils/interface.ts";
+import { getAssetsImage } from "@/utils/utils.ts";
 
 const { proxy }: any = getCurrentInstance();
 const calendar = ref();
@@ -128,30 +129,25 @@ const gameList: Array<GameList> = reactive([
     price: 325,
     platform: "switch",
     time: "2022-03-25",
-    img: getImage("Kirby.jpg"),
+    img: getAssetsImage("Kirby.jpg"),
   },
   {
     name: "塞尔达-旷野之息2",
     price: 375,
     platform: "switch",
     time: "2023-5-12",
-    img: getImage("Zelda.webp"),
+    img: getAssetsImage("Zelda.webp"),
   },
   {
     name: "宝可梦朱紫",
     price: 335,
     platform: "switch",
     time: "2022-11-18",
-    img: getImage("Pokemon.webp"),
+    img: getAssetsImage("Pokemon.webp"),
   },
 ]);
 
-// 动态获取图片
-function getImage(name: string): string {
-  return new URL(`/src/assets/${name}`, import.meta.url).href;
-}
-
-const calendarClick = (data: any) => {
+const calendarClick = (data: any): void => {
   chooseTime.value = new Date(data.day).getTime();
   currentTime.value = new Date().getTime();
   if (data.isSelected) {
@@ -164,7 +160,7 @@ const calendarClick = (data: any) => {
     });
   }
 };
-const submitForm = async (formEl: FormInstance | undefined) => {
+const submitForm = async (formEl: FormInstance | undefined): void => {
   if (!formEl) return;
   await formEl.validate((valid, fields) => {
     if (valid) {
@@ -182,7 +178,7 @@ const submitForm = async (formEl: FormInstance | undefined) => {
   });
 };
 
-const resetForm = (formEl: FormInstance | undefined) => {
+const resetForm = (formEl: FormInstance | undefined): void => {
   if (!formEl) return;
   formEl.resetFields();
 };

@@ -16,39 +16,51 @@
 import { defineComponent, Ref, ref, reactive, onMounted } from "vue";
 import { useStore } from "vuex";
 const store: any = useStore();
+const CONTENT_OFFSET_LEFT: number = 200;
+const CONTENT_OFFSET_TOP: number = 100;
+
 const mouseBeginX: Ref<number> = ref(0);
 const mouseBeginY: Ref<number> = ref(0);
-const canvas: any = reactive({});
-const context: any = reactive({});
-const start: Ref<boolean> = ref(false);
 const mouseX: Ref<number> = ref(0);
 const mouseY: Ref<number> = ref(0);
+const context: any = reactive({});
+const canvas: any = reactive({});
+const start: Ref<boolean> = ref(false);
 const color: Ref<string> = ref(store.getters.systemTheme);
 
-const drawStart = (e: MouseEvent) => {
+const drawStart = (e: MouseEvent): void => {
   context.value.beginPath();
-  mouseBeginX.value = e.clientX - canvas.value.offsetLeft - 200;
-  mouseBeginY.value = e.clientY - canvas.value.offsetTop - 100;
+  mouseBeginX.value = getMouse(e).x;
+  mouseBeginY.value = getMouse(e).y;
   context.value.moveTo(mouseBeginX.value, mouseBeginY.value);
   start.value = true;
 };
-const drawing = (e: MouseEvent) => {
+
+const drawing = (e: MouseEvent): void => {
   if (start.value) {
-    openDraw(e);
+    context.value.strokeStyle = color.value;
+    mouseX.value = getMouse(e).x;
+    mouseY.value = getMouse(e).y;
+    context.value.lineTo(mouseX.value, mouseY.value);
+    context.value.stroke();
   }
 };
-const drawEnd = (e: MouseEvent) => {
+
+const getMouse = (e: MouseEvent): { x: number; y: number } => {
+  const x = e.clientX - canvas.value.offsetLeft - CONTENT_OFFSET_LEFT;
+  const y = e.clientY - canvas.value.offsetTop - CONTENT_OFFSET_TOP;
+  return {
+    x,
+    y,
+  };
+};
+
+const drawEnd = (e: MouseEvent): void => {
   start.value = false;
   context.value.closePath();
 };
-const openDraw = (e: MouseEvent) => {
-  context.value.strokeStyle = color.value;
-  mouseX.value = e.clientX - canvas.value.offsetLeft - 200;
-  mouseY.value = e.clientY - canvas.value.offsetTop - 100;
-  context.value.lineTo(mouseX.value, mouseY.value);
-  context.value.stroke();
-};
-const clear = () => {
+
+const clear = (): void => {
   const w: number = canvas.value.width;
   const h: number = canvas.value.height;
   context.value.beginPath();

@@ -244,12 +244,12 @@ const selectList: any = reactive({
   list: <TableTestItem[]>[],
 });
 
-const init = () => {
+const init = (): void => {
   page.number = 1;
   getList();
 };
 //获取列表
-const getList = () => {
+const getList = (): void => {
   let params = {
     number: page.number,
     size: page.size,
@@ -263,7 +263,7 @@ const getList = () => {
   });
 };
 // 提交新增或修改
-const submit = async (formEl: FormInstance | undefined) => {
+const submit = async (formEl: FormInstance | undefined): void => {
   if (!formEl) return;
   await formEl.validate((valid, fields) => {
     if (valid) {
@@ -295,14 +295,14 @@ const submit = async (formEl: FormInstance | undefined) => {
   });
 };
 // 重置弹窗内容
-const reset = (formEl: FormInstance | undefined) => {
+const reset = (formEl: FormInstance | undefined): void => {
   if (!formEl) return;
   formEl.resetFields();
 };
 // 模糊查询
-const search = () => init();
+const search = (): void => init();
 // 批量新增
-const tableVolume = () => {
+const tableVolume = (): void => {
   const Item = {
     name: "",
     content: "",
@@ -326,7 +326,7 @@ const tableVolume = () => {
   });
 };
 // 删除
-const deleteRow = (id: string) =>
+const deleteRow = (id: string): void =>
   tableDeleteApi([id]).then((res: Res) => {
     ElMessage({
       type: "success",
@@ -335,7 +335,7 @@ const deleteRow = (id: string) =>
     init();
   });
 // 批量删除
-const deleteMessage = () => {
+const deleteMessage = (): void => {
   if (!selectList.list.length) {
     ElMessage({
       type: "warning",
@@ -361,18 +361,18 @@ const deleteMessage = () => {
   });
 };
 // 更换排序
-const sortChange = () => init();
-const quantityChange = () => init();
+const sortChange = (): void => init();
+const quantityChange = (): void => init();
 // 多选
-const handleSelectionChange = (val: TableTestItem[]) => (selectList.list = val);
+const handleSelectionChange = (val: TableTestItem[]): void => (selectList.list = val);
 // 分页操作
-const handleSizeChange = () => init();
+const handleSizeChange = (): void => init();
 // 分页切换
-const handleCurrentChange = () => getList();
+const handleCurrentChange = (): void => getList();
 // 关闭弹窗
-const handleClose = () => closeDialog();
+const handleClose = (): void => closeDialog();
 // 打开新增或修改弹窗
-const openDialog = (row: any) => {
+const openDialog = (row: any): void => {
   dialogVisible.value = true;
   if (row) {
     form.id = row.id;
@@ -384,7 +384,7 @@ const openDialog = (row: any) => {
   }
 };
 // 关闭弹窗
-const closeDialog = () => {
+const closeDialog = (): void => {
   dialogVisible.value = false;
 };
 

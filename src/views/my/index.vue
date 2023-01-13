@@ -61,7 +61,7 @@
 </template>
 <script setup lang="ts">
 import { FormInstance } from "element-plus";
-import { defineComponent, reactive, ref } from "vue";
+import { reactive, ref } from "vue";
 
 const formSize = ref("default");
 const ruleFormRef = ref<any>();
@@ -122,20 +122,19 @@ const rules = reactive({
   desc: [{ required: true, message: "Please input activity form", trigger: "blur" }],
 });
 
-const submitForm = async (formEl: FormInstance | undefined) => {
-  if (!formEl) return;
-  await formEl.validate((valid: any, fields: any) => {
-    if (valid) {
-      console.log("submit!");
-    } else {
-      console.log("error submit!", fields);
-    }
-  });
+const submitForm = async (formEl: FormInstance | undefined): void => {
+  formEl &&
+    (await formEl.validate((valid: any, fields: any) => {
+      if (valid) {
+        console.log("submit!");
+      } else {
+        console.log("error submit!", fields);
+      }
+    }));
 };
 
-const resetForm = (formEl: FormInstance | undefined) => {
-  if (!formEl) return;
-  formEl.resetFields();
+const resetForm = (formEl: FormInstance | undefined): void => {
+  formEl && formEl.resetFields();
 };
 </script>
 
