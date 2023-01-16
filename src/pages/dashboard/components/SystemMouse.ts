@@ -17,13 +17,13 @@ export default class SystemMouse {
         this.down = false
         this.timer = null
     }
-    mouseDown = (e: MouseEvent) => {
+    mouseDown = (e: MouseEvent): void => {
         this.downTime = new Date().getTime()
         this.down = true
         this.offsetX = e.offsetX
         this.offsetY = e.offsetY
     }
-    mouseMove = (e: MouseEvent) => {
+    mouseMove = (e: MouseEvent): any => {
         return new Promise((resolve) => {
             clearTimeout(this.timer)
             if (!this.down) return
@@ -32,20 +32,20 @@ export default class SystemMouse {
             resolve({ x: this.x, y: this.y })
         })
     }
-    mouseOut = () => {
+    mouseOut = (): void => {
         this.timer = setTimeout(() => {
             this.down = false
         }, 500)
     }
-    mouseUp = () => {
+    mouseUp = (): any => {
         return new Promise((resolve) => {
             clearTimeout(this.timer)
             if (new Date().getTime() - this.downTime < 300) {
                 resolve({ drawer: true })
-                return
+            } else {
+                this.down = false
+                resolve({ x: this.x, y: this.y })
             }
-            this.down = false
-            resolve({ x: this.x, y: this.y })
         })
     }
 }

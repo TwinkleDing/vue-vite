@@ -82,7 +82,7 @@ const icons = {
   Opportunity,
   VideoCameraFilled,
 };
-const open = (item: RouterItem) => {
+const open = (item: RouterItem): void => {
   if (route.name !== item.name) {
     router.push(item.path);
   }

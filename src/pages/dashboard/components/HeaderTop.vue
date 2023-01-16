@@ -37,7 +37,7 @@ const imgUrl: Ref<string> = ref(
 const title: Ref<string> = ref(window.config?.title);
 const logo: Ref<string> = ref(window.config?.logo);
 
-const drClick = (type: number) => {
+const drClick = (type: number): void => {
   if (type === 1) {
     router.push("my");
   } else if (type === 2) {

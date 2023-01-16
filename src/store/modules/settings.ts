@@ -9,7 +9,7 @@ import {
     HEADER_PRESET_BG_COLOR_LIST,
     SIDE_BAR_BG_COLOR_LIST
 } from "@/settings/designSetting"
-const ArLanuage: string[] = (window as any).config.ArLanuage || []
+const ArLanuages: string[] = (window as any).config.ArLanuages || []
 let FirstInit: boolean = true
 
 const settings = {
@@ -74,7 +74,7 @@ const settings = {
          * 设置语言/正反向语言
          */
         SET_LANGUAGE: (state: any, language: string): void => {
-            const lastIsArLanguage = ArLanuage.includes(state.language)
+            const lastIsArLanguage = ArLanuages.includes(state.language)
             const head = document.getElementsByTagName("head")[0]
             const linkTags = head.getElementsByTagName("link")
             state.language = language
@@ -83,7 +83,7 @@ const settings = {
                 loadArCss(language)
                 FirstInit = false
             } else {
-                if (lastIsArLanguage !== ArLanuage.includes(language)) {
+                if (lastIsArLanguage !== ArLanuages.includes(language)) {
                     for (let i of linkTags) {
                         if (i.attributes) {
                             for (let j of i.attributes) {
@@ -98,7 +98,7 @@ const settings = {
             }
 
             function loadArCss(language: string): void {
-                if (ArLanuage.includes(language)) {
+                if (ArLanuages.includes(language)) {
                     loadStyles("../../css/ar_public.css")
                 } else {
                     loadStyles("../../css/public.css")
@@ -308,7 +308,7 @@ const settings = {
          * 设置动态路由
          */
         router() {
-            return new Promise((resolve: any): void => {
+            return new Promise((resolve: any) => {
                 resolve([...routeList])
             })
         },

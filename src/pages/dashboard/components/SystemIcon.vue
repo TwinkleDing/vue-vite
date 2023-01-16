@@ -10,7 +10,7 @@
     <Cpu class="icon" />
   </div>
   <el-drawer
-    v-model="drawer"
+    v-model="drawerVisible"
     size="350px"
     custom-class="system-drawer"
     :direction="direction"
@@ -118,23 +118,23 @@ const menuTheme = store.getters.menuTheme;
 const systemMouse = new SystemMouse();
 const x: Ref<number> = ref(systemMouse.x);
 const y: Ref<number> = ref(systemMouse.y);
-const drawer: Ref<Boolean> = ref(false);
+const drawerVisible: Ref<Boolean> = ref(false);
 const direction: Ref<String> = ref(
-  (window as any).config.ArLanuage.includes(language.value) ? "ltr" : "rtl"
+  (window as any).config.ArLanuages?.includes(language.value) ? "ltr" : "rtl"
 );
-const mouseDown = (e: any) => {
+const mouseDown = (e: any): void => {
   systemMouse.mouseDown(e);
 };
 const mouseOut = systemMouse.mouseOut;
-const mouseMove = async (e: any) => {
+const mouseMove = async (e: any): void => {
   const coordinates: any = await systemMouse.mouseMove(e);
   x.value = coordinates.x;
   y.value = coordinates.y;
 };
-const mouseUp = async () => {
+const mouseUp = async (): void => {
   const coordinates: any = await systemMouse.mouseUp();
   if (coordinates.drawer) {
-    drawer.value = true;
+    drawerVisible.value = true;
     return;
   }
   x.value = coordinates.x;
@@ -145,31 +145,31 @@ const mouseUp = async () => {
   });
 };
 
-const systemThemeChange = (color: string) => {
+const systemThemeChange = (color: string): void => {
   store.commit("SET_SYSTEM_THEME", color);
 };
-const menuThemeChange = (color: string) => {
+const menuThemeChange = (color: string): void => {
   store.commit("SET_MENU_THEME", color);
 };
-const headerThemeChange = (color: string) => {
+const headerThemeChange = (color: string): void => {
   store.commit("SET_HEADER_THEME", color);
 };
-const tabsChange = (e: boolean) => {
+const tabsChange = (e: boolean): void => {
   store.commit("SET_TABS_SHOW", e);
 };
-const tabsTypeChange = (e: number) => {
+const tabsTypeChange = (e: number): void => {
   store.commit("SET_TABS_TYPE", e);
 };
-const menuPositionChange = (e: boolean) => {
+const menuPositionChange = (e: boolean): void => {
   store.commit("SET_MENU_POSITION", e);
   if (!e) {
     menuThemeChange(menuThemeList[0]);
   }
 };
-const languageChange = (lang: string) => {
-  const ArLanuage: string[] = (window as any).config.ArLanuage || [];
+const languageChange = (lang: string): void => {
+  const ArLanuages: string[] = (window as any).config.ArLanuages || [];
   proxy.$i18n.locale = lang;
-  direction.value = ArLanuage.includes(lang) ? "ltr" : "rtl";
+  direction.value = ArLanuages.includes(lang) ? "ltr" : "rtl";
   store.commit("SET_LANGUAGE", lang);
 };
 
