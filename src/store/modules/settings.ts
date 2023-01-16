@@ -307,7 +307,7 @@ const settings = {
         /**
          * 设置动态路由
          */
-        router() {
+        router(): Promise<RouterItem[]> {
             return new Promise((resolve: any) => {
                 resolve([...routeList])
             })
@@ -315,7 +315,7 @@ const settings = {
         /**
          * 获取路由列表
          */
-        getRouteList(context: any) {
+        getRouteList(context: any): Promise<RouterItem[]> {
             return new Promise((resolve: any, reject: any) => {
                 if (context.getters.userInfo.type === "tourist") {
                     context.state.routeList = [...routeList]

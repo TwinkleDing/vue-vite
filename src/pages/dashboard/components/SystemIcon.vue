@@ -100,6 +100,7 @@ import {
   SIDE_BAR_BG_COLOR_LIST,
 } from "@/settings/designSetting";
 import ThemeColorPicker from "@/components/ThemeColorPicker/index.vue";
+import { SystemIcon } from "@/utils/interface";
 import SystemMouse from "./SystemMouse";
 const { proxy }: any = getCurrentInstance();
 const store = useStore();
@@ -174,8 +175,8 @@ const languageChange = (lang: string): void => {
 };
 
 onMounted(() => {
-  const systemIcon = store.getters.systemIcon;
-  if (store.getters.systemIcon) {
+  const systemIcon: SystemIcon | null = store.getters.systemIcon;
+  if (systemIcon) {
     x.value = systemIcon.x;
     y.value = systemIcon.y;
   }

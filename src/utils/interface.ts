@@ -1,13 +1,20 @@
+/**
+ * 用户建议信息格式
+ */
 export interface UserInfo {
     userName: string
     type?: string
 }
 
+/**
+ * 路由的Meta信息格式
+ */
 interface Meta {
     icon: string
     label: string
     permission: boolean
 }
+
 /**
  * 路由格式
  */
@@ -20,6 +27,9 @@ export interface RouterItem {
     meta?: Meta
 }
 
+/**
+ * Res返回值格式
+ */
 export interface Res {
     status: number
     message?: string
@@ -36,6 +46,9 @@ export interface Page {
     sizes: number[]
 }
 
+/**
+ * 游戏列表格式
+ */
 interface GameList {
     name: string
     price: number
@@ -44,6 +57,9 @@ interface GameList {
     img: any
 }
 
+/**
+ * 系统设置按钮格式
+ */
 export interface SystemIcon {
     x: number
     y: number

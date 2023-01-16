@@ -1,5 +1,9 @@
 import { SYSTEM_ICON_DEFAULT_X, SYSTEM_ICON_DEFAULT_Y } from "@/settings/config"
-
+interface SystemResolve {
+    drawer?: boolean
+    x?: number
+    y?: number
+}
 export default class SystemMouse {
     downTime: number
     offsetX: number
@@ -23,7 +27,7 @@ export default class SystemMouse {
         this.offsetX = e.offsetX
         this.offsetY = e.offsetY
     }
-    mouseMove = (e: MouseEvent): any => {
+    mouseMove = (e: MouseEvent): Promise<SystemResolve> => {
         return new Promise((resolve) => {
             clearTimeout(this.timer)
             if (!this.down) return
@@ -37,7 +41,7 @@ export default class SystemMouse {
             this.down = false
         }, 500)
     }
-    mouseUp = (): any => {
+    mouseUp = (): Promise<SystemResolve> => {
         return new Promise((resolve) => {
             clearTimeout(this.timer)
             if (new Date().getTime() - this.downTime < 300) {
