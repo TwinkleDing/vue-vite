@@ -41,11 +41,14 @@ export default {
     headerTheme: "顶栏主题",
     labelTab: "标签页",
     menuPosition: "菜单位置",
+    systemPosition: "系统设置位置",
     leftPosition: "👈",
     topPosition: "👆",
     tabSimple: "简约",
     tabCard: "卡片",
     delete: "删除",
     edit: "修改",
-    loading: "加载中..."
+    loading: "加载中...",
+    inSide: "里",
+    outSide:"外"
 }

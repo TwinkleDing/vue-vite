@@ -8,25 +8,34 @@
     <div v-if="!store.getters.menuPosition" class="menu-top">
       <slot name="menu"></slot>
     </div>
-    <el-dropdown placement="bottom-end">
-      <div class="avatar">
-        <span>{{ userInfo.userName }}</span>
-        <el-avatar :size="size" :src="imgUrl" />
-      </div>
-      <template #dropdown>
-        <el-dropdown-menu>
-          <el-dropdown-item @click="drClick(1)">{{ $t("myInfo") }}</el-dropdown-item>
-          <el-dropdown-item @click="drClick(2)">{{ $t("logout") }}</el-dropdown-item>
-        </el-dropdown-menu>
-      </template>
-    </el-dropdown>
+    <div style="display: flex; align-items: center">
+      <el-dropdown placement="bottom-end">
+        <div class="avatar">
+          <span>{{ userInfo.userName }}</span>
+          <el-avatar :size="size" :src="imgUrl" />
+        </div>
+        <template #dropdown>
+          <el-dropdown-menu>
+            <el-dropdown-item @click="drClick(1)">{{ $t("myInfo") }}</el-dropdown-item>
+            <el-dropdown-item v-if="systemPosition === IN_SIDE" @click="drClick(2)">{{
+              $t("system")
+            }}</el-dropdown-item>
+            <el-dropdown-item @click="drClick(3)">{{ $t("logout") }}</el-dropdown-item>
+          </el-dropdown-menu>
+        </template>
+      </el-dropdown>
+      <system-drawer :drawer-visible="drawerVisible" @visibleClose="onVisibleClose" />
+    </div>
   </div>
 </template>
 <script setup lang="ts">
-import { defineComponent, reactive, ref, Ref } from "vue";
+import { defineComponent, reactive, ref, Ref, watch } from "vue";
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
 import { ElMessageBox, ElMessage } from "element-plus";
+import SystemDrawer from "./SystemDrawer.vue";
+import { IN_SIDE } from "@/settings/config";
+
 const store = useStore();
 const router = useRouter();
 const userInfo: any = reactive(store.getters.userInfo);
@@ -34,13 +43,17 @@ const size: Ref<string> = ref("default");
 const imgUrl: Ref<string> = ref(
   "https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"
 );
+const drawerVisible: Ref<Boolean> = ref(false);
 const title: Ref<string> = ref(window.config?.title);
 const logo: Ref<string> = ref(window.config?.logo);
+const systemPosition: Rrf<string> = ref(store.getters.systemPosition);
 
 const drClick = (type: number): void => {
   if (type === 1) {
     router.push("my");
   } else if (type === 2) {
+    drawerVisible.value = true;
+  } else if (type === 3) {
     ElMessageBox.confirm("是否确认退出登录?", "提示", {
       confirmButtonText: "确定",
       cancelButtonText: "取消",
@@ -57,6 +70,21 @@ const drClick = (type: number): void => {
       .catch(() => {});
   }
 };
+
+const onVisibleClose = (): void => {
+  drawerVisible.value = false;
+};
+
+watch(
+  () => store.getters.systemPosition,
+  (e) => {
+    systemPosition.value = e;
+  },
+  {
+    immediate: true, // 立即执行
+    deep: true, // 深度监听
+  }
+);
 </script>
 
 <style lang="scss" scoped>

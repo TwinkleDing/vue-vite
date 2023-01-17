@@ -41,11 +41,14 @@ export default {
     headerTheme: "Header Theme",
     labelTab: "Tabs",
     menuPosition: "Menu Position",
+    systemPosition: "System Position",
     leftPosition: "👈",
     topPosition: "👆",
     tabSimple: "Simple",
     tabCard: "Card",
     delete: "Delete",
     edit: "Edit",
-    loading:"Loading..."
+    loading:"Loading...",
+    inSide: "In",
+    outSide:"Out",
 }

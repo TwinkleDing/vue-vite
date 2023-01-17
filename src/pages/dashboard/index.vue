@@ -22,7 +22,7 @@
   </div>
 </template>
 <script setup lang="ts">
-import { defineComponent } from "vue";
+import { defineComponent, ref, Ref } from "vue";
 import { useStore } from "vuex";
 import { useRoute } from "vue-router";
 import LeftMenu from "./components/LeftMenu.vue";
@@ -34,6 +34,7 @@ import Tabs from "./components/Tabs.vue";
 const store = useStore();
 const route = useRoute();
 const menuList: RouterItem[] = [...store.getters.routeList];
+
 </script>
 
 <style lang="scss" scoped>

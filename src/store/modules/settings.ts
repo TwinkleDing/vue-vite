@@ -9,6 +9,7 @@ import {
     HEADER_PRESET_BG_COLOR_LIST,
     SIDE_BAR_BG_COLOR_LIST
 } from "@/settings/designSetting"
+import { OUT_SIDE } from "@/settings/config"
 const ArLanuages: string[] = (window as any).config.ArLanuages || []
 let FirstInit: boolean = true
 
@@ -67,7 +68,11 @@ const settings = {
         currentRoute:
             getStore({
                 name: "currentRoute"
-            }) || null
+            }) || null,
+        systemPosition:
+            getStore({
+                name: "systemPosition"
+            }) || OUT_SIDE
     },
     mutations: {
         /**
@@ -149,6 +154,16 @@ const settings = {
             setStore({
                 name: "menuTheme",
                 content: color
+            })
+        },
+        /**
+         * 设置系统设置入口位置
+         */
+        SET_SYSTEM_POSITION(state: any, position: string): void {
+            state.systemPosition = position
+            setStore({
+                name: "systemPosition",
+                content: position
             })
         },
         /**

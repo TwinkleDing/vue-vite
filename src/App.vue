@@ -16,8 +16,8 @@ let locale: any = ref(zh);
 
 watch(
   () => store.getters.language,
-  (newVal, oldVal) => {
-    locale = newVal === "zh" ? zh : en;
+  (e) => {
+    locale = e === "zh" ? zh : en;
   },
   {
     immediate: true, // 立即执行

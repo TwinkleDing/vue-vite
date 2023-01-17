@@ -14,6 +14,7 @@ const getters = {
     systemIcon: (state: any): SystemIcon => state.settings.systemIcon,
     tabsShow: (state: any): boolean => state.settings.tabsShow,
     menuPosition: (state: any): boolean => state.settings.menuPosition,
-    tabsType: (state: any): number => state.settings.tabsType
+    tabsType: (state: any): number => state.settings.tabsType,
+    systemPosition: (state: any): string => state.settings.systemPosition
 }
 export default getters
