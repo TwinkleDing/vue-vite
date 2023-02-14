@@ -35,16 +35,16 @@ export default defineConfig({
     build: {
         rollupOptions: {
             output: {
-                manualChunks(id) {
+                manualChunks(id: string) {
                     if (id.includes("node_modules")) {
                         return id.toString().split("node_modules/")[1].split("/")[0].toString()
                     }
                 },
                 assetFileNames: "static/[ext]/[name]-[hash].[ext]"
-            },
-            brotliSize: false,
-            target: "esnext",
-            minify: "esbuild"
-        }
+            }
+        },
+        target: "esnext",
+        brotliSize: false,
+        minify: "esbuild"
     }
 })
