@@ -2,11 +2,19 @@
   <div class="home">
     <div class="top">
       <div class="left">
-        <el-carousel class="carousel" indicator-position="outside">
-          <el-carousel-item v-for="item in 4" :key="item">
-            <h3 text="2xl" justify="center">{{ item }}</h3>
-          </el-carousel-item>
-        </el-carousel>
+        <div class="search-box">
+          <el-row>
+            <el-col :span="12">
+              <el-input v-model="searchValue" @keyup.enter.native="search" />
+            </el-col>
+            <el-button @click="search">询问</el-button>
+          </el-row>
+          <div>
+            <el-row v-for="(item, index) in openaiRes" :key="index">
+              {{ item.text }}
+            </el-row>
+          </div>
+        </div>
         <div class="charts">
           <div class="chart">
             <bar-chart ref="bar1" />
@@ -104,6 +112,7 @@ import Undone from "@/components/Undone/index.vue";
 import Game from "@/components/Game/index.vue";
 import { GameList } from "@/utils/interface.ts";
 import { getAssetsImage } from "@/utils/utils.ts";
+import { Configuration, OpenAIApi } from "openai";
 
 const { proxy }: any = getCurrentInstance();
 const calendar = ref();
@@ -117,6 +126,7 @@ const currentTime: Ref<number> = ref(0);
 const dialogVisible: Ref<boolean> = ref(false);
 const ruleFormRef = ref<FormInstance>();
 const scheduleList: any = reactive([]);
+const searchValue: Ref<string> = ref("");
 const form = reactive({
   title: "",
   time: "",
@@ -149,6 +159,12 @@ const gameList: Array<GameList> = reactive([
     img: getAssetsImage("Pokemon.webp"),
   },
 ]);
+const configuration = new Configuration({
+  apiKey: "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",
+});
+const openai = new OpenAIApi(configuration);
+let openaiRes: Ref<any> = ref([]);
+let ans: Ref<string> = ref("");
 
 const calendarClick = (data: any): void => {
   chooseTime.value = new Date(data.day).getTime();
@@ -180,6 +196,35 @@ const submitForm = async (formEl: FormInstance | undefined): void => {
     }
   });
 };
+const search = (): void => {
+  searchOpenAi();
+};
+
+const searchOpenAi = async (): void => {
+  let prompt = ans.value + "\n Human:" + searchValue.value;
+  const res = await openai.createCompletion(
+    {
+      model: "text-davinci-003",
+      prompt,
+      temperature: 0.1,
+      max_tokens: 2000,
+      top_p: 1,
+      frequency_penalty: 0,
+      presence_penalty: 0,
+    },
+    {
+      headers: {
+        "Example-Header": "example",
+        "User-Agent": "'",
+      },
+    }
+  );
+  openaiRes.value = [];
+  console.log(res);
+  ans.value = prompt + "\n AI:" + res.choices[0].text;
+  openaiRes.value.push({ text: searchValue.value });
+  openaiRes.value.push(...res.choices);
+};
 
 const resetForm = (formEl: FormInstance | undefined): void => {
   if (!formEl) return;
@@ -209,6 +254,16 @@ onMounted(() => {
     display: inline-block;
     width: 49%;
     min-width: 600px;
+    height: 100%;
+    overflow: auto;
+  }
+  .search-box {
+    min-height: 300px;
+    width: 600px;
+    padding: 12px;
+    box-sizing: border-box;
+    white-space: pre-wrap;
+    overflow: auto;
   }
   .chart {
     display: inline-block;
