@@ -1,20 +1,7 @@
 <template>
   <div class="home">
-    <div class="top">
+    <div class="home-content">
       <div class="left">
-        <div class="search-box">
-          <el-row>
-            <el-col :span="12">
-              <el-input v-model="searchValue" @keyup.enter.native="search" />
-            </el-col>
-            <el-button @click="search">询问</el-button>
-          </el-row>
-          <div>
-            <el-row v-for="(item, index) in openaiRes" :key="index">
-              {{ item.text }}
-            </el-row>
-          </div>
-        </div>
         <div class="charts">
           <div class="chart">
             <bar-chart ref="bar1" />
@@ -27,6 +14,23 @@
           </div>
           <div class="chart">
             <bar-chart ref="bar2" />
+          </div>
+        </div>
+        <div class="search-box">
+          <el-row>
+            <el-col :span="12">
+              <el-input v-model="searchValue" @keyup.enter.native="search" />
+            </el-col>
+            <el-col :span="2"> </el-col>
+            <el-col :span="6">
+              <el-button @click="search" type="primary">询问</el-button>
+              <el-button @click="reset">重置</el-button>
+            </el-col>
+          </el-row>
+          <div>
+            <el-row v-for="(item, index) in openaiRes" :key="index">
+              {{ item.text }}
+            </el-row>
           </div>
         </div>
       </div>
@@ -114,6 +118,7 @@ import { GameList } from "@/utils/interface.ts";
 import { getAssetsImage } from "@/utils/utils.ts";
 import { Configuration, OpenAIApi } from "openai";
 
+const API_KEY = "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";
 const { proxy }: any = getCurrentInstance();
 const calendar = ref();
 const pie = ref();
@@ -160,7 +165,7 @@ const gameList: Array<GameList> = reactive([
   },
 ]);
 const configuration = new Configuration({
-  apiKey: "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",
+  apiKey: API_KEY,
 });
 const openai = new OpenAIApi(configuration);
 let openaiRes: Ref<any> = ref([]);
@@ -199,6 +204,10 @@ const submitForm = async (formEl: FormInstance | undefined): void => {
 const search = (): void => {
   searchOpenAi();
 };
+const reset = (): void => {
+  ans.value = "";
+  openaiRes.value = [];
+};
 
 const searchOpenAi = async (): void => {
   let prompt = ans.value + "\n Human:" + searchValue.value;
@@ -219,11 +228,13 @@ const searchOpenAi = async (): void => {
       },
     }
   );
-  openaiRes.value = [];
-  console.log(res);
-  ans.value = prompt + "\n AI:" + res.choices[0].text;
-  openaiRes.value.push({ text: searchValue.value });
-  openaiRes.value.push(...res.choices);
+  if (res.error) {
+  } else {
+    ans.value = prompt + res.choices[0].text;
+    openaiRes.value.push({ text: searchValue.value });
+    openaiRes.value.push(...res.choices);
+    openaiRes.value.push({ text: "---------------" });
+  }
 };
 
 const resetForm = (formEl: FormInstance | undefined): void => {
@@ -243,7 +254,8 @@ onMounted(() => {
 
 <style lang="scss" scoped>
 .home {
-  .top {
+  height: 100%;
+  .home-content {
     display: flex;
     justify-content: space-between;
     height: 100%;
