@@ -13,7 +13,6 @@
       >
         <el-scrollbar class="res" ref="scrollbarRef" @scroll="scroll">
           <div ref="scrollRef">
-            <div style="height: 1000px"></div>
             <el-row
               v-for="(item, index) in openaiRes"
               :key="index"
