@@ -73,16 +73,12 @@
   </div>
 </template>
 <script setup lang="ts">
-import { ref, Ref, nextTick } from "vue";
-import { ElMessage } from "element-plus";
+import { ref, Ref, nextTick, onMounted } from "vue";
 import { Configuration, OpenAIApi } from "openai";
 import { UserFilled } from "@element-plus/icons-vue";
-import { ElScrollbar } from "element-plus";
+import { ElScrollbar, ElMessage, ElMessageBox } from "element-plus";
+import { setStore, getStore } from "@/utils/storage.ts";
 
-const configuration = new Configuration({
-  apiKey: window.config.API_KEY,
-});
-const openai = new OpenAIApi(configuration);
 const scrollbarRef = ref<InstanceType<typeof ElScrollbar>>();
 const scrollRef = ref<HTMLDivElement>();
 const searchValue: Ref<string> = ref("");
@@ -91,6 +87,10 @@ const loading: Ref<booolean> = ref(false);
 const openaiRes: Ref<any> = ref([]);
 const ans: Ref<string> = ref("");
 const value = ref(0);
+const configuration = new Configuration({
+  apiKey: getStore({ name: "apiKey" }),
+});
+const openai = new OpenAIApi(configuration);
 
 const tabChange = (): void => {
   reset();
@@ -155,6 +155,24 @@ const searchOpenAi = async (): void => {
     scrollToBottom();
   }
 };
+
+onMounted(() => {
+  if (!getStore({ name: "apiKey" })) {
+    ElMessageBox.prompt("请输入api-key", "提示", {
+      confirmButtonText: "确定",
+      cancelButtonText: "取消",
+      inputErrorMessage: "请输入api-key",
+    })
+      .then(({ value }) => {
+        setStore({
+          name: "apiKey",
+          content: value,
+        });
+        window.location.reload();
+      })
+      .catch(() => {});
+  }
+});
 </script>
 
 <style lang="scss">
@@ -235,5 +253,8 @@ body,
     position: absolute;
     bottom: 0;
   }
+}
+.el-message-box {
+  width: 90%;
 }
 </style>
