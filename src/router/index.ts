@@ -3,6 +3,7 @@ import { createRouter, createWebHashHistory } from "vue-router"
 import store from "@/store"
 import Empty from "@/pages/Empty.vue"
 import { RouterItem } from "@/utils/interface"
+const WHITE_PATH = ["/login", "/openai"]
 
 let firstGetRoute: boolean = true
 const _importComponent = (file: string) => () => import(`../views/${file}/index.vue`)
@@ -41,7 +42,7 @@ const router: any = new (createRouter as any)({
 })
 
 router.beforeEach(async (to: any) => {
-    if (to.fullPath.includes("login")) {
+    if (WHITE_PATH.includes(to.path)) {
         store.commit("REMOVE_USER_INFO")
     } else if (firstGetRoute && store.getters.userInfo.userName) {
         firstGetRoute = false
