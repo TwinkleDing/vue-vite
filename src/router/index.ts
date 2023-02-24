@@ -28,6 +28,11 @@ const router: any = new (createRouter as any)({
             component: () => import(/* webpackChunkName: 'login' */ "@/pages/login/index.vue")
         },
         {
+            path: "/openai",
+            name: "openai",
+            component: () => import(/* webpackChunkName: 'login' */ "@/views/openai/index.vue")
+        },
+        {
             path: "/:cathchAll(.*)",
             name: "404",
             component: () => import("@/pages/notFound.vue")

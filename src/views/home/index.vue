@@ -118,7 +118,7 @@ import { GameList } from "@/utils/interface.ts";
 import { getAssetsImage } from "@/utils/utils.ts";
 import { Configuration, OpenAIApi } from "openai";
 
-const API_KEY = "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";
+const API_KEY = "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";
 const { proxy }: any = getCurrentInstance();
 const calendar = ref();
 const pie = ref();
