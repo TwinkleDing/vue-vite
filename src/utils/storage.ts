@@ -27,7 +27,7 @@ export const setStore = (params: StorageParams): void => {
         content: content,
         dateTime: new Date().getTime()
     }
-    ;(window as any)[type].setItem(name, JSON.stringify(obj))
+        ; (window as any)[type].setItem(name, JSON.stringify(obj))
 }
 
 /**
@@ -75,7 +75,7 @@ export const removeStore = (params: StorageParams): void => {
     if (!name) {
         return
     }
-    ;(window as any)[type].removeItem(name)
+    ; (window as any)[type].removeItem(name)
 }
 
 /**
@@ -106,5 +106,5 @@ export const getAllStore = (type: string = LOCAL_STORAGE): StorageParams[] => {
  * @param params 类型
  */
 export const clearStore = (type: string = LOCAL_STORAGE): void => {
-    ;(window as any)[type].clear()
+    ; (window as any)[type].clear()
 }

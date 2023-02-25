@@ -37,17 +37,18 @@
         :size="16"
         color="#fff"
         @click="closeCurrentRoute(index)"
-        ><close
-      /></el-icon>
+      >
+        <close />
+      </el-icon>
     </div>
   </div>
 </template>
 <script setup lang="ts">
-import { defineComponent, computed } from "vue";
+import { computed } from "vue";
 import { useStore } from "vuex";
 import { useRoute, useRouter } from "vue-router";
 import { CircleClose, Close } from "@element-plus/icons-vue";
-import { RouterItem } from "@/utils/interface";
+import { RouterItem, RouterHistory } from "@/utils/interface";
 const store = useStore();
 const route = useRoute();
 const router = useRouter();
@@ -55,8 +56,8 @@ const router = useRouter();
 const routeHistory = computed(() => {
   const history = store.getters.routeHistory;
   const list = diGui(store.getters.routeList, []);
-  let showHistory: RouterItem[] = [];
-  history.map((item: RouterItem) => {
+  const showHistory: RouterHistory[] = [];
+  history.map((item: RouterHistory) => {
     list.map((element: RouterItem) => {
       if (element.path === item.path) {
         showHistory.push(item);
@@ -86,6 +87,7 @@ const closeCurrentRoute = (index: number) => {
 
 <style lang="scss" scoped>
 @import "@/css/theme.scss";
+
 .router-history {
   width: 100%;
   position: absolute;
@@ -97,6 +99,7 @@ const closeCurrentRoute = (index: number) => {
   overflow-x: auto;
   overflow-y: hidden;
   white-space: nowrap;
+
   .item {
     display: inline-block;
     padding: 0 6px;
@@ -104,18 +107,22 @@ const closeCurrentRoute = (index: number) => {
     height: 29px;
     line-height: 21px;
     cursor: pointer;
+
     &:hover {
       color: #fff !important;
       background-image: linear-gradient(to top right, $--color-primary, $--color-minor);
+
       i {
         color: #fff !important;
         width: 16px;
       }
     }
+
     span {
       padding: 4px;
       display: inline-block;
       vertical-align: middle;
+
       i {
         display: inline-block;
         vertical-align: text-top;
@@ -128,8 +135,10 @@ const closeCurrentRoute = (index: number) => {
     color: #fff !important;
   }
 }
+
 .router-history-simple {
   padding: 6px;
+
   .item {
     margin: 0 6px;
     border: 1px solid #d8dce5;
@@ -144,21 +153,26 @@ const closeCurrentRoute = (index: number) => {
     border-radius: 50%;
   }
 }
+
 .router-history-card {
   padding: 6px 6px 0;
+
   .item {
     &:hover {
       border-radius: 6px 6px 0 0;
+
       .router-history-name {
         transition: 0.3s;
         padding-left: 12px;
         padding-right: 12px;
       }
     }
+
     .router-history-name {
       transition: 0.3s;
       padding-left: 4px;
     }
+
     i {
       width: 0;
       overflow: hidden;
@@ -166,13 +180,16 @@ const closeCurrentRoute = (index: number) => {
       vertical-align: middle;
     }
   }
+
   .router-history-active {
     border-radius: 6px 6px 0 0;
+
     .router-history-name {
       transition: 0.3s;
       padding-left: 12px;
       padding-right: 12px;
     }
+
     i {
       transition: 0.3s;
       width: 16px;

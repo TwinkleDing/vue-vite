@@ -29,7 +29,7 @@
   </div>
 </template>
 <script setup lang="ts">
-import { defineComponent, reactive, ref, Ref, watch } from "vue";
+import { reactive, ref, Ref, watch } from "vue";
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
 import { ElMessageBox, ElMessage } from "element-plus";
@@ -43,10 +43,10 @@ const size: Ref<string> = ref("default");
 const imgUrl: Ref<string> = ref(
   "https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"
 );
-const drawerVisible: Ref<Boolean> = ref(false);
-const title: Ref<string> = ref(window.config?.title);
-const logo: Ref<string> = ref(window.config?.logo);
-const systemPosition: Rrf<string> = ref(store.getters.systemPosition);
+const drawerVisible: Ref<boolean> = ref(false);
+const title: Ref<string> = ref((window as any).config?.title);
+const logo: Ref<string> = ref((window as any).config?.logo);
+const systemPosition: Ref<string> = ref(store.getters.systemPosition);
 
 const drClick = (type: number): void => {
   if (type === 1) {
@@ -89,12 +89,14 @@ watch(
 
 <style lang="scss" scoped>
 @import "@/css/theme.scss";
+
 .pages-header {
   height: 60px;
   width: 100%;
   display: flex;
   justify-content: space-between;
   position: relative;
+
   .header-background {
     position: absolute;
     height: 100%;
@@ -102,22 +104,26 @@ watch(
     background-image: linear-gradient(to top right, $--header-primary, $--header-minor);
     z-index: -1;
   }
+
   .logo {
     height: 100%;
     min-width: 200px;
     padding: 0 10px;
     display: flex;
     align-items: center;
+
     img {
       height: 50px;
       width: 50px;
     }
+
     i {
       color: #fff;
       font-size: 36px;
       font-family: fangsong;
     }
   }
+
   .avatar {
     height: 100%;
     font-size: 18px;
@@ -128,10 +134,12 @@ watch(
     margin: 0 20px;
     color: #fff;
     cursor: pointer;
+
     .el-avatar {
       margin-left: 16px;
     }
   }
+
   .menu-top {
     flex: 1;
     min-width: 400px;

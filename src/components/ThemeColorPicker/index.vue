@@ -17,8 +17,7 @@
   </div>
 </template>
 <script setup lang="ts">
-import { ref, Ref, PropType, onMounted, defineComponent, getCurrentInstance } from "vue";
-import { useStore } from "vuex";
+import { ref, Ref, PropType, onMounted, getCurrentInstance } from "vue";
 import { Check } from "@element-plus/icons-vue";
 const props = defineProps({
   colorList: {
@@ -45,7 +44,7 @@ const judgeColor = (): any => {
 const handleClick = (color: string): any => {
   active.value = color;
   judgeColor();
-  proxy.$emit("change", color);
+  proxy.$emit("choose", color);
 };
 
 onMounted(() => {

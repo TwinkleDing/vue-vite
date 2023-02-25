@@ -1,7 +1,7 @@
 import { setStore, getStore, removeStore } from "@/utils/storage"
 import router from "@/router"
 import { lighten, addElementPlusColor } from "@/utils/themeColor"
-import { RouterItem, SystemIcon } from "@/utils/interface"
+import { RouterItem, SystemIcon, RouterHistory } from "@/utils/interface"
 import routeList from "@/router/routeList"
 import { routerApi } from "@/api/commonApi"
 import {
@@ -52,11 +52,11 @@ const settings = {
         routeHistory: getStore({
             name: "routeHistory"
         }) || [
-            {
-                label: "home",
-                path: "/home"
-            }
-        ],
+                {
+                    label: "home",
+                    path: "/home"
+                }
+            ],
         routeList:
             getStore({
                 name: "routeList"
@@ -128,7 +128,7 @@ const settings = {
          */
         SET_SYSTEM_THEME(state: any, color: string): void {
             state.systemTheme = color
-            ;(this as any).commit("SET_ALL_THEME_COLOR")
+                ; (this as any).commit("SET_ALL_THEME_COLOR")
             setStore({
                 name: "systemTheme",
                 content: color
@@ -139,7 +139,7 @@ const settings = {
          */
         SET_HEADER_THEME(state: any, color: string): void {
             state.headerTheme = color
-            ;(this as any).commit("SET_ALL_THEME_COLOR")
+                ; (this as any).commit("SET_ALL_THEME_COLOR")
             setStore({
                 name: "headerTheme",
                 content: color
@@ -150,7 +150,7 @@ const settings = {
          */
         SET_MENU_THEME(state: any, color: string): void {
             state.menuTheme = color
-            ;(this as any).commit("SET_ALL_THEME_COLOR")
+                ; (this as any).commit("SET_ALL_THEME_COLOR")
             setStore({
                 name: "menuTheme",
                 content: color
@@ -208,7 +208,7 @@ const settings = {
                 })
                 return
             }
-            const history: any = state.routeHistory ? state.routeHistory : []
+            const history: RouterHistory[] = state.routeHistory ? state.routeHistory : []
             let repeat: boolean = false
             history.forEach((item: any) => {
                 if (item.path.includes(to.path)) {

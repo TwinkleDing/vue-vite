@@ -15,20 +15,20 @@
         <theme-color-picker
           :colorList="systemThemeList"
           :def="systemTheme"
-          @change="systemThemeChange"
+          @choose="systemThemeChange"
         />
         <el-divider class="title">{{ $t("headerTheme") }}</el-divider>
         <theme-color-picker
           :colorList="headerThemeList"
           :def="headerTheme"
-          @change="headerThemeChange"
+          @choose="headerThemeChange"
         />
         <template v-if="store.getters.menuPosition">
           <el-divider class="title">{{ $t("menuTheme") }}</el-divider>
           <theme-color-picker
             :colorList="menuThemeList"
             :def="menuTheme"
-            @change="menuThemeChange"
+            @choose="menuThemeChange"
           />
         </template>
       </div>
@@ -99,7 +99,7 @@
   </div>
 </template>
 <script setup lang="ts">
-import { defineComponent, getCurrentInstance, ref, Ref, watch } from "vue";
+import { getCurrentInstance, ref, Ref, watch } from "vue";
 import { useStore } from "vuex";
 import {
   APP_PRESET_COLOR_LIST,
@@ -146,7 +146,7 @@ watch(
   }
 );
 
-const beforeClose = (e): void => {
+const beforeClose = (): void => {
   $emit("visibleClose");
 };
 
@@ -159,7 +159,7 @@ const menuThemeChange = (e: string): void => {
 const headerThemeChange = (e: string): void => {
   store.commit("SET_HEADER_THEME", e);
 };
-const systemPositionChange = (e: stirng): void => {
+const systemPositionChange = (e: string): void => {
   store.commit("SET_SYSTEM_POSITION", e);
 };
 const tabsChange = (e: boolean): void => {

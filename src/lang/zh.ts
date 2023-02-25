@@ -50,5 +50,5 @@ export default {
     edit: "修改",
     loading: "加载中...",
     inSide: "里",
-    outSide:"外"
+    outSide: "外"
 }

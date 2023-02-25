@@ -49,7 +49,7 @@ export interface Page {
 /**
  * 游戏列表格式
  */
-interface GameList {
+export interface GameList {
     name: string
     price: number
     platform: string
@@ -63,4 +63,13 @@ interface GameList {
 export interface SystemIcon {
     x: number
     y: number
+}
+
+
+/**
+ * 标签页格式
+ */
+export interface RouterHistory {
+    label: string
+    path: string
 }

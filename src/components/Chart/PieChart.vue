@@ -79,6 +79,10 @@ export default {
       type: String,
       default: "100%",
     },
+    theme: {
+      type: String,
+      default: "light",
+    },
   },
   setup(props: any) {
     const { proxy }: any = getCurrentInstance();
@@ -87,7 +91,7 @@ export default {
 
     const init = (): void => {
       const chartDom = proxy.$refs.pieChart!;
-      myChart = echarts.init(chartDom, null, { renderer: "svg" });
+      myChart = echarts.init(chartDom, props.theme, { renderer: "svg" });
       option && myChart.setOption(option);
       resize();
     };

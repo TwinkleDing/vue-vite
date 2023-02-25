@@ -76,16 +76,16 @@ import { ref, Ref, nextTick, onMounted } from "vue";
 import { Configuration, OpenAIApi } from "openai";
 import { UserFilled } from "@element-plus/icons-vue";
 import { ElScrollbar, ElMessage, ElMessageBox } from "element-plus";
-import { setStore, getStore } from "@/utils/storage.ts";
+import { setStore, getStore } from "@/utils/storage";
 
 const scrollbarRef = ref<InstanceType<typeof ElScrollbar>>();
 const scrollRef = ref<HTMLDivElement>();
 const searchValue: Ref<string> = ref("");
 const activeName: Ref<string> = ref("1");
-const loading: Ref<booolean> = ref(false);
+const loading: Ref<boolean> = ref(false);
 const openaiRes: Ref<any> = ref([]);
 const ans: Ref<string> = ref("");
-const value = ref(0);
+const value: Ref<number> = ref(0);
 const configuration = new Configuration({
   apiKey: getStore({ name: "apiKey" }),
 });
@@ -94,8 +94,8 @@ const openai = new OpenAIApi(configuration);
 const tabChange = (): void => {
   reset();
 };
-const scroll = ({ scrollTop }) => {
-  value.value = scrollTop;
+const scroll = (e: any) => {
+  value.value = e.scrollTop;
 };
 const search = (): void => {
   !loading.value && searchOpenAi();
@@ -110,18 +110,18 @@ const delStartLine = (text: string): string => {
   }
   return text;
 };
-const scrollToBottom = async (): void => {
+const scrollToBottom = async (): Promise<void> => {
   await nextTick();
   scrollbarRef.value!.setScrollTop(scrollRef.value!.clientHeight);
 };
 
-const searchOpenAi = async (): void => {
+const searchOpenAi = async (): Promise<void> => {
   let prompt = ans.value + "\n Human:" + searchValue.value;
   if (!ans.value || searchValue.value === "2") {
     prompt = "Human:" + searchValue.value;
   }
   loading.value = true;
-  const res = await openai.createCompletion(
+  const res: any = await openai.createCompletion(
     {
       model: "text-davinci-003",
       prompt,

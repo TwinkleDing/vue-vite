@@ -13,7 +13,7 @@
   </div>
 </template>
 <script setup lang="ts">
-import { defineComponent, Ref, ref, reactive, onMounted } from "vue";
+import { Ref, ref, reactive, onMounted } from "vue";
 import { useStore } from "vuex";
 const store: any = useStore();
 const CONTENT_OFFSET_LEFT: number = 200;

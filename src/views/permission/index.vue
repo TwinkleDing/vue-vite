@@ -76,18 +76,18 @@ const tableData: DataItem[] = reactive([
   },
 ]);
 
+const diGui = (list: RouterItem[]): void => {
+  list.map((element: RouterItem) => {
+    if (element.children) {
+      diGui(element.children);
+    }
+    return element;
+  });
+};
 const openPermission = (): void => {
   dialogVisible.value = true;
   store.dispatch("router").then((res: RouterItem[]) => {
-    tree.value = digui(res);
-  });
-};
-const digui = (list: RouterItem[]): void => {
-  return list.map((element: RouterItem) => {
-    if (element.children) {
-      digui(element.children);
-    }
-    return element;
+    tree.value = diGui(res);
   });
 };
 const handleDelete = (): void => {
@@ -98,7 +98,7 @@ const handleDelete = (): void => {
 };
 
 const switchPermission = (data: RouterItem): void => {
-  console.log(data.meta.permission);
+  console.log(data.meta && data.meta.permission);
 };
 
 const savePermission = (): void => {
@@ -109,7 +109,7 @@ const savePermission = (): void => {
   // }, 1000)
 };
 
-const permissionRoute = async (): void => {
+const permissionRoute = async (): Promise<void> => {
   let list: RouterItem[] = [...(await store.dispatch("getRouteList"))];
   if (list.length > 3) {
     list.splice(1, 1);
@@ -128,7 +128,7 @@ const permissionRoute = async (): void => {
     });
   }
 };
-const restoreRoute = async (): void => {
+const restoreRoute = async (): Promise<void> => {
   let list: RouterItem[] = [...(await store.dispatch("router"))];
   ElMessage({
     type: "success",

@@ -7,8 +7,9 @@
 </template>
 
 <script setup lang="ts">
+import { PropType } from "vue";
+import { GameList } from "@/utils/interface";
 import Item from "./item.vue";
-import { GameList } from "@/utils/interface.ts";
 const props = defineProps({
   list: {
     type: Array as PropType<GameList[]>,

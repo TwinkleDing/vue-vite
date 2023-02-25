@@ -13,7 +13,7 @@
   </div>
 </template>
 <script setup lang="ts">
-import { defineComponent, onMounted, ref, Ref, reactive, getCurrentInstance } from "vue";
+import { reactive } from "vue";
 
 interface ListData {
   title: string;
@@ -69,6 +69,7 @@ const checkboxClick = (item: ListData): any => {
     align-items: center;
     cursor: pointer;
     color: var(--systemThemeColor);
+
     &:hover {
       background: var(--el-color-primary-light-9);
     }

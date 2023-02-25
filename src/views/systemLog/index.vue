@@ -50,7 +50,7 @@
   </div>
 </template>
 <script setup lang="ts">
-import { defineComponent, onBeforeMount, reactive, getCurrentInstance } from "vue";
+import { onBeforeMount, reactive, getCurrentInstance } from "vue";
 import {
   systemLogApi,
   deleteLogApi,
