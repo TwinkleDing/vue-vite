@@ -4,15 +4,14 @@
   </div>
 </template>
 <script setup lang="ts">
-import { markRaw, onMounted, ref } from "vue";
-import BpmnJS from "bpmn-js";
+import { onMounted } from "vue";
 import "bpmn-js/dist/assets/diagram-js.css";
 import "bpmn-js/dist/assets/bpmn-font/css/bpmn-embedded.css";
 import BpmnModeler from "bpmn-js/lib/Modeler";
 import { bmpmStr } from "./bpmnStr.js";
 
 let bpmnModeler: any = null;
-const init: void = async () => {
+const init = async (): Promise<void> => {
   bpmnModeler = new BpmnModeler({ container: "#container" });
 
   try {
@@ -20,7 +19,7 @@ const init: void = async () => {
     const { warnings } = result;
     console.log(warnings);
   } catch (err) {
-    console.log(err.message, err.warnings);
+    console.log(err);
   }
 };
 

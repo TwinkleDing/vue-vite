@@ -155,7 +155,6 @@
 </template>
 <script setup lang="ts">
 import {
-  defineComponent,
   onBeforeMount,
   reactive,
   ref,
@@ -263,7 +262,7 @@ const getList = (): void => {
   });
 };
 // 提交新增或修改
-const submit = async (formEl: FormInstance | undefined): void => {
+const submit = async (formEl: FormInstance | undefined): Promise<void> => {
   if (!formEl) return;
   await formEl.validate((valid, fields) => {
     if (valid) {
@@ -326,8 +325,8 @@ const tableVolume = (): void => {
   });
 };
 // 删除
-const deleteRow = (id: string): void =>
-  tableDeleteApi([id]).then((res: Res) => {
+const deleteRow = (id: string): Promise<void> =>
+  tableDeleteApi([id]).then((res: Res): void => {
     ElMessage({
       type: "success",
       message: res.message,
@@ -364,7 +363,9 @@ const deleteMessage = (): void => {
 const sortChange = (): void => init();
 const quantityChange = (): void => init();
 // 多选
-const handleSelectionChange = (val: TableTestItem[]): void => (selectList.list = val);
+const handleSelectionChange = (val: TableTestItem[]): void => {
+  selectList.list = val;
+};
 // 分页操作
 const handleSizeChange = (): void => init();
 // 分页切换

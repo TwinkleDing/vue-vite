@@ -122,7 +122,7 @@ const rules = reactive({
   desc: [{ required: true, message: "Please input activity form", trigger: "blur" }],
 });
 
-const submitForm = async (formEl: FormInstance | undefined): void => {
+const submitForm = async (formEl: FormInstance | undefined): Promise<void> => {
   formEl &&
     (await formEl.validate((valid: any, fields: any) => {
       if (valid) {

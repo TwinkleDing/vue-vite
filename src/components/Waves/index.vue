@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div id="model" class="model-ca" @keydown="keyDown"></div>
+    <div id="model" class="model-ca"></div>
   </div>
 </template>
 
@@ -132,6 +132,7 @@ onMounted(() => {
 .model-ca {
   position: relative;
 }
+
 .dg.ac {
   position: absolute;
   right: 0;

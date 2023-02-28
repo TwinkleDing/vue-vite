@@ -1,7 +1,12 @@
 <template>
   <div class="home">
-    <div class="home-content">
+    <div class="top">
       <div class="left">
+        <el-carousel class="carousel" indicator-position="outside">
+          <el-carousel-item v-for="item in 4" :key="item">
+            <h3 text="2xl" justify="center">{{ item }}</h3>
+          </el-carousel-item>
+        </el-carousel>
         <div class="charts">
           <div class="chart">
             <bar-chart ref="bar1" />
@@ -14,23 +19,6 @@
           </div>
           <div class="chart">
             <bar-chart ref="bar2" />
-          </div>
-        </div>
-        <div class="search-box">
-          <el-row>
-            <el-col :span="12">
-              <el-input v-model="searchValue" @keyup.enter.native="search" />
-            </el-col>
-            <el-col :span="2"> </el-col>
-            <el-col :span="6">
-              <el-button @click="search" type="primary">询问</el-button>
-              <el-button @click="reset">重置</el-button>
-            </el-col>
-          </el-row>
-          <div>
-            <el-row v-for="(item, index) in openaiRes" :key="index">
-              {{ item.text }}
-            </el-row>
           </div>
         </div>
       </div>
@@ -106,7 +94,7 @@
   </el-dialog>
 </template>
 <script setup lang="ts">
-import { defineComponent, onMounted, ref, Ref, reactive, getCurrentInstance } from "vue";
+import { onMounted, ref, Ref, reactive, getCurrentInstance } from "vue";
 import type { FormInstance, FormRules } from "element-plus";
 import { ElMessage } from "element-plus";
 import BarChart from "@/components/Chart/BarChart.vue";
@@ -114,11 +102,9 @@ import LineChart from "@/components/Chart/LineChart.vue";
 import PieChart from "@/components/Chart/PieChart.vue";
 import Undone from "@/components/Undone/index.vue";
 import Game from "@/components/Game/index.vue";
-import { GameList } from "@/utils/interface.ts";
-import { getAssetsImage } from "@/utils/utils.ts";
-import { Configuration, OpenAIApi } from "openai";
+import { GameList } from "@/utils/interface";
+import { getAssetsImage } from "@/utils/utils";
 
-const API_KEY = "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";
 const { proxy }: any = getCurrentInstance();
 const calendar = ref();
 const pie = ref();
@@ -131,7 +117,6 @@ const currentTime: Ref<number> = ref(0);
 const dialogVisible: Ref<boolean> = ref(false);
 const ruleFormRef = ref<FormInstance>();
 const scheduleList: any = reactive([]);
-const searchValue: Ref<string> = ref("");
 const form = reactive({
   title: "",
   time: "",
@@ -164,12 +149,6 @@ const gameList: Array<GameList> = reactive([
     img: getAssetsImage("Pokemon.webp"),
   },
 ]);
-const configuration = new Configuration({
-  apiKey: API_KEY,
-});
-const openai = new OpenAIApi(configuration);
-let openaiRes: Ref<any> = ref([]);
-let ans: Ref<string> = ref("");
 
 const calendarClick = (data: any): void => {
   chooseTime.value = new Date(data.day).getTime();
@@ -184,7 +163,7 @@ const calendarClick = (data: any): void => {
     });
   }
 };
-const submitForm = async (formEl: FormInstance | undefined): void => {
+const submitForm = async (formEl: FormInstance | undefined): Promise<void> => {
   if (!formEl) return;
   await formEl.validate((valid, fields) => {
     if (valid) {
@@ -200,41 +179,6 @@ const submitForm = async (formEl: FormInstance | undefined): void => {
       console.log("error submit!", fields);
     }
   });
-};
-const search = (): void => {
-  searchOpenAi();
-};
-const reset = (): void => {
-  ans.value = "";
-  openaiRes.value = [];
-};
-
-const searchOpenAi = async (): void => {
-  let prompt = ans.value + "\n Human:" + searchValue.value;
-  const res = await openai.createCompletion(
-    {
-      model: "text-davinci-003",
-      prompt,
-      temperature: 0.1,
-      max_tokens: 2000,
-      top_p: 1,
-      frequency_penalty: 0,
-      presence_penalty: 0,
-    },
-    {
-      headers: {
-        "Example-Header": "example",
-        "User-Agent": "'",
-      },
-    }
-  );
-  if (res.error) {
-  } else {
-    ans.value = prompt + res.choices[0].text;
-    openaiRes.value.push({ text: searchValue.value });
-    openaiRes.value.push(...res.choices);
-    openaiRes.value.push({ text: "---------------" });
-  }
 };
 
 const resetForm = (formEl: FormInstance | undefined): void => {
@@ -254,36 +198,29 @@ onMounted(() => {
 
 <style lang="scss" scoped>
 .home {
-  height: 100%;
-  .home-content {
+  .top {
     display: flex;
     justify-content: space-between;
     height: 100%;
     overflow: hidden;
   }
+
   .left,
   .right {
     display: inline-block;
     width: 49%;
     min-width: 600px;
-    height: 100%;
-    overflow: auto;
   }
-  .search-box {
-    min-height: 300px;
-    width: 600px;
-    padding: 12px;
-    box-sizing: border-box;
-    white-space: pre-wrap;
-    overflow: auto;
-  }
+
   .chart {
     display: inline-block;
     height: 200px;
     width: 50%;
   }
+
   .calendar {
     height: 300px;
+
     &-item {
       display: flex;
       justify-content: start;
@@ -292,8 +229,10 @@ onMounted(() => {
       line-height: 20px;
     }
   }
-  .el-calendar {
+
+  :deep(.el-calendar) {
     --el-calendar-cell-width: 36px;
+
     .el-carousel__item h3 {
       display: flex;
       color: #475669;
@@ -301,6 +240,7 @@ onMounted(() => {
       line-height: 300px;
       margin: 0;
     }
+
     .el-calendar-day {
       padding: 8px 5px;
     }

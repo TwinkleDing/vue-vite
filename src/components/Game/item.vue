@@ -17,10 +17,12 @@
 </template>
 
 <script setup lang="ts">
-import { GameList } from "@/utils/interface.ts";
+import { PropType } from "vue";
+import { GameList } from "@/utils/interface";
 const props = defineProps({
   item: {
     type: Object as PropType<GameList>,
+    default: () => [],
   },
 });
 </script>
@@ -32,10 +34,12 @@ const props = defineProps({
   cursor: pointer;
   margin-right: 10px;
   font-size: 14px;
+
   .game-name {
     font-size: 14px;
     font-weight: 700;
   }
+
   img {
     border-radius: 10px;
     margin-right: 24px;

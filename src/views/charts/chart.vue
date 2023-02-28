@@ -2,7 +2,7 @@
   <div id="main" style="height: 780px; width: 100%"></div>
 </template>
 <script setup lang="ts">
-import { defineComponent, onMounted } from "vue";
+import { onMounted } from "vue";
 import * as echarts from "echarts/core";
 import {
   TitleComponent,

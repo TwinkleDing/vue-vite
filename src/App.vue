@@ -4,7 +4,7 @@
   </el-config-provider>
 </template>
 <script setup lang="ts">
-import { defineComponent, watch, ref } from "vue";
+import { watch, ref } from "vue";
 import { getStore } from "@/utils/storage";
 import { useStore } from "vuex";
 import { ElConfigProvider } from "element-plus";

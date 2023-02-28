@@ -4,7 +4,6 @@
   </div>
 </template>
 <script setup lang="ts">
-import { defineComponent } from "vue";
 import VChart from "./chart.vue";
 </script>
 

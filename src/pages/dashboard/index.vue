@@ -22,7 +22,6 @@
   </div>
 </template>
 <script setup lang="ts">
-import { defineComponent, ref, Ref } from "vue";
 import { useStore } from "vuex";
 import { useRoute } from "vue-router";
 import LeftMenu from "./components/LeftMenu.vue";
@@ -34,7 +33,6 @@ import Tabs from "./components/Tabs.vue";
 const store = useStore();
 const route = useRoute();
 const menuList: RouterItem[] = [...store.getters.routeList];
-
 </script>
 
 <style lang="scss" scoped>
@@ -42,22 +40,26 @@ const menuList: RouterItem[] = [...store.getters.routeList];
   height: 100%;
   width: 100%;
   min-width: 1200px;
+
   &-content {
     width: 100%;
     height: calc(100% - 60px);
     display: flex;
   }
+
   &-left {
     height: 100%;
     width: 200px;
     min-width: 200px;
     box-shadow: 6px 0px 10px 0px rgb(38 38 38 / 8%);
   }
+
   &-right {
     height: 100%;
     flex: 1;
     overflow: hidden;
     position: relative;
+
     .right-content {
       padding: 24px;
       box-sizing: border-box;

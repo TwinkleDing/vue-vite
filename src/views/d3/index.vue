@@ -42,7 +42,7 @@
 </template>
 <script setup lang="ts">
 import * as d3 from "d3";
-import { defineComponent, onMounted, Ref, ref } from "vue";
+import { onMounted, Ref, ref } from "vue";
 
 interface NodesData {
   name: string;

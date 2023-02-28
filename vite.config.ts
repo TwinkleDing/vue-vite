@@ -21,10 +21,13 @@ export default defineConfig({
     mode: "development",
     publicDir: "public",
     resolve: {
-        alias: {
+        alias:
+        {
             "@": path.resolve(__dirname, "src"),
             "vue-i18n": "vue-i18n/dist/vue-i18n.cjs.js"
         }
+        ,
+        extensions: ['.js', '.ts', '.tsx', '.json']
     },
     server: {
         host: "0.0.0.0",
