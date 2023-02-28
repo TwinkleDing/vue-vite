@@ -12,11 +12,11 @@ export default {
     props: {
         height: {
             type: Number,
-            default: 765
+            default: 0
         },
         width: {
             type: Number,
-            default: 1360
+            default: 0
         }
     },
     setup(props) {

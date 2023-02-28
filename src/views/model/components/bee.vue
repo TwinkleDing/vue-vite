@@ -4,7 +4,7 @@
     </div>
 </template>
 <script>
-    import { defineComponent, onMounted, onUnmounted } from "vue"
+    import { defineComponent, onMounted, onBeforeUnmount } from "vue"
     import * as THREE from "three"
     import Stats from "three/examples/jsm/libs/stats.module.js"
     import { GUI } from "three/examples/jsm/libs/lil-gui.module.min.js"
@@ -15,11 +15,11 @@
         props: {
             height: {
                 type: Number,
-                default: 765
+                default: 0
             },
             width: {
                 type: Number,
-                default: 1360
+                default: 0
             }
         },
         setup(props) {
@@ -172,7 +172,7 @@
             onMounted(() => {
                 init()
             })
-            onUnmounted(() => {
+            onBeforeUnmount(() => {
                 gui.domElement.remove()
             })
             return {}
