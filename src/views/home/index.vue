@@ -292,7 +292,7 @@ onMounted(() => {
       line-height: 20px;
     }
   }
-  :deep(.el-calendar) {
+  .el-calendar {
     --el-calendar-cell-width: 36px;
     .el-carousel__item h3 {
       display: flex;

@@ -26,3 +26,22 @@ div {
 .text-right {
     text-align: right;
 }
+
+.lil-gui.autoPlace {
+    top: 126px !important;
+    position: fixed;
+    right: 26px !important;
+    left: unset !important;
+}
+
+.el-tabs--left .el-tabs__header.is-left {
+    float: left !important;
+    margin: 0 !important;
+    border-right: 1px solid var(--el-border-color);
+}
+
+.el-tabs--left .el-tabs__header.is-right {
+    float: right !important;
+    margin: 0 !important;
+    border-left: 1px solid var(--el-border-color);
+}
