@@ -219,7 +219,7 @@ onMounted(() => {
   }
 
   .calendar {
-    height: 300px;
+    min-height: 300px;
 
     &-item {
       display: flex;

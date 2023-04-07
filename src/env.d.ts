@@ -10,3 +10,4 @@ declare module "*.vue" {
 declare module "element-plus/dist/locale/zh-cn.mjs"
 declare module "element-plus/dist/locale/en.mjs"
 declare module "nprogress"
+declare module "vue3-particles"
