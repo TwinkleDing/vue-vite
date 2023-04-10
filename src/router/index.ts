@@ -1,5 +1,5 @@
 import { shallowRef } from "vue"
-import { createRouter, createWebHashHistory } from "vue-router"
+import { createRouter, createWebHistory } from "vue-router"
 import store from "@/store"
 import Empty from "@/pages/Empty.vue"
 import { RouterItem } from "@/utils/interface"
@@ -9,7 +9,7 @@ let firstGetRoute: boolean = true
 const _importComponent = (file: string) => () => import(`../views/${file}/index.vue`)
 
 const router: any = new (createRouter as any)({
-    history: createWebHashHistory(),
+    history: createWebHistory(),
     routes: [
         {
             path: "/",

@@ -355,6 +355,7 @@ const settings = {
         removeAll(context: any): void {
             context.commit("REMOVE_ROUTER_LIST")
             context.commit("REMOVE_USER_INFO")
+            context.commit("REMOVE_TOKEN")
         }
     }
 }
