@@ -169,7 +169,10 @@ const animate = (): void => {
 onMounted(() => {
   init();
 });
-onUnmounted(() => {});
+
+onUnmounted(()=> {
+  window.removeEventListener("resize", onWindowResize)
+})
 </script>
 
 <style scoped>

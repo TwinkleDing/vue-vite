@@ -5,7 +5,7 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted } from "vue";
+import { onMounted, onUnmounted } from "vue";
 import { useStore } from "vuex";
 import * as THREE from "three";
 const store = useStore();
@@ -126,6 +126,9 @@ onMounted(() => {
   init();
   animate();
 });
+onUnmounted(()=> {
+  window.removeEventListener("resize", onWindowResize)
+})
 </script>
 
 <style lang="scss" scoped>

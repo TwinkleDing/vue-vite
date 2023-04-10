@@ -94,7 +94,7 @@
   </el-dialog>
 </template>
 <script setup lang="ts">
-import { onMounted, ref, Ref, reactive, getCurrentInstance } from "vue";
+import { onMounted, onUnmounted, ref, Ref, reactive, getCurrentInstance } from "vue";
 import type { FormInstance, FormRules } from "element-plus";
 import { ElMessage } from "element-plus";
 import BarChart from "@/components/Chart/BarChart.vue";
@@ -185,15 +185,20 @@ const resetForm = (formEl: FormInstance | undefined): void => {
   if (!formEl) return;
   formEl.resetFields();
 };
+const resize = ()=> {
+    pie.value && pie.value.resize();
+    bar1.value && bar1.value.resize();
+    bar2.value && bar2.value.resize();
+    line.value && line.value.resize();
+}
 
 onMounted(() => {
-  window.addEventListener("resize", function (e) {
-    pie.value.resize();
-    bar1.value.resize();
-    bar2.value.resize();
-    line.value.resize();
-  });
-});
+  window.addEventListener("resize", resize);
+})
+
+onUnmounted(()=> {
+  window.removeEventListener("resize", resize)
+})
 </script>
 
 <style lang="scss" scoped>
