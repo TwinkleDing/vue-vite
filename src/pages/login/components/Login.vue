@@ -14,6 +14,7 @@
           v-model="password"
           :placeholder="$t('login.userPassword')"
           :prefix-icon="UserFilled"
+          @keyup.enter.native="login"
         />
       </el-form-item>
       <el-form-item class="login-handle">

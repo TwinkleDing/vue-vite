@@ -129,7 +129,7 @@ const routeList: RouterItem[] = [
         path: "/media",
         name: "media",
         meta: {
-            label: "media",
+            label: "多媒体",
             icon: "VideoCameraFilled",
             permission: true
         },
