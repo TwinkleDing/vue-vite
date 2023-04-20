@@ -27,7 +27,7 @@ export default defineConfig({
       useDevMode: true
     })
   ],
-  base: "/",
+  base: "/mmm/vue",
   mode: "development",
   publicDir: "public",
   resolve: {
