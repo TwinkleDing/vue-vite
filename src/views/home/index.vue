@@ -24,7 +24,7 @@
       </div>
       <div class="right">
         <el-calendar ref="calendar" class="calendar">
-          <template #dateCell="{ data }">
+          <template #date-cell="{ data }">
             <div class="calendar-item" @click="calendarClick(data)">
               <!-- :class="data.isSelected ? 'is-selected' : ''" -->
               {{ data.day.split("-").slice(1).join("-") }}
