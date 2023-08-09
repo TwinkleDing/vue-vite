@@ -34,5 +34,5 @@ export const SIDE_BAR_BG_COLOR_LIST: string[] = [
     "#304156",
     "#001628",
     "#28333E",
-    "#344058",
+    "#344058"
 ]

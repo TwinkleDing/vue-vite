@@ -50,5 +50,5 @@ export default {
     edit: "Edit",
     loading: "Loading...",
     inSide: "In",
-    outSide: "Out",
+    outSide: "Out"
 }

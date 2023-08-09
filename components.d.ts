@@ -33,6 +33,8 @@ declare module 'vue' {
     ElSelect: typeof import('element-plus/es')['ElSelect']
     ElSubMenu: typeof import('element-plus/es')['ElSubMenu']
     ElSwitch: typeof import('element-plus/es')['ElSwitch']
+    ElTabPane: typeof import('element-plus/es')['ElTabPane']
+    ElTabs: typeof import('element-plus/es')['ElTabs']
     ElTimeSelect: typeof import('element-plus/es')['ElTimeSelect']
     Game: typeof import('./src/components/Game/index.vue')['default']
     Item: typeof import('./src/components/Game/item.vue')['default']

@@ -3,11 +3,11 @@
     <el-drawer
       v-model="visible"
       size="350px"
-      custom-class="system-drawer"
+      class="system-drawer"
       :direction="direction"
       :before-close="beforeClose"
     >
-      <template #title>
+      <template #header>
         <h3>{{ $t("system") }}</h3>
       </template>
       <div>
