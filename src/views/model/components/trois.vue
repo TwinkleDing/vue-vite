@@ -12,23 +12,112 @@
         ref="cameraC"
         :fov="45"
         :aspect="width / height"
-        :near="0.1"
-        :far="40"
+        :near="1"
+        :far="1000"
         :position="{ x: 1, y: 3, z: -3 }"
-        :lookAt="{ x: 0, y: 1, z: 0 }"
       />
-      <Scene ref="sceneC" background="#a0a0a0"> </Scene>
+      <Scene ref="sceneC" />
     </Renderer>
     <div class="ctrl">
-      <el-button type="primary" @click="frame">帧动</el-button>
-      <el-button type="primary" @click="pause">暂停/继续</el-button>
-      <el-button
-        v-for="(item, index) in actionsName"
-        type="primary"
-        @click="activeAction(index)"
-      >
-        {{ item }}
-      </el-button>
+      <div>
+        <el-switch
+          v-model="allActions"
+          inline-prompt
+          style="--el-switch-off-color: var(--systemThemeColorActive)"
+          active-text="启动所有动作"
+          inactive-text="禁用所有动作"
+          @change="offAllActions"
+        />
+      </div>
+      <div>
+        动作：时段：{{ timeScale }}
+        <el-slider
+          v-model="timeScale"
+          :min="0"
+          :max="2"
+          @input="timeScaleChange"
+          :step="0.01"
+        />
+      </div>
+      <div class="btns">
+        <el-button type="primary" @click="frame">帧动</el-button>
+        <el-button type="primary" @click="pause">暂停/继续</el-button>
+        <el-button
+          v-for="(item, index) in actionsName"
+          type="primary"
+          @click="activeAction(index)"
+        >
+          {{ item }}
+        </el-button>
+      </div>
+      <div>
+        <div>
+          动态：转换时长：{{ fadeDuration }}
+          <el-slider
+            v-model="fadeDuration"
+            :min="0"
+            :max="10"
+            :step="0.01"
+            @change="fadeDurationChange"
+          />
+        </div>
+        <div class="btns">
+          <el-button
+            :disabled="current !== 0"
+            type="primary"
+            @click="setFade(IDLE_TO_WALK)"
+          >
+            从停到走
+          </el-button>
+          <el-button
+            :disabled="current !== 3"
+            type="primary"
+            @click="setFade(WALK_TO_RUN)"
+          >
+            从走到跑
+          </el-button>
+          <el-button
+            :disabled="current !== 1"
+            type="primary"
+            @click="setFade(RUN_TOP_WALK)"
+          >
+            从跑到走
+          </el-button>
+          <el-button
+            :disabled="current !== 3"
+            type="primary"
+            @click="setFade(WALK_TO_IDLE)"
+          >
+            从走到停
+          </el-button>
+        </div>
+        <div>
+          <div>
+            idleWeight:
+            <el-progress
+              :percentage="parseInt(idleWeight * 100)"
+              :stroke-width="15"
+              striped
+            />
+          </div>
+          <div>
+            walkWeight:
+            <el-progress
+              :percentage="parseInt(walkWeight * 100)"
+              :stroke-width="15"
+              striped
+            />
+          </div>
+          <div>
+            runWeight:
+            <el-progress
+              :percentage="parseInt(runWeight * 100)"
+              :stroke-width="15"
+              striped
+            />
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -48,6 +137,8 @@ import {
 import * as THREE from "three";
 import Stats from "three/examples/jsm/libs/stats.module.js";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
+import Trois from "./Trois.ts";
+import { Reflector } from "three/examples/jsm/objects/Reflector.js";
 
 const props = defineProps({
   height: {
@@ -59,21 +150,32 @@ const props = defineProps({
     default: 0,
   },
 });
-const ONE_STEP: Number = 0.05;
+const IDLE_TO_WALK: string = "IDLE_TO_WALK";
+const WALK_TO_RUN: string = "WALK_TO_RUN";
+const RUN_TOP_WALK: string = "RUN_TOP_WALK";
+const WALK_TO_IDLE: string = "WALK_TO_IDLE";
+const ONE_STEP: number = 0.05;
 const rendererC = ref();
 const sceneC = ref();
 const cameraC = ref();
-let actions: AnimationClip = reactive([]);
-let actionsName: String = reactive([]);
-let current = ref<Number>(0);
-let sizeOfNextStep = ref<Number>(0);
-let singleStepMode = ref<Boolean>(false);
+const idleAction = ref<AnimationClip>();
+const walkAction = ref<AnimationClip>();
+const runAction = ref<AnimationClip>();
+const current = ref<number>(0);
+const timeScale = ref<number>(1);
+const idleWeight = ref<number>(0);
+const walkWeight = ref<number>(0);
+const runWeight = ref<number>(0);
+const fadeDuration = ref<number>(3);
+const allActions = ref<boolean>(true);
+let actionsName: string = reactive([]);
+let dirLight;
+
 let renderer;
 let scene;
 let camera;
 let stats;
-let mixer;
-let clock;
+let trois: Trois;
 watch(
   () => props,
   (e) => {
@@ -89,29 +191,28 @@ const init: void = () => {
   renderer = rendererC.value as RendererPublicInterface;
   scene = sceneC.value.scene;
   camera = cameraC.value.camera;
-  camera.lookAt(0, 1, 0);
-  clock = new THREE.Clock();
 
   renderer.three.setSize(props.width, props.height);
+  renderer.three.renderer.outputEncoding = THREE.sRGBEncoding;
+  renderer.three.renderer.antialias = true;
+
   // 创建坐标系
   let axisHelper = new THREE.AxesHelper(10);
   scene.add(axisHelper);
-  // scene.position.x = 0.2;
-  // scene.position.y = -0.5;
   scene.background = new THREE.Color(0xa0a0a0);
-  scene.fog = new THREE.Fog(0xa0a0a0, 10, 50);
+  // scene.fog = new THREE.Fog(0xa0a0a0, 10, 50);
   // 添加半球光
-  const hemiLight = new THREE.HemisphereLight(0xffffff, 0x444444);
+  const hemiLight = new THREE.HemisphereLight(0xffffff, 0xffffff);
   hemiLight.position.set(0, 20, 0);
   scene.add(hemiLight);
   // 添加平行光
-  const dirLight = new THREE.DirectionalLight(0xffffff);
-  dirLight.position.set(-3, 10, -10);
+  dirLight = new THREE.DirectionalLight(0xffffff);
+  dirLight.position.set(-3, 3, -3);
   dirLight.castShadow = true;
   dirLight.shadow.camera.top = 2;
-  dirLight.shadow.camera.bottom = -2;
-  dirLight.shadow.camera.left = -2;
-  dirLight.shadow.camera.right = 2;
+  dirLight.shadow.camera.bottom = -1;
+  dirLight.shadow.camera.left = -1;
+  dirLight.shadow.camera.right = 1;
   dirLight.shadow.camera.near = 0.1;
   dirLight.shadow.camera.far = 40;
   scene.add(dirLight);
@@ -124,83 +225,68 @@ const init: void = () => {
   mesh.rotation.x = -Math.PI / 2;
   mesh.receiveShadow = true;
   scene.add(mesh);
-  addModel();
-
   stats = new Stats();
   stats.dom.style.position = "absolute";
   document.getElementById("model").appendChild(stats.dom);
+  addModel();
+  // 设置灯光自旋
+  setLightSpin(dirLight.position);
+  addSphere();
+};
+
+const setLightSpin: void = (position) => {
+  const clock = new THREE.Clock();
+  let timer = 0;
+
+  const rotate = () => {
+    requestAnimationFrame(rotate);
+    const delta = clock.getDelta();
+    timer += delta / 5;
+    const x = -3 * Math.cos(timer);
+    const z = -3 * Math.sin(timer);
+    position.set(x, 3, z);
+  };
+  rotate();
 };
 
 const addModel: void = () => {
-  const loader = new GLTFLoader();
-  loader.load("../../models/Soldier.glb", function (gltf) {
-    const model = gltf.scene;
+  trois = new Trois();
+  trois.initModel().then((model: THREE.Group): void => {
     scene.add(model);
-    // 显示每个部件的影子
-    model.traverse(function (object) {
-      if (object.isMesh) object.castShadow = true;
-    });
     //显示骨骼
     const skeleton = new THREE.SkeletonHelper(model);
     scene.add(skeleton);
-
-    mixer = new THREE.AnimationMixer(model);
-    gltf.animations.map((item: AnimationClip) => {
-      actions.push(mixer.clipAction(item));
-      actionsName.push(item.name);
+    // 获取动画列表
+    trois.getActionList().map((item: THREE.AnimationClip) => {
+      actionsName.push(item.getClip().name);
     });
-    activeAction(0);
-    animate();
+    modelDIY(model);
   });
 };
 
-const activeAction = (index: number) => {
-  current.value = index;
-  actions.forEach((item: AnimationClip, i: number) => {
-    if (index === i) {
-      setWeight(actions[index], 1);
-      actions[index].play();
-    } else {
-      setWeight(item, 0);
-    }
-  });
-};
-
-const pause: void = () => {
-  // 如果是帧动状态，先解除帧动状态
-  if (singleStepMode.value) {
-    singleStepMode.value = false;
+// 启用或禁用所有动作
+const offAllActions: void = () => {
+  if (allActions.value) {
+    trois.activateAllActions();
   } else {
-    actions[current.value].paused = !actions[current.value].paused;
+    trois.deactivateAllActions();
   }
 };
-
-const frame: void = () => {
-  // 如果是动画状态的暂停，先解除
-  actions[current.value].paused = false;
-  // 开启单步状态，并设置每次单步的间隔
-  singleStepMode.value = true;
-  sizeOfNextStep.value = ONE_STEP;
+const timeScaleChange: void = (timeScale: number) => trois.timeScaleChange(timeScale);
+// 暂停/继续
+const pause: void = () => trois.pause();
+// 帧动
+const frame: void = () => trois.frame();
+// 修改动作
+const activeAction: void = (index: number) => {
+  trois.activeAction(index);
 };
-
-const setWeight = (action: AnimationClip, weight: number) => {
-  action.enabled = true;
-  action.setEffectiveTimeScale(1);
-  action.setEffectiveWeight(weight);
+const fadeDurationChange: void = (fadeDuration: number) =>
+  trois.setFadeDuration(fadeDuration);
+const setFade: void = (type: string) => {
+  trois.setFade(type);
+  current.value = trois.getCurrent();
 };
-
-const animate: void = () => {
-  requestAnimationFrame(animate);
-  let mixerUpdateDelta = clock.getDelta();
-  // 如果是帧动模式，开启单步状态
-  if (singleStepMode.value) {
-    mixerUpdateDelta = sizeOfNextStep.value;
-    sizeOfNextStep.value = 0;
-  }
-  mixer.update(mixerUpdateDelta);
-  stats.update();
-};
-
 const addCtrl: void = () => {
   const orbitCtrl = renderer.three.cameraCtrl;
   orbitCtrl.addEventListener("change", () => {
@@ -208,19 +294,42 @@ const addCtrl: void = () => {
   });
 };
 
-onMounted(() => {
+const modelDIY: void = (model: THREE.Group) => {
+  const bone = model.children[0].children[0]; // 骨骼
+  const body = model.children[0].children[1]; // 身体
+  const face = model.children[0].children[2]; // 面部
+};
+
+const addSphere: void = () => {};
+
+onMounted((): void => {
   init();
-  addCtrl();
+  // addCtrl();
 });
 </script>
 
 <style scoped lang="scss">
+@import "@/css/theme.scss";
 #model {
   position: relative;
   .ctrl {
     position: absolute;
     right: 0;
     bottom: 0;
+    width: 200px;
+    padding: 10px 20px;
+    border: 1px solid $--color-minor;
+    border-radius: 16px;
+    // background: $--color-minor;
+    .btns {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      button {
+        width: 40%;
+        margin: 5px !important;
+      }
+    }
   }
 }
 </style>
