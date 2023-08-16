@@ -7,7 +7,7 @@ const apps = [
     },
     {
         name: "MicroReactApp",
-        entry: process.env.NODE_ENV === "development" ? "//localhost:669" : "/microApps/MicroVue",
+        entry: process.env.NODE_ENV === "development" ? "//localhost:669" : "/microApps/MicroReact",
         container: "#frame",
         activeRule: "/MicroReact"
     }
