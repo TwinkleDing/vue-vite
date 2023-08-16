@@ -5,12 +5,13 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "buildMain": "cross-env BUILD_PATH=../dist/Main-Vue-app vite build",
+    "buildMain": "cross-env BUILD_PATH=../dist/MainVueApp vite build",
     "preview": "vite preview",
     "lint": "vue-tsc --noEmit"
   },
   "dependencies": {
     "@element-plus/icons-vue": "^1.1.3",
+    "@types/node": "^20.5.0",
     "@types/three": "^0.138.0",
     "axios": "^0.26.1",
     "cross-env": "^7.0.3",

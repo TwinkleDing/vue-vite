@@ -27,7 +27,7 @@ export default defineConfig({
       useDevMode: true
     })
   ],
-  base: "/mmm/vue",
+  publicPath: process.env.NODE_ENV === 'development' ? '/' : '/microApps/MicroVue',
   mode: "development",
   publicDir: "public",
   resolve: {

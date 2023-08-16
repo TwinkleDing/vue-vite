@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "set PORT=669 && rescripts start",
     "build": "rescripts build",
-    "buildMicro": "cross-env BUILD_PATH=../dist/Micro-React-app rescripts build",
+    "buildMicro": "cross-env BUILD_PATH=../dist/MicroReactApp PUBLIC_URL=/microApps/MicroReact rescripts build",
     "test": "rescripts test"
   },
   "dependencies": {

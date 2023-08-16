@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "buildMicro": "cross-env BUILD_PATH=../dist/Micro-Vue-app vite build",
+    "buildMicro": "cross-env BUILD_PATH=../dist/MicroVueApp vite build",
     "preview": "vite preview"
   },
   "dependencies": {

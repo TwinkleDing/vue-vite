@@ -1,13 +1,13 @@
 const apps = [
     {
         name: "MicroVueApp",
-        entry: "/mmm/vue",
+        entry: process.env.NODE_ENV === "development" ? "//localhost:668" : "/microApps/MicroVue",
         container: "#frame",
         activeRule: "/MicroVue"
     },
     {
         name: "MicroReactApp",
-        entry: "//localhost:669",
+        entry: process.env.NODE_ENV === "development" ? "//localhost:669" : "/microApps/MicroVue",
         container: "#frame",
         activeRule: "/MicroReact"
     }
