@@ -50,6 +50,13 @@ router.beforeEach(async (to: any) => {
         store.dispatch("removeAll")
         return "/login"
     } else {
+        // 手动设置这两个属性，不然react子项目切换至其他会报错
+        if (!window.history.state.current) {
+            window.history.state.current = to.fullPath
+        }
+        if (!window.history.state.back) {
+            window.history.state.back = to.fullPath
+        }
         // 添加路由到路有记录
         store.commit("SET_CURRENT_ROUTE", to)
         store.commit("SET_ROUTE_HISTORY", to)

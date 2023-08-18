@@ -33,10 +33,9 @@ export async function mount(props) {
 }
 
 export async function unmount(props) {
-  const { container } = props;
   instance.unmount();
   instance = null;
-  console.log("MicroReactApp Unmount", container);
+  console.log("MicroReactApp Unmount", props);
 }
 
 // If you want to start measuring performance in your app, pass a function
