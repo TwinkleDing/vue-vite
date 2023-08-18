@@ -249,19 +249,25 @@ const setLightSpin: void = (position) => {
   rotate();
 };
 
-const addModel: void = () => {
+const addModel: void = async () => {
   trois = new Trois();
-  trois.initModel().then((model: THREE.Group): void => {
-    scene.add(model);
-    //显示骨骼
-    const skeleton = new THREE.SkeletonHelper(model);
-    scene.add(skeleton);
-    // 获取动画列表
-    trois.getActionList().map((item: THREE.AnimationClip) => {
-      actionsName.push(item.getClip().name);
-    });
-    modelDIY(model);
+  const model: THREE.Group = await trois.initModel();
+  scene.add(model);
+  //显示骨骼
+  const skeleton = new THREE.SkeletonHelper(model);
+  scene.add(skeleton);
+  // 获取动画列表
+  trois.getActionList().map((item: THREE.AnimationClip) => {
+    actionsName.push(item.getClip().name);
   });
+  // 获取weight值
+  trois.deepProxy((e) => {
+    idleWeight.value = e.idleWeight;
+    walkWeight.value = e.walkWeight;
+    runWeight.value = e.runWeight;
+  });
+
+  modelDIY(model);
 };
 
 // 启用或禁用所有动作

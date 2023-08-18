@@ -20,9 +20,12 @@ export default class Trois {
     private runAction!: THREE.AnimationAction;
     private actions: Array<THREE.AnimationAction> = [];
     private clock: THREE.Clock = new THREE.Clock();
+    private data: any = {};
+    private originalData: any = {};
+    private initData: boolean = true;
 
     constructor() {
-
+        this.setOriginalData();
     }
     initModel(): Promise<void> {
         const loader = new GLTFLoader();
@@ -183,8 +186,60 @@ export default class Trois {
             this.sizeOfNextStep = 0;
         }
         this.mixer.update(mixerUpdateDelta);
+        this.setData();
     };
 
+    deepProxy(cb: any) {
+        const self = this;
+        this.data = new Proxy(this.originalData, {
+            /**
+             * @param {Object, Array} target 设置值的对象
+             * @param {String} key 属性
+             * @param {any} value 值
+             * @param {Object} receiver this
+             */
+            set: function (target, key, value, receiver) {
+                target[key] = value
+                cb(target);
+                return true
+            },
+        });
+    }
+
+    setData(): void {
+        if (this.initData) {
+            for (let key in this.originalData) {
+                this.data[key] = this.originalData[key]
+            }
+            this.initData = false;
+        } else {
+            for (let key in this) {
+                if (typeof this[key] !== 'function') {
+                    if (typeof this.data[key] === "object"
+                        && (this.data[key]?.toString() !== this[key]?.toString()))
+                    {
+                        this.data[key] = this[key]
+                    } else if (this.data[key] !== this[key]) {
+                        this.data[key] = this[key]
+                    }
+                }
+            }
+        }
+    }
+    setOriginalData(): void {
+        let obj: any = {}
+        for (let key in this) {
+            if (typeof this[key] !== 'function') {
+                obj[key] = this[key]
+                if (typeof this.data[key] === "object") {
+                    JSON.parse(JSON.stringify(this.originalData[key]))
+                    JSON.parse(JSON.stringify(this[key]))
+
+                }
+            }
+        }
+        this.originalData = obj
+    }
 
     setCurrent(current: number): void {
         this.current = current;
