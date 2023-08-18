@@ -189,7 +189,7 @@ export default class Trois {
         this.setData();
     };
 
-    deepProxy(cb: any) {
+    troisChange(cb: any) {
         const self = this;
         this.data = new Proxy(this.originalData, {
             /**
@@ -213,29 +213,23 @@ export default class Trois {
             }
             this.initData = false;
         } else {
-            for (let key in this) {
-                if (typeof this[key] !== 'function') {
-                    if (typeof this.data[key] === "object"
-                        && (this.data[key]?.toString() !== this[key]?.toString()))
-                    {
-                        this.data[key] = this[key]
-                    } else if (this.data[key] !== this[key]) {
-                        this.data[key] = this[key]
-                    }
+            for (let key in this.data) {
+                if (typeof this.data[key] === "object"
+                    && (this.data[key]?.toString() !== this[key].toString()))
+                {
+                    this.data[key] = this[key]
+                } else if (this.data[key] !== this[key]) {
+                    this.data[key] = this[key]
                 }
             }
         }
     }
+
     setOriginalData(): void {
         let obj: any = {}
         for (let key in this) {
             if (typeof this[key] !== 'function') {
                 obj[key] = this[key]
-                if (typeof this.data[key] === "object") {
-                    JSON.parse(JSON.stringify(this.originalData[key]))
-                    JSON.parse(JSON.stringify(this[key]))
-
-                }
             }
         }
         this.originalData = obj

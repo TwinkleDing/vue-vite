@@ -261,7 +261,7 @@ const addModel: void = async () => {
     actionsName.push(item.getClip().name);
   });
   // 获取weight值
-  trois.deepProxy((e) => {
+  trois.troisChange((e) => {
     idleWeight.value = e.idleWeight;
     walkWeight.value = e.walkWeight;
     runWeight.value = e.runWeight;
