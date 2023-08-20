@@ -94,27 +94,15 @@
         <div>
           <div>
             idleWeight:
-            <el-progress
-              :percentage="parseInt(idleWeight * 100)"
-              :stroke-width="15"
-              striped
-            />
+            <el-progress :percentage="idleWeight * 100" :stroke-width="15" striped />
           </div>
           <div>
             walkWeight:
-            <el-progress
-              :percentage="parseInt(walkWeight * 100)"
-              :stroke-width="15"
-              striped
-            />
+            <el-progress :percentage="walkWeight * 100" :stroke-width="15" striped />
           </div>
           <div>
             runWeight:
-            <el-progress
-              :percentage="parseInt(runWeight * 100)"
-              :stroke-width="15"
-              striped
-            />
+            <el-progress :percentage="runWeight * 100" :stroke-width="15" striped />
           </div>
         </div>
       </div>
@@ -124,21 +112,10 @@
 
 <script setup lang="ts">
 import { ref, Ref, onMounted, watch, reactive } from "vue";
-import {
-  Renderer,
-  RendererPublicInterface,
-  Camera,
-  Scene,
-  DirectionalLight,
-  HemisphereLight,
-  Box,
-  GltfModel,
-} from "troisjs";
+import { Renderer, RendererPublicInterface, Camera, Scene } from "troisjs";
 import * as THREE from "three";
 import Stats from "three/examples/jsm/libs/stats.module.js";
-import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
-import Trois from "./Trois.ts";
-import { Reflector } from "three/examples/jsm/objects/Reflector.js";
+import Trois from "./Trois";
 
 const props = defineProps({
   height: {
@@ -154,13 +131,9 @@ const IDLE_TO_WALK: string = "IDLE_TO_WALK";
 const WALK_TO_RUN: string = "WALK_TO_RUN";
 const RUN_TOP_WALK: string = "RUN_TOP_WALK";
 const WALK_TO_IDLE: string = "WALK_TO_IDLE";
-const ONE_STEP: number = 0.05;
 const rendererC = ref();
 const sceneC = ref();
 const cameraC = ref();
-const idleAction = ref<AnimationClip>();
-const walkAction = ref<AnimationClip>();
-const runAction = ref<AnimationClip>();
 const current = ref<number>(0);
 const timeScale = ref<number>(1);
 const idleWeight = ref<number>(0);
@@ -168,11 +141,11 @@ const walkWeight = ref<number>(0);
 const runWeight = ref<number>(0);
 const fadeDuration = ref<number>(3);
 const allActions = ref<boolean>(true);
-let actionsName: string = reactive([]);
+let actionsName: string[] = reactive([]);
 let dirLight;
 
-let renderer;
-let scene;
+let renderer: any;
+let scene: any;
 let camera;
 let stats;
 let trois: Trois;
@@ -187,7 +160,7 @@ watch(
   }
 );
 
-const init: void = () => {
+const init = (): void => {
   renderer = rendererC.value as RendererPublicInterface;
   scene = sceneC.value.scene;
   camera = cameraC.value.camera;
@@ -227,14 +200,14 @@ const init: void = () => {
   scene.add(mesh);
   stats = new Stats();
   stats.dom.style.position = "absolute";
-  document.getElementById("model").appendChild(stats.dom);
+  document.getElementById("model")?.appendChild(stats.dom);
   addModel();
   // 设置灯光自旋
   setLightSpin(dirLight.position);
   addSphere();
 };
 
-const setLightSpin: void = (position) => {
+const setLightSpin = (position: any): void => {
   const clock = new THREE.Clock();
   let timer = 0;
 
@@ -249,64 +222,65 @@ const setLightSpin: void = (position) => {
   rotate();
 };
 
-const addModel: void = async () => {
+const addModel = async (): Promise<void> => {
   trois = new Trois();
-  const model: THREE.Group = await trois.initModel();
+  const model: any = await trois.initModel();
   scene.add(model);
   //显示骨骼
   const skeleton = new THREE.SkeletonHelper(model);
   scene.add(skeleton);
   // 获取动画列表
-  trois.getActionList().map((item: THREE.AnimationClip) => {
+  const actionList = trois.getActionList();
+  actionList.map((item: THREE.AnimationClip): void => {
+    console.log(item)
     actionsName.push(item.getClip().name);
   });
   // 获取weight值
-  trois.troisChange((e) => {
-    idleWeight.value = e.idleWeight;
-    walkWeight.value = e.walkWeight;
-    runWeight.value = e.runWeight;
+  trois.troisChange((e: Trois): void => {
+    idleWeight.value = e.getIdleWeight();
+    walkWeight.value = e.getWalkWeight();
+    runWeight.value = e.getRunWeight();
   });
 
   modelDIY(model);
 };
 
 // 启用或禁用所有动作
-const offAllActions: void = () => {
+const offAllActions = (): void => {
   if (allActions.value) {
     trois.activateAllActions();
   } else {
     trois.deactivateAllActions();
   }
 };
-const timeScaleChange: void = (timeScale: number) => trois.timeScaleChange(timeScale);
+const timeScaleChange = (timeScale: number): void => trois.timeScaleChange(timeScale);
 // 暂停/继续
-const pause: void = () => trois.pause();
+const pause = (): void => trois.pause();
 // 帧动
-const frame: void = () => trois.frame();
+const frame = (): void => trois.frame();
 // 修改动作
-const activeAction: void = (index: number) => {
+const activeAction = (index: number): void => {
   trois.activeAction(index);
 };
-const fadeDurationChange: void = (fadeDuration: number) =>
-  trois.setFadeDuration(fadeDuration);
-const setFade: void = (type: string) => {
+const fadeDurationChange = (fadeDuration: number) => trois.setFadeDuration(fadeDuration);
+const setFade = (type: string): void => {
   trois.setFade(type);
   current.value = trois.getCurrent();
 };
-const addCtrl: void = () => {
+const addCtrl = (): void => {
   const orbitCtrl = renderer.three.cameraCtrl;
   orbitCtrl.addEventListener("change", () => {
     // console.log(1);
   });
 };
 
-const modelDIY: void = (model: THREE.Group) => {
+const modelDIY = (model: THREE.Group): void => {
   const bone = model.children[0].children[0]; // 骨骼
   const body = model.children[0].children[1]; // 身体
   const face = model.children[0].children[2]; // 面部
 };
 
-const addSphere: void = () => {};
+const addSphere = (): void => {};
 
 onMounted((): void => {
   init();
