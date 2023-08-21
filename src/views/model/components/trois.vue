@@ -232,7 +232,6 @@ const addModel = async (): Promise<void> => {
   // 获取动画列表
   const actionList = trois.getActionList();
   actionList.map((item: THREE.AnimationClip): void => {
-    console.log(item)
     actionsName.push(item.getClip().name);
   });
   // 获取weight值

@@ -223,11 +223,11 @@ export default class Trois {
             for (let key in this.data) {
                 if (
                     typeof this.data[key] === "object" &&
-                    this.data[key]?.toString() !== this[key].toString()
+                    this.data[key]?.toString() !== (this as any)[key].toString()
                 ) {
-                    this.data[key] = this[key]
-                } else if (this.data[key] !== this[key]) {
-                    this.data[key] = this[key]
+                    this.data[key] = (this as any)[key]
+                } else if (this.data[key] !== (this as any)[key]) {
+                    this.data[key] = (this as any)[key]
                 }
             }
         }
