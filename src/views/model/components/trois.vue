@@ -30,7 +30,7 @@
         />
       </div>
       <div>
-        动作：时段：{{ timeScale }}
+        单独动作时段：{{ timeScale }}
         <el-slider
           v-model="timeScale"
           :min="0"
@@ -52,7 +52,7 @@
       </div>
       <div>
         <div>
-          动态：转换时长：{{ fadeDuration }}
+          连续动作转换时长：{{ fadeDuration }}
           <el-slider
             v-model="fadeDuration"
             :min="0"
@@ -94,15 +94,15 @@
         <div>
           <div>
             idleWeight:
-            <el-progress :percentage="idleWeight * 100" :stroke-width="15" striped />
+            <el-progress :percentage="idleWeight" :stroke-width="15" striped />
           </div>
           <div>
             walkWeight:
-            <el-progress :percentage="walkWeight * 100" :stroke-width="15" striped />
+            <el-progress :percentage="walkWeight" :stroke-width="15" striped />
           </div>
           <div>
             runWeight:
-            <el-progress :percentage="runWeight * 100" :stroke-width="15" striped />
+            <el-progress :percentage="runWeight" :stroke-width="15" striped />
           </div>
         </div>
       </div>
@@ -175,7 +175,7 @@ const init = (): void => {
   scene.background = new THREE.Color(0xa0a0a0);
   // scene.fog = new THREE.Fog(0xa0a0a0, 10, 50);
   // 添加半球光
-  const hemiLight = new THREE.HemisphereLight(0xffffff, 0xffffff);
+  const hemiLight = new THREE.HemisphereLight(0xffffff, 0xffffff, 1);
   hemiLight.position.set(0, 20, 0);
   scene.add(hemiLight);
   // 添加平行光
@@ -191,9 +191,15 @@ const init = (): void => {
   scene.add(dirLight);
   scene.add(new THREE.CameraHelper(dirLight.shadow.camera));
   // 添加地面网格材料
+  const textureLoader = new THREE.TextureLoader();
   const mesh = new THREE.Mesh(
-    new THREE.PlaneGeometry(100, 100),
-    new THREE.MeshPhongMaterial({ color: 0x999999, depthWrite: false })
+    new THREE.PlaneGeometry(10, 10),
+    new THREE.MeshPhongMaterial({
+      color: 0x999999,
+      // depthWrite: false,
+      map: textureLoader.load("./static/nitu.webp"),
+      side: THREE.DoubleSide,
+    })
   );
   mesh.rotation.x = -Math.PI / 2;
   mesh.receiveShadow = true;
@@ -236,9 +242,9 @@ const addModel = async (): Promise<void> => {
   });
   // 获取weight值
   trois.troisChange((e: Trois): void => {
-    idleWeight.value = e.getIdleWeight();
-    walkWeight.value = e.getWalkWeight();
-    runWeight.value = e.getRunWeight();
+    idleWeight.value = Math.round(e.getIdleWeight().toFixed(2) * 100);
+    walkWeight.value = Math.round(e.getWalkWeight().toFixed(2) * 100);
+    runWeight.value = Math.round(e.getRunWeight().toFixed(2) * 100);
   });
 
   modelDIY(model);
@@ -292,6 +298,7 @@ onMounted((): void => {
 #model {
   position: relative;
   .ctrl {
+    background: #fff;
     position: absolute;
     right: 0;
     bottom: 0;
@@ -299,7 +306,6 @@ onMounted((): void => {
     padding: 10px 20px;
     border: 1px solid $--color-minor;
     border-radius: 16px;
-    // background: $--color-minor;
     .btns {
       display: flex;
       flex-wrap: wrap;
