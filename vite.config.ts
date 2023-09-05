@@ -29,7 +29,7 @@ export default defineConfig({
     },
     server: {
         host: "0.0.0.0",
-        port: 1667,
+        port: 667,
         open: true,
         hmr: true
     },
