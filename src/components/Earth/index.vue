@@ -78,7 +78,7 @@ const init = (): void => {
   // 星星
   stars();
   const renderModel: any = new RenderPass(scene, camera);
-  const effectFilm: any = new FilmPass(0.35, 0.75, 2048, 0);
+  const effectFilm: any = new FilmPass(0.35, 0.75, 2048, false);
   composer = new EffectComposer(renderer);
   composer.addPass(renderModel);
   composer.addPass(effectFilm);

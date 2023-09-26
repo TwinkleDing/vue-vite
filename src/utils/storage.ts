@@ -12,6 +12,10 @@ interface StorageData {
     dateTime: number
 }
 
+const getStorage = (type: string): Storage => {
+    return type == LOCAL_STORAGE ? localStorage : sessionStorage
+}
+
 /**
  * 存储localStorage
  *
@@ -27,7 +31,7 @@ export const setStore = (params: StorageParams): void => {
         content: content,
         dateTime: new Date().getTime()
     }
-        ; (window as any)[type].setItem(name, JSON.stringify(obj))
+    getStorage(type).setItem(name, JSON.stringify(obj))
 }
 
 /**
@@ -75,7 +79,7 @@ export const removeStore = (params: StorageParams): void => {
     if (!name) {
         return
     }
-    ; (window as any)[type].removeItem(name)
+    getStorage(type).removeItem(name)
 }
 
 /**
@@ -106,5 +110,5 @@ export const getAllStore = (type: string = LOCAL_STORAGE): StorageParams[] => {
  * @param params 类型
  */
 export const clearStore = (type: string = LOCAL_STORAGE): void => {
-    ; (window as any)[type].clear()
+    getStorage(type).clear()
 }

@@ -136,9 +136,9 @@ const sceneC = ref();
 const cameraC = ref();
 const current = ref<number>(0);
 const timeScale = ref<number>(1);
-const idleWeight = ref<number>(0);
-const walkWeight = ref<number>(0);
-const runWeight = ref<number>(0);
+const idleWeight = ref<number | bigint>(0);
+const walkWeight = ref<number | bigint>(0);
+const runWeight = ref<number | bigint>(0);
 const fadeDuration = ref<number>(3);
 const allActions = ref<boolean>(true);
 let actionsName: string[] = reactive([]);
@@ -237,7 +237,7 @@ const addModel = async (): Promise<void> => {
   scene.add(skeleton);
   // 获取动画列表
   const actionList = trois.getActionList();
-  actionList.map((item: THREE.AnimationClip): void => {
+  actionList.map((item: THREE.AnimationAction): void => {
     actionsName.push(item.getClip().name);
   });
   // 获取weight值

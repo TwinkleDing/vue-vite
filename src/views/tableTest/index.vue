@@ -347,7 +347,7 @@ const deleteMessage = (): void => {
     cancelButtonText: proxy.$t("cancel"),
     type: "warning",
   }).then(() => {
-    const list: String[] = selectList.list.map((item: TableTestItem) => {
+    const list: string[] = selectList.list.map((item: TableTestItem) => {
       return item.id;
     });
     tableDeleteApi(list).then((res: Res) => {

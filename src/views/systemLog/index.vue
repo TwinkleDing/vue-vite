@@ -128,7 +128,7 @@ const deleteAll = (): void => {
   });
 };
 const deleteSelect = (): void => {
-  const list: Array<String> = selectList.list.map((item: SystemLogItem) => {
+  const list: Array<string> = selectList.list.map((item: SystemLogItem) => {
     return item.id;
   });
   const params = list;

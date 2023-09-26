@@ -130,7 +130,7 @@ const systemTheme: Ref<string> = ref(store.getters.systemTheme);
 const headerTheme: Ref<string> = ref(store.getters.headerTheme);
 const menuTheme: Ref<string> = ref(store.getters.menuTheme);
 const systemPosition: Ref<string> = ref(store.getters.systemPosition);
-const direction: Ref<String> = ref(
+const direction: Ref<string> = ref(
   (window as any).config.ArLanuages?.includes(language.value) ? "ltr" : "rtl"
 );
 

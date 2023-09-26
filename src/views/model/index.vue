@@ -36,7 +36,7 @@ import { useRoute } from "vue-router";
 
 interface Components {
   key: string;
-  lable: string;
+  label: string;
   component: any;
 }
 

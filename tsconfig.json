@@ -3,6 +3,7 @@
     "target": "esnext",
     "module": "esnext",
     "strict": true,
+    "allowJs":true,
     "jsx": "preserve",
     "importHelpers": true,
     "moduleResolution": "node",
@@ -35,5 +36,6 @@
   "exclude": [
     "node_modules",
     "src/assets/json/*.json"
-  ]
+  ],
+  "skipLibCheck": true
 }

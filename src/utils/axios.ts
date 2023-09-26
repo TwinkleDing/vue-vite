@@ -63,7 +63,7 @@ axios.interceptors.response.use(
             router.push("/login")
             return
         }
-        if (res.config.url.includes("/auth/login")) {
+        if (res.config?.url.includes("/auth/login")) {
             if (res.data.data === "") {
                 ElMessage({
                     type: "error",

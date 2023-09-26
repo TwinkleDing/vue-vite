@@ -5,12 +5,16 @@
         v-for="item in imgList"
         class="box-img"
         :style="{
-          left: `${item.random.length ? item.random[0] : item.coordinate[0]}px`,
-          top: `${item.random.length ? item.random[1] : item.coordinate[1]}px`,
+          left: `${
+            item.getRandom().length ? item.getRandom()[0] : item.getCoordinate()[0]
+          }px`,
+          top: `${
+            item.getRandom().length ? item.getRandom()[1] : item.getCoordinate()[1]
+          }px`,
           height: `${itemSize}px`,
           width: `${itemSize}px`,
-          backgroundImage: item.isImg ? `url(${cardImg})` : '',
-          backgroundPosition: `${-item.coordinate[0]}px ${-item.coordinate[1]}px`,
+          backgroundImage: item.getIsImg() ? `url(${cardImg})` : '',
+          backgroundPosition: `${-item.getCoordinate()[0]}px ${-item.getCoordinate()[1]}px`,
         }"
         @click="puzzleClick(item)"
       ></div>
@@ -27,36 +31,36 @@
 import { onBeforeMount, reactive, ref, Ref } from "vue";
 import Puzzle, { Image } from "./puzzle";
 import img from "./Pokemon.webp";
-let puzzle;
+let puzzle: Puzzle;
 let imgList: Ref<Array<Image>> = ref([]);
 let count: Ref<number> = ref(0);
 let itemSize: Ref<number> = ref(0);
 let cardImg: Ref<any> = ref(null);
 
-const init: void = () => {
+const init = (): void => {
   puzzle = new Puzzle(img, 3, 600);
   itemSize.value = puzzle.getItemSize();
   cardImg.value = puzzle.getImg();
   puzzleImgChanged();
 };
-const start: void = () => {
+const start = (): void => {
   puzzle.start();
   puzzleImgChanged();
 };
-const reset: void = () => {
+const reset = (): void => {
   puzzle.reset();
   puzzleImgChanged();
 };
 
-const puzzleImgChanged: void = () => {
+const puzzleImgChanged = (): void => {
   count.value = puzzle.getCount();
   imgList.value = [...puzzle.getImageList()];
   if (puzzle.getOver()) {
     console.log("Over");
   }
 };
-const puzzleClick: void = (item: Image) => {
-  if (item.isImg) {
+const puzzleClick = (item: Image): void => {
+  if (item.getIsImg()) {
     puzzle.itemClick(item);
     puzzleImgChanged();
   }

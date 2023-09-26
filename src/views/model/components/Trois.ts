@@ -201,7 +201,7 @@ export default class Trois {
         this.data = new Proxy(this.originalData, {
             /**
              * @param {Object, Array} target 设置值的对象
-             * @param {String} key 属性
+             * @param {string} key 属性
              * @param {any} value 值
              * @param {Object} receiver this
              */
