@@ -9,7 +9,7 @@
         </el-carousel>
         <div class="charts">
           <div class="chart">
-            <bar-chart ref="bar1" />
+            <bar-chart ref="bar1" :option="barChart1Option" />
           </div>
           <div class="chart">
             <line-chart ref="line" />
@@ -125,7 +125,6 @@ const rules = reactive<FormRules>({
   title: [{ required: true, message: "请输入事件名称！", trigger: "blur" }],
   time: [{ required: true, message: "请选择事件时间！", trigger: "blur" }],
 });
-
 const gameList: Array<GameList> = reactive([
   {
     name: "星之卡比-探索发现",
@@ -149,6 +148,28 @@ const gameList: Array<GameList> = reactive([
     img: getAssetsImage("Pokemon.webp"),
   },
 ]);
+
+const barChart1Option = {
+  title: {
+    text: "柱状图",
+    subtext: "模拟数据",
+    left: "center",
+  },
+  xAxis: {
+    data: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
+  },
+  series: [
+    {
+      data: [120, 200, 150, 80, 70, 110, 130],
+      type: "bar",
+    },
+    {
+      data: [120, 200, 150, 80, 70, 110, 130],
+      type: "line",
+      areaStyle: {},
+    },
+  ],
+};
 
 const calendarClick = (data: any): void => {
   chooseTime.value = new Date(data.day).getTime();
@@ -185,20 +206,20 @@ const resetForm = (formEl: FormInstance | undefined): void => {
   if (!formEl) return;
   formEl.resetFields();
 };
-const resize = ()=> {
-    pie.value && pie.value.resize();
-    bar1.value && bar1.value.resize();
-    bar2.value && bar2.value.resize();
-    line.value && line.value.resize();
-}
+const resize = () => {
+  pie.value && pie.value.resize();
+  bar1.value && bar1.value.resize();
+  bar2.value && bar2.value.resize();
+  line.value && line.value.resize();
+};
 
 onMounted(() => {
   window.addEventListener("resize", resize);
-})
+});
 
-onUnmounted(()=> {
-  window.removeEventListener("resize", resize)
-})
+onUnmounted(() => {
+  window.removeEventListener("resize", resize);
+});
 </script>
 
 <style lang="scss" scoped>

@@ -1,8 +1,8 @@
 <template>
   <div ref="lineChart" class="line-chart" :style="{ width, height }"></div>
 </template>
-<script lang="ts">
-import { onMounted, getCurrentInstance, reactive } from "vue";
+<script lang="ts" setup>
+import { onMounted, ref, reactive } from "vue";
 import * as echarts from "echarts/core";
 import { GridComponent, GridComponentOption } from "echarts/components";
 import { LineChart, LineSeriesOption } from "echarts/charts";
@@ -12,74 +12,62 @@ import { CanvasRenderer } from "echarts/renderers";
 echarts.use([GridComponent, LineChart, CanvasRenderer, UniversalTransition]);
 type EChartsOption = echarts.ComposeOption<GridComponentOption | LineSeriesOption>;
 
-export default {
-  name: "LineChart",
-  props: {
-    option: {
-      type: Object,
-      default: () => {
-        return {
-          title: {
-            text: "Referer of a Website",
-            subtext: "Fake Data",
-            left: "center",
-          },
-          tooltip: {
-            trigger: "item",
-          },
-          xAxis: {
-            type: "category",
-            data: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
-          },
-          yAxis: {
-            type: "value",
-          },
-          series: [
-            {
-              data: [150, 230, 224, 218, 135, 147, 260],
-              type: "line",
-              areaStyle: {},
-            },
-          ],
-        };
-      },
-    },
-    width: {
-      type: String,
-      default: "100%",
-    },
-    height: {
-      type: String,
-      default: "100%",
-    },
-    theme: {
-      type: String,
-      default: "light",
-    },
+const props = defineProps({
+  option: {
+    type: Object,
+    default: () => {},
   },
-  setup(props: any) {
-    const { proxy }: any = getCurrentInstance();
-    const option: EChartsOption = props.option;
-    let myChart: any = reactive({});
+  width: {
+    type: String,
+    default: "100%",
+  },
+  height: {
+    type: String,
+    default: "100%",
+  },
+  theme: {
+    type: String,
+    default: "light",
+  },
+});
+const lineChart = ref();
+const Option: EChartsOption = reactive({
+  title: {
+    text: "Referer of a Website",
+    subtext: "Fake Data",
+    left: "center",
+  },
+  tooltip: {
+    trigger: "item",
+  },
+  xAxis: {
+    type: "category",
+    data: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
+  },
+  yAxis: {
+    type: "value",
+  },
+  series: [
+    {
+      data: [150, 230, 224, 218, 135, 147, 260],
+      type: "line",
+      areaStyle: {},
+    },
+  ],
+});
+let myChart: any = reactive({});
 
-    const init = (): void => {
-      const chartDom = proxy.$refs.lineChart!;
-      myChart = echarts.init(chartDom, props.theme, { renderer: "svg" });
-      option && myChart.setOption(option);
-      resize();
-    };
-    const resize = (): void => {
-      myChart.resize();
-    };
-    onMounted(() => {
-      init();
-    });
-    return {
-      init,
-      resize,
-    };
-  },
+const init = (): void => {
+  myChart = echarts.init(lineChart.value, props.theme, { renderer: "svg" });
+  myChart.setOption({ ...Option, ...props.option });
+  resize();
 };
+const resize = (): void => {
+  myChart.resize();
+};
+onMounted(() => {
+  init();
+});
 </script>
 
 <style scoped>
