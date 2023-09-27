@@ -2,7 +2,7 @@
   <div ref="barChart" class="line-chart" :style="{ width, height }"></div>
 </template>
 <script lang="ts" setup>
-import { onMounted, ref, reactive } from "vue";
+import { onMounted, onUnmounted, ref, reactive } from "vue";
 import * as echarts from "echarts/core";
 import { GridComponent, GridComponentOption } from "echarts/components";
 import { BarChart, BarSeriesOption } from "echarts/charts";
@@ -65,6 +65,10 @@ const resize = (): void => {
 };
 onMounted(() => {
   init();
+  window.addEventListener("resize", resize);
+});
+onUnmounted(() => {
+  window.removeEventListener("resize", resize);
 });
 </script>
 
