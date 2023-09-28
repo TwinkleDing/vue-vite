@@ -3,64 +3,78 @@ class Puzzle {
     private static playing: boolean = false
     private static over: boolean = false
     private static img: ImageBitmap
-    private static count: number
-    private type: number
+    private count: number = Puzzle.DEFAULT_COUNT
+    private time: number = Puzzle.DEFAULT_COUNT
+    private timer: any
+    private block: number
     private width: number
     private itemSize: number
     private imgList: Array<Image> = []
-    constructor(img: ImageBitmap, type: number, width: number) {
+    private data: any = {}
+    private originalData: any = {}
+    private initData: boolean = true
+    constructor(img: ImageBitmap, block: number, width: number) {
         Puzzle.img = img
-        this.type = type
+        this.block = block
         this.width = width
-        Puzzle.count = Puzzle.DEFAULT_COUNT
-        this.itemSize = this.width / this.type
+        this.itemSize = this.width / this.block
         this.init()
     }
     init(): void {
-        Puzzle.count = Puzzle.DEFAULT_COUNT
-        const itemLength: number = Math.pow(this.type, 2)
-        for (let i = 0; i < this.type; i++) {
-            for (let j = 0; j < this.type; j++) {
+        const itemLength: number = Math.pow(this.block, 2)
+        for (let i = 0; i < this.block; i++) {
+            for (let j = 0; j < this.block; j++) {
                 const coordinate: Array<number> = [i * this.itemSize, j * this.itemSize]
-                const img: Image = new Image(i * this.type + j + 1 !== itemLength, coordinate)
+                const img: Image = new Image(i * this.block + j + 1 !== itemLength, coordinate)
                 this.imgList.push(img)
             }
         }
+        this.setOriginalData()
+        this.setData()
     }
     start(): void {
-        Puzzle.count = Puzzle.DEFAULT_COUNT
+        this.randomImg()
+        const startTime = new Date().getTime()
+        this.count = Puzzle.DEFAULT_COUNT
+        this.timer = setInterval(() => {
+            this.time = new Date().getTime() - startTime
+            this.setData()
+        }, 10)
         Puzzle.playing = true
         Puzzle.over = false
-        let randomList: Array<number> = []
-        while (true) {
-            let random: number = Math.floor(Math.random() * (this.imgList.length - 1))
-            if (!randomList.includes(random)) {
-                randomList.push(random)
+        this.setData()
+    }
+    randomImg(): void {
+        this.imgList.forEach((item: Image, i: number) => {
+            if (item.getIsImg()) {
+                const index = getRandom(0, this.imgList.length - 2, i)
+                const temp = [...item.getRandom()]
+                item.setRandom([...this.imgList[index].getRandom()])
+                this.imgList[index].setRandom([...temp])
             }
-            if (randomList.length === this.imgList.length - 1) {
-                break
+        })
+        function getRandom(min: number, max: number, i: number): number {
+            const r: number = Math.floor(Math.random() * (max + 1 - min) + min)
+            if (r !== i) {
+                return r
+            } else {
+                return getRandom(min, max, i)
             }
         }
-        this.imgList.forEach((item: Image, index: number) => {
-            if (item.getIsImg()) {
-                item.setRandom(this.imgList[randomList[index]].getCoordinate())
-            }
-        })
     }
     reset(): void {
-        Puzzle.count = Puzzle.DEFAULT_COUNT
+        clearInterval(this.timer)
+        this.count = Puzzle.DEFAULT_COUNT
+        this.time = Puzzle.DEFAULT_COUNT
         Puzzle.playing = false
         this.imgList.forEach((item: Image, index: number) => {
-            if (item.getIsImg()) {
-                item.setRandom([])
-            } else {
-                item.setRandom(item.getCoordinate())
-            }
+            item.setRandom(item.getCoordinate())
         })
+        this.setData()
     }
     itemClick(item: Image): void {
         if (Puzzle.playing && !Puzzle.over) {
-            let coordinate: Array<number> = item.getRandom()
+            const coordinate: Array<number> = item.getRandom()
             // left
             if (coordinate[0] - this.itemSize >= 0) {
                 this.emptyChange(coordinate[0] - this.itemSize, coordinate[1], item)
@@ -78,8 +92,8 @@ class Puzzle {
                 this.emptyChange(coordinate[0], coordinate[1] + this.itemSize, item)
             }
         }
+        this.setData()
     }
-
     emptyChange(x: number, y: number, item: Image): void {
         const empty: Image = this.imgList[this.imgList.length - 1]
         const coordinate: Array<number> = empty.getRandom()
@@ -87,7 +101,7 @@ class Puzzle {
             const substitution: Array<number> = item.getRandom()
             item.setRandom([coordinate[0], coordinate[1]])
             empty.setRandom(substitution)
-            Puzzle.count++
+            this.count++
             this.hasOver()
         }
     }
@@ -101,8 +115,55 @@ class Puzzle {
             }
         })
         if (everyOver) {
+            clearInterval(this.timer)
             Puzzle.over = true
         }
+    }
+    puzzleChange(cb: any) {
+        const _self = this
+        this.data = new Proxy(this.originalData, {
+            /**
+             * @param {Object, Array} target 设置值的对象
+             * @param {string} key 属性
+             * @param {any} value 值
+             * @param {Object} receiver this
+             */
+            set: function (target, key, value, receiver) {
+                target[key] = value
+                cb(_self)
+                return true
+            }
+        })
+    }
+    setData(): void {
+        if (this.initData) {
+            for (let key in this.originalData) {
+                this.data[key] = this.originalData[key]
+            }
+            this.initData = false
+        } else {
+            for (let key in this.data) {
+                if (
+                    typeof this.data[key] === "object" &&
+                    this.data[key] !== null &&
+                    this.data[key] !== undefined &&
+                    this.data[key]?.toString() !== (this as any)[key].toString()
+                ) {
+                    this.data[key] = (this as any)[key]
+                } else if (this.data[key] !== (this as any)[key]) {
+                    this.data[key] = (this as any)[key]
+                }
+            }
+        }
+    }
+    setOriginalData(): void {
+        let obj: any = {}
+        for (let key in this) {
+            if (typeof this[key] !== "function") {
+                obj[key] = this[key]
+            }
+        }
+        this.originalData = obj
     }
 
     getOver(): boolean {
@@ -115,7 +176,10 @@ class Puzzle {
         return this.itemSize
     }
     getCount(): number {
-        return Puzzle.count
+        return this.count
+    }
+    getTime(): number {
+        return this.time
     }
     getImageList(): Array<Image> {
         return this.imgList

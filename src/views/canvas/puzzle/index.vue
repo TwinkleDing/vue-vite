@@ -1,68 +1,80 @@
 <template>
   <div class="puzzle">
-    <div class="box">
+    <div
+      class="box"
+      :style="{
+        height: `${width}px`,
+        width: `${width}px`,
+      }"
+    >
       <div
         v-for="item in imgList"
         class="box-img"
         :style="{
-          left: `${
-            item.getRandom().length ? item.getRandom()[0] : item.getCoordinate()[0]
-          }px`,
-          top: `${
-            item.getRandom().length ? item.getRandom()[1] : item.getCoordinate()[1]
-          }px`,
+          left: `${item.getRandom()[0]}px`,
+          top: `${item.getRandom()[1]}px`,
           height: `${itemSize}px`,
           width: `${itemSize}px`,
           backgroundImage: item.getIsImg() ? `url(${cardImg})` : '',
           backgroundPosition: `${-item.getCoordinate()[0]}px ${-item.getCoordinate()[1]}px`,
+          backgroundSize: `${width}px ${width}px`,
         }"
         @click="puzzleClick(item)"
       ></div>
     </div>
-    <div class="handler">
-      <span>步数：{{ count }}</span>
-      <el-button type="primary" @click="start">开始</el-button>
-      <el-button type="info" @click="reset">重置</el-button>
+    <div class="setting">
+      <img class="material" :src="img" alt="" />
+      <div class="handler">
+        <div>步数：{{ count }}</div>
+        <div>计时：{{ time }}</div>
+        <hr />
+        <el-button type="primary" @click="start">开始</el-button>
+        <el-button type="info" @click="reset">重置</el-button>
+      </div>
     </div>
   </div>
 </template>
 
 <script lang="ts" setup>
 import { onBeforeMount, reactive, ref, Ref } from "vue";
+import { ElMessage } from "element-plus";
 import Puzzle, { Image } from "./puzzle";
-import img from "./Pokemon.webp";
+import img from "./guoran.jpg";
 let puzzle: Puzzle;
-let imgList: Ref<Array<Image>> = ref([]);
-let count: Ref<number> = ref(0);
-let itemSize: Ref<number> = ref(0);
-let cardImg: Ref<any> = ref(null);
+const imgList: Ref<Array<Image>> = ref([]);
+const count: Ref<number> = ref(0);
+const time: Ref<number> = ref(0);
+const itemSize: Ref<number> = ref(0);
+const cardImg: Ref<any> = ref(null);
+const width: Ref<number> = ref(600);
+const block: Ref<number> = ref(3);
 
 const init = (): void => {
-  puzzle = new Puzzle(img, 3, 600);
+  puzzle = new Puzzle(img, block.value, width.value);
   itemSize.value = puzzle.getItemSize();
   cardImg.value = puzzle.getImg();
-  puzzleImgChanged();
+  imgList.value = [...puzzle.getImageList()];
+  puzzle.puzzleChange((e: Puzzle): void => {
+    time.value = e.getTime();
+    count.value = e.getCount();
+    imgList.value = [...e.getImageList()];
+    console.log(1);
+    if (puzzle.getOver()) {
+      console.log("Over");
+      ElMessage.success("恭喜你，拼图完成！用时" + time.value + "ms");
+    }
+  });
 };
 const start = (): void => {
   puzzle.start();
-  puzzleImgChanged();
 };
 const reset = (): void => {
   puzzle.reset();
-  puzzleImgChanged();
 };
 
-const puzzleImgChanged = (): void => {
-  count.value = puzzle.getCount();
-  imgList.value = [...puzzle.getImageList()];
-  if (puzzle.getOver()) {
-    console.log("Over");
-  }
-};
 const puzzleClick = (item: Image): void => {
   if (item.getIsImg()) {
     puzzle.itemClick(item);
-    puzzleImgChanged();
   }
 };
 
@@ -73,10 +85,12 @@ onBeforeMount(() => {
 
 <style lang="scss" scoped>
 .puzzle {
-  width: 600px;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
   .box {
-    height: 600px;
-    width: 600px;
     border: 1px solid black;
     position: relative;
     &-img {
@@ -84,9 +98,16 @@ onBeforeMount(() => {
       border: 1px solid #fff;
     }
   }
-  .handler {
-    margin-top: 12px;
-    text-align: right;
+  .setting {
+    .material {
+      height: 200px;
+      width: 200px;
+      background-size: 100% 100%;
+    }
+    .handler {
+      margin-top: 12px;
+      text-align: right;
+    }
   }
 }
 </style>

@@ -26,6 +26,7 @@ export default class Trois {
 
     constructor() {
         this.setOriginalData()
+        this.setData()
     }
     initModel(): Promise<void> {
         const loader = new GLTFLoader()
