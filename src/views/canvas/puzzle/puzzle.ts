@@ -1,8 +1,8 @@
 class Puzzle {
-    private static DEFAULT_COUNT = 0
-    private static playing: boolean = false
-    private static over: boolean = false
-    private static img: ImageBitmap
+    public static DEFAULT_COUNT = 0
+    public static playing: boolean = false
+    public static over: boolean = false
+    public static img: ImageBitmap
     private count: number = Puzzle.DEFAULT_COUNT
     private time: number = Puzzle.DEFAULT_COUNT
     private timer: any
