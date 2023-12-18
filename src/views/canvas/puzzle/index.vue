@@ -58,7 +58,6 @@ const init = (): void => {
     time.value = e.getTime();
     count.value = e.getCount();
     imgList.value = [...e.getImageList()];
-    console.log(1);
     if (puzzle.getOver()) {
       console.log("Over");
       ElMessage.success("恭喜你，拼图完成！用时" + time.value + "ms");

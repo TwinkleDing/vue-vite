@@ -1,10 +1,11 @@
 <template>
   <div class="charts">
-    <v-chart />
+    <w-chart />
   </div>
 </template>
 <script setup lang="ts">
-import VChart from "./chart.vue";
+import DChart from "./chart.vue";
+import WChart from "./chartWeight.vue";
 </script>
 
 <style scoped lang="scss">

@@ -1,35 +1,17 @@
 <template>
-  <div id="main" style="height: 780px; width: 100%"></div>
+  <div id="main" ref="chartDom" style="height: 780px; width: 100%"></div>
 </template>
 <script setup lang="ts">
-import { onMounted } from "vue";
-import * as echarts from "echarts/core";
+import { ref, reactive, onMounted } from "vue";
+import echarts from "@/utils/echarts.ts";
+import { LineSeriesOption } from "echarts/charts";
 import {
-  TitleComponent,
   TitleComponentOption,
-  ToolboxComponent,
   ToolboxComponentOption,
-  TooltipComponent,
   TooltipComponentOption,
-  GridComponent,
   GridComponentOption,
-  LegendComponent,
   LegendComponentOption,
 } from "echarts/components";
-import { LineChart, LineSeriesOption } from "echarts/charts";
-import { UniversalTransition } from "echarts/features";
-import { CanvasRenderer } from "echarts/renderers";
-
-echarts.use([
-  TitleComponent,
-  ToolboxComponent,
-  TooltipComponent,
-  GridComponent,
-  LegendComponent,
-  LineChart,
-  CanvasRenderer,
-  UniversalTransition,
-]);
 
 type EChartsOption = echarts.ComposeOption<
   | TitleComponentOption
@@ -40,7 +22,7 @@ type EChartsOption = echarts.ComposeOption<
   | LineSeriesOption
 >;
 
-const option: EChartsOption = {
+const option: EChartsOption = ref({
   color: ["#80FFA5", "#00DDFF", "#37A2FF", "#FF0087", "#FFBF00"],
   title: {
     text: "Gradient Stacked Area Chart",
@@ -223,12 +205,14 @@ const option: EChartsOption = {
       data: [220, 302, 181, 234, 210, 290, 150],
     },
   ],
-};
+});
+const chartDom = ref("");
+
+let myChart: echarts = reactive({});
 
 onMounted(() => {
-  const chartDom: any = document.getElementById("main")!;
-  const myChart: any = echarts.init(chartDom);
-  option && myChart.setOption(option);
+  myChart = echarts.init(chartDom.value);
+  option.value && myChart.setOption(option.value);
   window.onresize = () => {
     myChart.resize();
   };
