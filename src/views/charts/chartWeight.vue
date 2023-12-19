@@ -1,5 +1,11 @@
 <template>
-  <div id="main" ref="chartDom" style="height: 780px; width: 100%"></div>
+  <div
+    id="main"
+    ref="chartDom"
+    style="height: 780px; width: 100%"
+    @mouseover="chartMouseover"
+    @mouseout="chartMouseout"
+  ></div>
 </template>
 <script setup lang="ts">
 import { ref, Ref, reactive, onMounted } from "vue";
@@ -80,8 +86,23 @@ const data: Ref<Array[Array[number]]> = ref([[]]);
 for (let i = 0; i < Math.ceil(weight.value.length / 7); i++) {
   data.value[i] = weight.value.slice(i * 7, 7 + i * 7);
 }
-const colorList = ["red", "orange", "yellow", "green", "cyan", "blue", "purple"];
+const colorList: Ref<Array[string]> = ref([
+  "red",
+  "orange",
+  "yellow",
+  "green",
+  "cyan",
+  "blue",
+  "purple",
+]);
+const tooltipIndex = ref(0);
+const myTimer = ref(null);
+
 const option: EChartsOption = ref({
+//   dataset: {
+//     dimensions: ["area", "slaj", "bjaj", "zbaj"],
+//     source: [],
+//   },
   title: {
     text: "减肥体重每周同比图",
   },
@@ -113,7 +134,7 @@ const option: EChartsOption = ref({
       return {
         name: `第${i + 1}周`,
         type: "line",
-        color: colorList[i % 7],
+        color: colorList.value[i % 7],
         lineStyle: {
           width: 2,
         },
@@ -124,14 +145,46 @@ const option: EChartsOption = ref({
 });
 const chartDom = ref("");
 
-let myChart: echarts = reactive({});
+let myChart: echarts = reactive(null);
+
+const initChart = (): void => {
+  if (!myChart) {
+    myChart = echarts.init(chartDom.value);
+    tooltipInterval();
+    window.onresize = () => {
+      myChart.resize();
+    };
+  }
+  option.value && myChart.setOption(option.value);
+};
+
+const tooltipInterval = (): void => {
+  myTimer.value = setInterval(() => {
+    myChart.dispatchAction({
+      type: "showTip",
+      seriesIndex: 0,
+      dataIndex: tooltipIndex.value,
+    });
+    tooltipIndex.value++;
+    if (tooltipIndex.value > option.value.series[0].data.length) {
+      tooltipIndex.value = 0;
+    }
+  }, 3000);
+};
+
+const chartMouseover = (): void => {
+  if (myChart) {
+    clearInterval(myTimer.value);
+  }
+};
+const chartMouseout = (): void => {
+  if (myChart) {
+    tooltipInterval();
+  }
+};
 
 onMounted(() => {
-  myChart = echarts.init(chartDom.value);
-  option.value && myChart.setOption(option.value);
-  window.onresize = () => {
-    myChart.resize();
-  };
+  initChart();
 });
 </script>
 

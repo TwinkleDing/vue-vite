@@ -4,7 +4,8 @@ import {
     ToolboxComponent,
     TooltipComponent,
     GridComponent,
-    LegendComponent
+    LegendComponent,
+    DatasetComponent
 } from "echarts/components"
 import { LineChart, BarChart } from "echarts/charts"
 import { UniversalTransition } from "echarts/features"
@@ -16,6 +17,7 @@ echarts.use([
     TooltipComponent,
     GridComponent,
     LegendComponent,
+    DatasetComponent,
     LineChart,
     BarChart,
     CanvasRenderer,
