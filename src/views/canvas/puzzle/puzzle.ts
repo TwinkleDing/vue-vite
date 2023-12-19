@@ -1,4 +1,4 @@
-class Puzzle {
+export default class Puzzle {
     public static DEFAULT_COUNT = 0
     public static playing: boolean = false
     public static over: boolean = false
@@ -6,34 +6,40 @@ class Puzzle {
     private count: number = Puzzle.DEFAULT_COUNT
     private time: number = Puzzle.DEFAULT_COUNT
     private timer: any
-    private block: number
-    private width: number
-    private itemSize: number
-    private imgList: Array<Image> = []
+    private tier: number = 3
+    private width: number = 600
+    private blockSize: number
+    private blockList: Array<Block> = []
     private data: any = {}
     private originalData: any = {}
     private initData: boolean = true
-    constructor(img: ImageBitmap, block: number, width: number) {
+    constructor(img: ImageBitmap, tier: number, width: number) {
         Puzzle.img = img
-        this.block = block
-        this.width = width
-        this.itemSize = this.width / this.block
+        this.tier = tier || this.tier
+        this.width = width || this.width
+        this.blockSize = this.width / this.tier
         this.init()
     }
-    init(): void {
-        const itemLength: number = Math.pow(this.block, 2)
-        for (let i = 0; i < this.block; i++) {
-            for (let j = 0; j < this.block; j++) {
-                const coordinate: Array<number> = [i * this.itemSize, j * this.itemSize]
-                const img: Image = new Image(i * this.block + j + 1 !== itemLength, coordinate)
-                this.imgList.push(img)
+    /**
+     * 初始化拼图
+     */
+    private init(): void {
+        const itemLength: number = Math.pow(this.tier, 2)
+        for (let i = 0; i < this.tier; i++) {
+            for (let j = 0; j < this.tier; j++) {
+                const coordinate: Array<number> = [i * this.blockSize, j * this.blockSize]
+                const block: Block = new Block(i * this.tier + j + 1 !== itemLength, coordinate)
+                this.blockList.push(block)
             }
         }
         this.setOriginalData()
         this.setData()
     }
-    start(): void {
-        this.randomImg()
+    /**
+     * 开始游戏
+     */
+    public start(): void {
+        this.randomBlock()
         const startTime = new Date().getTime()
         this.count = Puzzle.DEFAULT_COUNT
         this.timer = setInterval(() => {
@@ -44,13 +50,16 @@ class Puzzle {
         Puzzle.over = false
         this.setData()
     }
-    randomImg(): void {
-        this.imgList.forEach((item: Image, i: number) => {
+    /**
+     * 随机打乱方块
+     */
+    private randomBlock(): void {
+        this.blockList.forEach((item: Block, i: number) => {
             if (item.getIsImg()) {
-                const index = getRandom(0, this.imgList.length - 2, i)
+                const index = getRandom(0, this.blockList.length - 2, i)
                 const temp = [...item.getRandom()]
-                item.setRandom([...this.imgList[index].getRandom()])
-                this.imgList[index].setRandom([...temp])
+                item.setRandom([...this.blockList[index].getRandom()])
+                this.blockList[index].setRandom([...temp])
             }
         })
         function getRandom(min: number, max: number, i: number): number {
@@ -62,40 +71,53 @@ class Puzzle {
             }
         }
     }
-    reset(): void {
+    /**
+     * 重置拼图
+     */
+    public reset(): void {
         clearInterval(this.timer)
         this.count = Puzzle.DEFAULT_COUNT
         this.time = Puzzle.DEFAULT_COUNT
         Puzzle.playing = false
-        this.imgList.forEach((item: Image, index: number) => {
+        this.blockList.forEach((item: Block, index: number) => {
             item.setRandom(item.getCoordinate())
         })
         this.setData()
     }
-    itemClick(item: Image): void {
+    /**
+     * 每一个块的点击事件，判断是改和哪个交换位置
+     * @param item 每一个块
+     */
+    public blockClick(item: Block): void {
         if (Puzzle.playing && !Puzzle.over) {
             const coordinate: Array<number> = item.getRandom()
             // left
-            if (coordinate[0] - this.itemSize >= 0) {
-                this.emptyChange(coordinate[0] - this.itemSize, coordinate[1], item)
+            if (coordinate[0] - this.blockSize >= 0) {
+                this.emptyChange(coordinate[0] - this.blockSize, coordinate[1], item)
             }
             // top
-            if (coordinate[1] - this.itemSize >= 0) {
-                this.emptyChange(coordinate[0], coordinate[1] - this.itemSize, item)
+            if (coordinate[1] - this.blockSize >= 0) {
+                this.emptyChange(coordinate[0], coordinate[1] - this.blockSize, item)
             }
             //right
-            if (coordinate[0] + this.itemSize < this.width) {
-                this.emptyChange(coordinate[0] + this.itemSize, coordinate[1], item)
+            if (coordinate[0] + this.blockSize < this.width) {
+                this.emptyChange(coordinate[0] + this.blockSize, coordinate[1], item)
             }
             // bottom
-            if (coordinate[1] + this.itemSize < this.width) {
-                this.emptyChange(coordinate[0], coordinate[1] + this.itemSize, item)
+            if (coordinate[1] + this.blockSize < this.width) {
+                this.emptyChange(coordinate[0], coordinate[1] + this.blockSize, item)
             }
         }
         this.setData()
     }
-    emptyChange(x: number, y: number, item: Image): void {
-        const empty: Image = this.imgList[this.imgList.length - 1]
+    /**
+     * 每次点击之后改变的内容
+     * @param x 第几行
+     * @param y 第几列
+     * @param item 块的内容
+     */
+    private emptyChange(x: number, y: number, item: Block): void {
+        const empty: Block = this.blockList[this.blockList.length - 1]
         const coordinate: Array<number> = empty.getRandom()
         if (x === coordinate[0] && y === coordinate[1]) {
             const substitution: Array<number> = item.getRandom()
@@ -105,9 +127,12 @@ class Puzzle {
             this.hasOver()
         }
     }
-    hasOver(): void {
+    /**
+     * 是否结束游戏
+     */
+    private hasOver(): void {
         let everyOver: boolean = true
-        this.imgList.forEach((item: Image) => {
+        this.blockList.forEach((item: Block) => {
             const coordinate = item.getCoordinate()
             const random = item.getRandom()
             if (coordinate[0] !== random[0] || coordinate[1] !== random[1]) {
@@ -119,7 +144,11 @@ class Puzzle {
             Puzzle.over = true
         }
     }
-    puzzleChange(cb: any) {
+    /**
+     * 监听函数
+     * @param cb
+     */
+    public puzzleChange(cb: any) {
         const _self = this
         this.data = new Proxy(this.originalData, {
             /**
@@ -135,7 +164,10 @@ class Puzzle {
             }
         })
     }
-    setData(): void {
+    /**
+     * 每当有属性发生改变触发，为了触发监听函数
+     */
+    private setData(): void {
         if (this.initData) {
             for (let key in this.originalData) {
                 this.data[key] = this.originalData[key]
@@ -156,7 +188,7 @@ class Puzzle {
             }
         }
     }
-    setOriginalData(): void {
+    private setOriginalData(): void {
         let obj: any = {}
         for (let key in this) {
             if (typeof this[key] !== "function") {
@@ -173,7 +205,7 @@ class Puzzle {
         return Puzzle.img
     }
     getItemSize(): number {
-        return this.itemSize
+        return this.blockSize
     }
     getCount(): number {
         return this.count
@@ -181,12 +213,12 @@ class Puzzle {
     getTime(): number {
         return this.time
     }
-    getImageList(): Array<Image> {
-        return this.imgList
+    getImageList(): Array<Block> {
+        return this.blockList
     }
 }
 
-export class Image {
+export class Block {
     private isImg: boolean
     private coordinate: Array<number> | [0, 0]
     private random: Array<number> | [0, 0]
@@ -214,5 +246,3 @@ export class Image {
         return this.random
     }
 }
-
-export default Puzzle

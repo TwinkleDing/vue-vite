@@ -8,7 +8,7 @@
       }"
     >
       <div
-        v-for="item in imgList"
+        v-for="item in blockList"
         class="box-img"
         :style="{
           left: `${item.getRandom()[0]}px`,
@@ -41,23 +41,23 @@ import { ElMessage } from "element-plus";
 import Puzzle, { Image } from "./puzzle";
 import img from "./guoran.jpg";
 let puzzle: Puzzle;
-const imgList: Ref<Array<Image>> = ref([]);
+const blockList: Ref<Array<Image>> = ref([]);
 const count: Ref<number> = ref(0);
 const time: Ref<number> = ref(0);
 const itemSize: Ref<number> = ref(0);
 const cardImg: Ref<any> = ref(null);
 const width: Ref<number> = ref(600);
-const block: Ref<number> = ref(3);
+const tier: Ref<number> = ref(3);
 
 const init = (): void => {
-  puzzle = new Puzzle(img, block.value, width.value);
+  puzzle = new Puzzle(img);
   itemSize.value = puzzle.getItemSize();
   cardImg.value = puzzle.getImg();
-  imgList.value = [...puzzle.getImageList()];
+  blockList.value = [...puzzle.getImageList()];
   puzzle.puzzleChange((e: Puzzle): void => {
     time.value = e.getTime();
     count.value = e.getCount();
-    imgList.value = [...e.getImageList()];
+    blockList.value = [...e.getImageList()];
     if (puzzle.getOver()) {
       console.log("Over");
       ElMessage.success("恭喜你，拼图完成！用时" + time.value + "ms");
@@ -73,7 +73,7 @@ const reset = (): void => {
 
 const puzzleClick = (item: Image): void => {
   if (item.getIsImg()) {
-    puzzle.itemClick(item);
+    puzzle.blockClick(item);
   }
 };
 
