@@ -84,7 +84,7 @@ const weight: Ref<number> = ref([
 
 const data: Ref<Array[Array[number]]> = ref([[]]);
 for (let i = 0; i < Math.ceil(weight.value.length / 7); i++) {
-  data.value[i] = weight.value.slice(i * 7, 7 + i * 7);
+  data.value[i] = [...weight.value.slice(i * 7, 7 + i * 7)];
 }
 const colorList: Ref<Array[string]> = ref([
   "red",
@@ -95,14 +95,44 @@ const colorList: Ref<Array[string]> = ref([
   "blue",
   "purple",
 ]);
+
+const dataset: Ref<any> = ref([
+  {
+    date: "周一",
+  },
+  {
+    date: "周二",
+  },
+  {
+    date: "周三",
+  },
+  {
+    date: "周四",
+  },
+  {
+    date: "周五",
+  },
+  {
+    date: "周六",
+  },
+  {
+    date: "周天",
+  },
+]);
+const dimensions: Ref<Array[string]> = ref([]);
+data.value.map((item, index) => {
+  dimensions.value.push(`第${index + 1}周`);
+  item.map((e, i) => {
+    dataset.value[i][`第${index + 1}周`] = e;
+  });
+});
 const tooltipIndex = ref(0);
 const myTimer = ref(null);
-
 const option: EChartsOption = ref({
-//   dataset: {
-//     dimensions: ["area", "slaj", "bjaj", "zbaj"],
-//     source: [],
-//   },
+  dataset: {
+    dimensions: ["date", ...dimensions.value],
+    source: dataset.value,
+  },
   title: {
     text: "减肥体重每周同比图",
   },
@@ -119,7 +149,6 @@ const option: EChartsOption = ref({
   xAxis: [
     {
       type: "category",
-      data: ["周一", "周二", "周三", "周四", "周五", "周六", "周天"],
     },
   ],
   yAxis: [
@@ -138,14 +167,12 @@ const option: EChartsOption = ref({
         lineStyle: {
           width: 2,
         },
-        data: item,
       };
     }),
   ],
 });
 const chartDom = ref("");
-
-let myChart: echarts = reactive(null);
+let myChart: echarts;
 
 const initChart = (): void => {
   if (!myChart) {
@@ -163,12 +190,9 @@ const tooltipInterval = (): void => {
     myChart.dispatchAction({
       type: "showTip",
       seriesIndex: 0,
-      dataIndex: tooltipIndex.value,
+      dataIndex: tooltipIndex.value % 7,
     });
     tooltipIndex.value++;
-    if (tooltipIndex.value > option.value.series[0].data.length) {
-      tooltipIndex.value = 0;
-    }
   }, 3000);
 };
 
