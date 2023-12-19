@@ -73,6 +73,7 @@ const weight: Ref<number> = ref([
   74.02,
   73.01,
   73.23,
+  73.04
 ]);
 
 const data: Ref<Array[Array[number]]> = ref([[]]);
