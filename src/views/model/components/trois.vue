@@ -93,15 +93,15 @@
         </div>
         <div>
           <div>
-            idleWeight:
+            站比重:
             <el-progress :percentage="idleWeight" :stroke-width="15" striped />
           </div>
           <div>
-            walkWeight:
+            走比重:
             <el-progress :percentage="walkWeight" :stroke-width="15" striped />
           </div>
           <div>
-            runWeight:
+            跑比重:
             <el-progress :percentage="runWeight" :stroke-width="15" striped />
           </div>
         </div>
@@ -252,6 +252,7 @@ const addModel = async (): Promise<void> => {
 
 // 启用或禁用所有动作
 const offAllActions = (): void => {
+    trois.deactivateAllActions();
   if (allActions.value) {
     trois.activateAllActions();
   } else {
