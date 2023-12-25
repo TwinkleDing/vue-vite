@@ -18,6 +18,7 @@ import {
   GridComponentOption,
   LegendComponentOption,
 } from "echarts/components";
+import Weight, { Dataset } from "./weight.ts";
 
 type EChartsOption = echarts.ComposeOption<
   | TitleComponentOption
@@ -28,60 +29,7 @@ type EChartsOption = echarts.ComposeOption<
   | LineSeriesOption
 >;
 
-const weight: Ref<number> = ref([
-  "-",
-  77.5,
-  77.8,
-  77.5,
-  77.5,
-  77.5,
-  76.8,
-  77.1,
-  76.8,
-  76.8,
-  76.9,
-  76.3,
-  76.7,
-  76.2,
-  76.5,
-  76.7,
-  76.9,
-  76.6,
-  77.2,
-  77.2,
-  76.2,
-  76,
-  75.8,
-  76.6,
-  76.6,
-  76,
-  75.8,
-  74.6,
-  74.6,
-  75,
-  75,
-  75,
-  75.6,
-  75.3,
-  75,
-  74.8,
-  74.8,
-  75.04,
-  75.68,
-  75.35,
-  74.85,
-  74.06,
-  73.52,
-  74.22,
-  74.22,
-  74.52,
-  74.4,
-  74.02,
-  73.01,
-  73.23,
-  73.04,
-  73.44
-]);
+const weight: Ref<number[]> = ref(Weight);
 
 const data: Ref<Array[Array[number]]> = ref([[]]);
 for (let i = 0; i < Math.ceil(weight.value.length / 7); i++) {
@@ -97,29 +45,7 @@ const colorList: Ref<Array[string]> = ref([
   "purple",
 ]);
 
-const dataset: Ref<any> = ref([
-  {
-    date: "周一",
-  },
-  {
-    date: "周二",
-  },
-  {
-    date: "周三",
-  },
-  {
-    date: "周四",
-  },
-  {
-    date: "周五",
-  },
-  {
-    date: "周六",
-  },
-  {
-    date: "周天",
-  },
-]);
+const dataset: Ref<any> = ref(Dataset);
 const dimensions: Ref<Array[string]> = ref([]);
 data.value.map((item, index) => {
   dimensions.value.push(`第${index + 1}周`);
@@ -129,13 +55,16 @@ data.value.map((item, index) => {
 });
 const tooltipIndex = ref(0);
 const myTimer = ref(null);
+const max: number = Math.max(...weight.value);
+const min: number = Math.min(...weight.value);
 const option: EChartsOption = ref({
   dataset: {
     dimensions: ["date", ...dimensions.value],
     source: dataset.value,
   },
   title: {
-    text: "减肥体重每周同比图",
+    text: `减肥体重每周同比图：最重${max}；最轻${min}\n
+平均每周${(((max - min) / weight.value.length) * 7).toFixed(2)}`,
   },
   tooltip: {
     trigger: "axis",
@@ -143,7 +72,8 @@ const option: EChartsOption = ref({
   grid: {
     left: "3%",
     right: "4%",
-    bottom: "3%",
+    top: "13%",
+    bottom: "0",
     containLabel: true,
   },
   legend: {},
@@ -155,7 +85,7 @@ const option: EChartsOption = ref({
   yAxis: [
     {
       name: "体重：公斤",
-      min: 70,
+      min: 65,
       max: 80,
     },
   ],
