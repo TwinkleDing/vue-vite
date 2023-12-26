@@ -64,7 +64,10 @@ const option: EChartsOption = ref({
   },
   title: {
     text: `减肥体重每周同比图：最重${max}；最轻${min}\n
-平均每周${(((max - min) / weight.value.length) * 7).toFixed(2)}`,
+目前${weight.value[weight.value.length - 1]}；平均每周${(
+      ((max - weight.value[weight.value.length - 1]) / weight.value.length) *
+      7
+    ).toFixed(2)}`,
   },
   tooltip: {
     trigger: "axis",
