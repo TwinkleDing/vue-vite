@@ -36,13 +36,10 @@ for (let i = 0; i < Math.ceil(weight.value.length / 7); i++) {
   data.value[i] = [...weight.value.slice(i * 7, 7 + i * 7)];
 }
 const colorList: Ref<Array[string]> = ref([
-  "red",
-  "orange",
-  "yellow",
-  "green",
-  "cyan",
-  "blue",
-  "purple",
+  "#f39",
+  "#9f3",
+  "#39f",
+  "#666",
 ]);
 
 const dataset: Ref<any> = ref(Dataset);
@@ -88,7 +85,7 @@ const option: EChartsOption = ref({
   yAxis: [
     {
       name: "体重：公斤",
-      min: 65,
+      min: 70,
       max: 80,
     },
   ],
@@ -97,7 +94,7 @@ const option: EChartsOption = ref({
       return {
         name: `第${i + 1}周`,
         type: "line",
-        color: colorList.value[i % 7],
+        color: colorList.value[i % 4],
         lineStyle: {
           width: 2,
         },
