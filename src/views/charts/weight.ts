@@ -1,3 +1,11 @@
+/*
+ * @Author: dingyuliang dingyuliang
+ * @Date: 2023-12-25 09:22:19
+ * @LastEditors: twinkleding twinkle415@163.com
+ * @LastEditTime: 2024-01-07 14:31:57
+ * @FilePath: \vue-vite\src\views\charts\weight.ts
+ * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
+ */
 export default [
     77.5, 77.5, 77.8, 77.5, 77.5, 77.5, 76.8, 77.1, 76.8, 76.8, 76.9, 76.3, 76.7, 76.2, 76.5, 76.7,
     76.9, 76.6, 77.2, 77.2, 76.2, 76, 75.8, 76.6, 76.6, 76, 75.8, 74.6, 74.6, 75, 75, 75, 75.6,
