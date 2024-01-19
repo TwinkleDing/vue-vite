@@ -2,7 +2,7 @@
  * @Author: dingyuliang dingyuliang
  * @Date: 2023-12-25 09:22:19
  * @LastEditors: twinkleding twinkle415@163.com
- * @LastEditTime: 2024-01-17 10:00:49
+ * @LastEditTime: 2024-01-19 10:36:27
  * @FilePath: \vue-vite\src\views\charts\weight.ts
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -12,7 +12,7 @@ export default [
     75.3, 75, 74.8, 74.8, 75.04, 75.68, 75.35, 74.85, 74.06, 73.52, 74.22, 74.22, 74.52, 74.4,
     74.02, 73.01, 73.23, 73.04, 73.44, 73.48, 73.07, 72.88, 72.4, 72.18, 72.74, 72.74, 72.99, 72.74,
     72.32, 72.35, 72.28, 72.54, 72.74, 72.46, 72.68, 72.47, 71.92, 71.71, 71.93, 72.18, 72.2, 71.94,
-    72.18, 71.98, 71.35, 71.74, 71.17, 71.5
+    72.18, 71.98, 71.35, 71.74, 71.17, 71.5, 72.13
 ]
 
 export const Dataset: any = [
