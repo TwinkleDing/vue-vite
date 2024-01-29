@@ -85,8 +85,8 @@ const option: EChartsOption = ref({
   yAxis: [
     {
       name: "体重：公斤",
-      min: 70,
-      max: 80,
+      min: 68,
+      max: 78,
     },
   ],
   series: [
