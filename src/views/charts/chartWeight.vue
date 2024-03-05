@@ -86,7 +86,7 @@ const option: EChartsOption = ref({
     {
       name: "体重：公斤",
       min: 68,
-      max: 78,
+      max: 73,
     },
   ],
   series: [
